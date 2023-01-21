@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Beat {
+  id               Int               @id @unique @default(autoincrement())
+  title            String            @db.VarChar(20000)
+  category         String[]          @db.VarChar
+  beatFile         String            @db.VarChar(10000)
+  introduce        String?
+  keyword          String[]          @db.VarChar
+  producerId       Int
+  isClosed         Boolean           @default(false)
+  beatImage        String            @db.VarChar(10000)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime
+  Producer         Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "beat_producer_id_fk")
+  BeatFileDuration BeatFileDuration?
+  Comment          Comment[]
+}
+
+model BeatFileDuration {
+  id       Int   @id(map: "beatFileDuration_pkey") @unique @default(autoincrement())
+  beatId   Int   @unique
+  duration Float
+  Beat     Beat  @relation(fields: [beatId], references: [id], onDelete: Cascade, map: "beatfileduration_beat_id_fk")
+}
+
+model Comment {
+  id                  Int                  @id @unique @default(autoincrement())
+  beatId              Int
+  vocalId             Int
+  commentFile         String               @db.VarChar(10000)
+  content             String?
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime
+  Beat                Beat                 @relation(fields: [beatId], references: [id], onDelete: Cascade, map: "comment_beat_id_fk")
+  Vocal               Vocal                @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "comment_vocal_id_fk")
+  CommentFileDuration CommentFileDuration?
+}
+
+model CommentFileDuration {
+  id        Int     @id @unique @default(autoincrement())
+  commentId Int     @unique
+  duration  Float
+  Comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade, map: "commentfileduration_comment_id_fk")
+}
+
+model Producer {
+  id                Int                 @id @unique @default(autoincrement())
+  name              String              @unique @db.VarChar(200)
+  contact           String              @db.VarChar(200)
+  category          String[]            @db.VarChar
+  keyword           String[]            @db.VarChar
+  introduce         String?
+  producerImage     String              @db.VarChar(10000)
+  producerID        String              @unique @db.VarChar(200)
+  producerPW        String              @db.VarChar(200)
+  Beat              Beat[]
+  ProducerPortfolio ProducerPortfolio[]
+  ProducerTitle     ProducerTitle?
+}
+
+model ProducerPortfolio {
+  id                        Int                        @id(map: "producerPF_pkey") @unique @default(autoincrement())
+  ppfImage                  String                     @db.VarChar(20000)
+  title                     String                     @db.VarChar(20000)
+  ppfFile                   String                     @db.VarChar(10000)
+  category                  String[]                   @db.VarChar
+  content                   String?
+  keyword                   String[]                   @db.VarChar
+  producerId                Int
+  createdAt                 DateTime                   @default(now())
+  updatedAt                 DateTime
+  Producer                  Producer                   @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "producerpf_producer_id_fk")
+  ProducerPortfolioDuration ProducerPortfolioDuration?
+  ProducerTitle             ProducerTitle?
+}
+
+model ProducerPortfolioDuration {
+  id                  Int               @id @unique @default(autoincrement())
+  producerPortfolioId Int               @unique
+  duration            Float
+  ProducerPortfolio   ProducerPortfolio @relation(fields: [producerPortfolioId], references: [id], onDelete: Cascade, map: "producerportfolioduration_producerportfolio_id_fk")
+}
+
+model ProducerTitle {
+  id                  Int               @id(map: "producerTitle_pkey") @unique @default(autoincrement())
+  producerId          Int               @unique
+  producerPortfolioId Int               @unique
+  ProducerPortfolio   ProducerPortfolio @relation(fields: [producerPortfolioId], references: [id], onDelete: Cascade, map: "producertitle_ppf_id_fk")
+  Producer            Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "producertitle_producer_id_fk")
+}
+
+model Vocal {
+  id             Int              @id @unique @default(autoincrement())
+  name           String           @unique @db.VarChar(200)
+  contact        String           @db.VarChar(200)
+  category       String[]         @db.VarChar
+  keyword        String[]         @db.VarChar
+  introduce      String?
+  vocalImage     String           @db.VarChar(10000)
+  isSelected     Boolean          @default(false)
+  vocalID        String           @unique @db.VarChar(200)
+  vocalPW        String           @db.VarChar(200)
+  Comment        Comment[]
+  VocalOrder     VocalOrder[]
+  VocalPortfolio VocalPortfolio[]
+  VocalTitle     VocalTitle?
+}
+
+model VocalOrder {
+  id                     Int      @id @unique @default(autoincrement())
+  vocalId                Int
+  orderStandardTableName String   @db.VarChar(100)
+  orderStandardTableId   Int
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime
+  Vocal                  Vocal    @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocalorder_vocalId_id_fk")
+}
+
+model VocalPortfolio {
+  id                     Int                     @id @unique @default(autoincrement())
+  vpfImage               String                  @db.VarChar(20000)
+  title                  String                  @db.VarChar(20000)
+  vpfFile                String                  @db.VarChar(10000)
+  category               String[]                @db.VarChar
+  content                String?
+  keyword                String[]                @db.VarChar
+  vocalId                Int
+  createdAt              DateTime                @default(now())
+  updatedAt              DateTime
+  Vocal                  Vocal                   @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocalpf_vocal_id_fk")
+  VocalPortfolioDuration VocalPortfolioDuration?
+  VocalTitle             VocalTitle?
+}
+
+model VocalPortfolioDuration {
+  id               Int            @id @unique @default(autoincrement())
+  vocalPortfolioId Int            @unique
+  duration         Float?
+  VocalPortfolio   VocalPortfolio @relation(fields: [vocalPortfolioId], references: [id], onDelete: Cascade, map: "vocalportfolioduration_vocalPortfolio_id_fk")
+}
+
+model VocalTitle {
+  id               Int            @id @unique @default(autoincrement())
+  vocalId          Int            @unique
+  vocalPortfolioId Int            @unique
+  Vocal            Vocal          @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocaltitle_vocal_id_fk")
+  VocalPortfolio   VocalPortfolio @relation(fields: [vocalPortfolioId], references: [id], onDelete: Cascade, map: "vocaltitle_vpf_id_fk")
+}
