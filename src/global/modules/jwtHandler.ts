@@ -1,6 +1,6 @@
-import jwt from "jsonwebtoken";
-import redisClient from "redis";
-import { promisify } from "util";
+import jwt from 'jsonwebtoken';
+import redisClient from '../modules/redisClient';
+import { promisify } from 'util';
 import config from '../config';
 import tokenType from '../constants/tokenType';
 

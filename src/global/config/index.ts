@@ -16,6 +16,9 @@ export default {
 
   //? 데이터베이스
   database: process.env.DATABASE_URL as string,
+  redisPort: process.env.REDIS_PORT as unknown as number,
+  redisHost: process.env.REDIS_HOST as string,
+  redisPassword: process.env.REDIS_PASSWORD as string, 
 
   //? JWT
   jwtSecret: process.env.JWT_SECRET as string,
