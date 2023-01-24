@@ -24,7 +24,7 @@ const isValidRefresh = async(accessToken: string, refreshToken: string) => {
     try {
         const accessTokenResult = jwtUtils.accessVerify(accessToken); //! expired 여야 accesstoken 재발급 가능함 
         const decoded = jwt.decode(accessToken) as JwtPayload;
-    
+
         if (!decoded) throw new AccessTokenInvalid(rm.INVALID_ACCESS_TOKEN); //! decoding 결과 없는 경우
     
         const refreshTokenResult = await jwtUtils.refreshVerify(refreshToken, decoded.tableName, decoded.userId);

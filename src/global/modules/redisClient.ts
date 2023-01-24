@@ -2,13 +2,14 @@ import config from '../config';
 import * as redis from 'redis';
 
 const redisInfo = {
-    host: config.redisHost,
-    port: config.redisPort,
+    socket: {
+        host: config.redisHost,
+        port: config.redisPort,
+    },
     password: config.redisPassword,
-
 };
 
-const redisClient = redis.createClient(redisInfo);
-
+let redisClient = redis.createClient(redisInfo);
+redisClient.connect();
 
 export default redisClient;

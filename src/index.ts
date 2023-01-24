@@ -1,9 +1,24 @@
 import express, { NextFunction, Request, Response } from "express";
 import router from './domain';
-import { globalErrorHandler } from './global/middlewares/error';
+import cors from "cors";
+import { corsMiddleware, globalErrorHandler } from './global/middlewares';
 
 const app = express(); 
 const PORT = 3000;
+
+const corsOriginList = [
+    'http://localhost:3000',
+    'https://www.track1.site'
+];
+
+const corsOptions = {
+    origin: corsOriginList,
+    credential: true,
+    optionsSuccessStatus: 200,
+};
+
+app.use(cors(corsOptions));
+app.use(corsMiddleware(corsOriginList));
 
 app.use(express.json());
 app.use("/", router); 

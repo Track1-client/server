@@ -68,13 +68,12 @@ const accessVerify = (token: string) => {
 
 //& Refresh Token 유효성 검사 
 const refreshVerify = async(token: string, tableName: string, userId: number) => {
-    const getAsync = promisify(redisClient.get).bind(redisClient); 
+    //const getAsync = promisify(redisClient.get).bind(redisClient); 
     const redisKeyArray: string[] = ['Table', tableName, 'UserID', userId as unknown as string];
 
     try {
-        console.log(redisKeyArray.join(':'));
-        const data = await getAsync(redisKeyArray.join(':'));   //* Redis에서 key에 해당하는 value 가져오기 
-        
+        const data = await redisClient.get(redisKeyArray.join(':'));
+        //const data = await redisClient.get(redisKeyArray.join(':')); //* Redis에서 key에 해당하는 value 가져오기 
         if (token === data) {
             try {
                 jwt.verify(token, config.jwtSecret);    //* refresh token 유효성 검사

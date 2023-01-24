@@ -30,12 +30,12 @@ const globalErrorHandler: ErrorRequestHandler = (
             console.error(`[statusCode: ${err.statusCode}] message: ${err.message}`);
         };
         
-        return res.status(statusCode || 500).json({ message, code });
+        return res.status(statusCode || 500).send(fail(code as unknown as number, message));
     } 
     else {                                          //! 예상 불가능한 에러 
         console.error('[UNEXPECTED ERROR]: ' + err);
         return res.status(sc.INTERNAL_SERVER_ERROR).send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
-    };
+    }
 };
 
 export default globalErrorHandler;
