@@ -14,8 +14,10 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
         const accessToken = jwtUtils.signAccess(data.tableName, data.userId);
         const refreshToken = jwtUtils.signRefresh(data.tableName, data.userId);
 
+        console.log(data.redisKey);
+        console.log(refreshToken);
         redisClient.set(data.redisKey, refreshToken);  //! Redis에 refresh token 저장 
-    
+        
         const result = {
             tableName: data.tableName,
             id: data.userId,

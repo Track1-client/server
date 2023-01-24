@@ -12,7 +12,7 @@ const signAccess = (tableName: string, userId: number) => {
         userId,
     };
 
-    const accessToken = jwt.sign(payload, config.jwtSecret, 
+    const accessToken = jwt.sign(payload, config.jwtSecret,
         { 
             algorithm: config.jwtAlgo,
             expiresIn: config.jwtAccessExp, 
@@ -72,6 +72,7 @@ const refreshVerify = async(token: string, tableName: string, userId: number) =>
     const redisKeyArray: string[] = ['Table', tableName, 'UserID', userId as unknown as string];
 
     try {
+        console.log(redisKeyArray.join(':'));
         const data = await getAsync(redisKeyArray.join(':'));   //* Redis에서 key에 해당하는 value 가져오기 
         
         if (token === data) {
