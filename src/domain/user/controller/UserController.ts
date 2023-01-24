@@ -23,11 +23,11 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
             refreshToken,
         };
     
-        res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
+        return res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
     } catch (error) {
         return next(error);
     };
-}
+};
 
 
 const UserController = {

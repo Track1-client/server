@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { body } from 'express-validator';
 import { ValidatorErrorCallback } from '../../../global';
-import UserController from '../controller/UserController';
+import { TokenController, UserController } from '../controller/';
 
 
 const router: Router = Router();
@@ -19,5 +19,7 @@ router.post(
     UserController.signIn
 );
 
+//! 토큰 재발급
+router.get('/refresh', TokenController.refresh);
 
 export default router;

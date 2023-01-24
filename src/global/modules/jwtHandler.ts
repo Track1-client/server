@@ -7,7 +7,6 @@ import tokenType from '../constants/tokenType';
 
 //& Access Token 발급
 const signAccess = (tableName: string, userId: number) => {
-//const sign = (user: User) => {
     const payload = {
         tableName,
         userId,
@@ -48,21 +47,32 @@ const accessVerify = (token: string) => {
 
     try {
         decoded = jwt.verify(token, config.jwtSecret);
-        return decoded;
+        return {
+            decoded: decoded,
+            message: null
+        };
     } catch (error: any) {
-        if (error.message === "jwt expired") { return tokenType.ACCESS_TOKEN_EXPIRED }
-        else if (error.message === "invalid token") { return tokenType.ACCESS_TOKEN_INVALID } 
-        else { return tokenType.ACCESS_TOKEN_INVALID }
+        let errorMessage: number;
+        
+        if (error.message === "jwt expired") errorMessage = tokenType.ACCESS_TOKEN_EXPIRED;
+        else if (error.message === "invalid token") errorMessage = tokenType.ACCESS_TOKEN_INVALID;
+        else errorMessage = tokenType.GLOBAL_TOKEN_INVALID;
+
+        return {
+            decoded: null,
+            message: errorMessage,
+        };
     }
 };
 
 
 //& Refresh Token 유효성 검사 
-const refreshVerify = async(token: string, userId: number, tableName: string) => {
-    const getAsync = promisify(redisClient.get).bind(redisClient);  //! TO_DO 
+const refreshVerify = async(token: string, tableName: string, userId: number) => {
+    const getAsync = promisify(redisClient.get).bind(redisClient); 
+    const redisKeyArray: string[] = ['Table', tableName, 'UserID', userId as unknown as string];
 
     try {
-        const data = await getAsync(tableName, userId);
+        const data = await getAsync(redisKeyArray.join(':'));   //* Redis에서 key에 해당하는 value 가져오기 
         
         if (token === data) {
             try {

@@ -1,3 +1,4 @@
+import { sc } from '../../../../constants';
 import { AbstractError } from '../../abstractError';
 
 export class IncorrectLoginPassword extends AbstractError {
@@ -6,6 +7,6 @@ export class IncorrectLoginPassword extends AbstractError {
         this.code = '1000';
         this.name = 'Wrong_LoginPW';
         this.stack = `${this.message}\n${new Error().stack}`;
-        this.statusCode = 401;
+        this.statusCode = sc.UNAUTHORIZED;
     };
 };

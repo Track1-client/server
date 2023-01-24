@@ -1,11 +1,11 @@
 import { sc } from '../../../../constants';
 import { AbstractError } from '../../abstractError';
 
-export class LoginIDNonExists extends AbstractError {
+export class UnauthorizedUser extends AbstractError {
     constructor(...args: any) {
         super(...args);
         this.code = '1000';
-        this.name = 'UserLoginID_NonExists_In_DB';
+        this.name = 'UnauthorizedUser';
         this.stack = `${this.message}\n${new Error().stack}`;
         this.statusCode = sc.UNAUTHORIZED;
     };
