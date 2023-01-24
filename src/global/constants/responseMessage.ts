@@ -10,6 +10,8 @@ export default {
     NEED_TO_LOGIN: "새롭게 로그인 필요",
     SIGNIN_SUCCESS: "로그인 성공",
     SIGNIN_FAIL: "로그인 실패",
+    SIGNOUT_SUCCESS: "로그아웃 성공",
+    SIGNOUT_FAIL: "로그아웃 실패",
     ALREADY_IN_USE_ID: "이미 존재하는 아이디입니다.",
     ALREADY_IN_USE_NICKNAME: "이미 존재하는 닉네임입니다.",
     INVALID_ID: "존재하지 않는 아이디입니다.",

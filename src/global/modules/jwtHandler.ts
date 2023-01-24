@@ -1,4 +1,4 @@
-import jwt from 'jsonwebtoken';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 import redisClient from '../modules/redisClient';
 import { promisify } from 'util';
 import config from '../config';
@@ -8,8 +8,8 @@ import tokenType from '../constants/tokenType';
 //& Access Token 발급
 const signAccess = (tableName: string, userId: number) => {
     const payload = {
-        tableName,
-        userId,
+        tableName: tableName,
+        userId: userId,
     };
 
     const accessToken = jwt.sign(payload, config.jwtSecret,
@@ -26,8 +26,8 @@ const signAccess = (tableName: string, userId: number) => {
 //& Refresh Token 발급
 const signRefresh = (tableName: string, userId: number) => {
     const payload = {
-        tableName,
-        userId,
+        tableName: tableName,
+        userId: userId,
     };
 
     const refreshToken = jwt.sign(payload, config.jwtSecret, 
@@ -47,6 +47,7 @@ const accessVerify = (token: string) => {
 
     try {
         decoded = jwt.verify(token, config.jwtSecret);
+        
         return {
             decoded: decoded,
             message: null
@@ -57,7 +58,7 @@ const accessVerify = (token: string) => {
         if (error.message === "jwt expired") errorMessage = tokenType.ACCESS_TOKEN_EXPIRED;
         else if (error.message === "invalid token") errorMessage = tokenType.ACCESS_TOKEN_INVALID;
         else errorMessage = tokenType.GLOBAL_TOKEN_INVALID;
-
+        
         return {
             decoded: null,
             message: errorMessage,
