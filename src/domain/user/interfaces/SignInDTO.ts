@@ -1,4 +1,4 @@
-export default interface UserLogInDTO {
+export default interface UserSignInDTO {
     ID: string;
     PW: string;  
 };

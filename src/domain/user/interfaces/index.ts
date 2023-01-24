@@ -1,2 +1,2 @@
-export { default as LogInDTO } from './SignInDTO';
-export { default as LogInResultDTO } from './SignInReturnDTO';
+export { default as SignInDTO } from './SignInDTO';
+export { default as SignInResultDTO } from './SignInReturnDTO';

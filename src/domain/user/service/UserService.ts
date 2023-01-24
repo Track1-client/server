@@ -1,10 +1,10 @@
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { LogInDTO, LogInResultDTO } from '../interfaces';
+import { SignInDTO, SignInResultDTO } from '../interfaces';
 import { getUserByLoginID } from '../repository';
 
-const userLogin = async(logInDTO: LogInDTO): Promise<LogInResultDTO> => {
+const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     try {
         const producer = await getUserByLoginID.producerLogin(logInDTO);
         const vocal = await getUserByLoginID.vocalLogin(logInDTO);
@@ -18,10 +18,13 @@ const userLogin = async(logInDTO: LogInDTO): Promise<LogInResultDTO> => {
         const isMatch = await bcrypt.compare(logInDTO.PW, userPW as string);
         if (!isMatch) throw new IncorrectLoginPassword(rm.INCORRECT_PASSWORD);
         
-        const result: LogInResultDTO = {
+        const redisKeyArray: string[] = ['Table', tableName, 'UserID', user.id as unknown as string]
+        const result: SignInResultDTO = {
             tableName: tableName,
-            userId: user.id
+            userId: user.id,
+            redisKey: redisKeyArray.join(':'),   //* Table:vocal:UserId:1 의 형태로 반환 
         };
+
         return result;
     } catch (error) {
         throw error;
