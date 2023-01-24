@@ -1,6 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { rm, tokenType } from '../../../global/constants';
 import jwtUtils from '../../../global/modules/jwtHandler';
+import redisClient from '../../../global/modules/redisClient';
 import { RefreshAccessTokenDTO } from '../interfaces';
 import { 
     RefreshTokenDoesNotExists, 
@@ -20,7 +21,7 @@ const isTokenExists = async(accessToken: string, refreshToken: string) => {
     }
 };
 
-const isValidRefresh = async(accessToken: string, refreshToken: string) => {
+const isRefreshValid = async(accessToken: string, refreshToken: string) => {
     try {
         const accessTokenResult = jwtUtils.accessVerify(accessToken); //! expired 여야 accesstoken 재발급 가능함 
         const decoded = jwt.decode(accessToken) as JwtPayload;
@@ -51,12 +52,26 @@ const isValidRefresh = async(accessToken: string, refreshToken: string) => {
     } catch(error) {
         throw error;
     }
-    
+};
+
+const isRefreshTokenValid = async(tableName: string, userId: number) => {
+    try {
+        const redisKeyArray: string[] = ['Table', tableName, 'UserID', userId as unknown as string];
+        const data = await redisClient.get(redisKeyArray.join(':'));
+
+        const result = (!data) ? false: data;
+        //! result === false -> 현재 refresh token 존재하지 않음 -> 발급받기
+        //! result === true -> 발급 필요 x 
+        return result;
+    } catch(error) {
+        throw error;
+    }
 };
 
 const TokenService = {
     isTokenExists,
-    isValidRefresh,
+    isRefreshValid,
+    isRefreshTokenValid,
 };
 
 export default TokenService;

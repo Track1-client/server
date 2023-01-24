@@ -9,7 +9,7 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
         const refreshToken = req.headers.refresh;
 
         await TokenService.isTokenExists(accessToken as string, refreshToken as string);
-        const data = await TokenService.isValidRefresh(accessToken as string, refreshToken as string);
+        const data = await TokenService.isRefreshValid(accessToken as string, refreshToken as string);
 
         return res.status(sc.OK).send(success(sc.OK, rm.CREATE_TOKEN_SUCCESS, data));
     } catch (error) {
