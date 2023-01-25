@@ -1,8 +1,6 @@
-import config from '../../../global/config';
-import jwt, { JwtPayload } from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
-import { success, fail } from '../../../global/constants/response';
+import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/modules/redisClient';
 import { SignInDTO, SignInResultDTO } from '../interfaces';
@@ -35,12 +33,21 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
         return res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
     } catch (error) {
         return next(error);
-    };
+    }
+};
+
+const getNewPassword = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    } catch(error) {  
+        return next(error);
+    }
 };
 
 
 const UserController = {
     signIn,
+    getNewPassword,
 };
 
 export default UserController;

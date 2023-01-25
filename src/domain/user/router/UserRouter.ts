@@ -20,10 +20,15 @@ router.post(
     UserController.signIn
 );
 
-//! 로그아웃
-router.get('/logout', authJWT, TokenController.deleteRefreshToken);
 
 //! 토큰 재발급
 router.get('/refresh', TokenController.refresh);
+
+//! 로그아웃
+router.get('/logout', authJWT, TokenController.deleteRefreshToken);
+
+//! 비밀번호 찾기
+router.post('/newpassword', UserController.getNewPassword);
+
 
 export default router;
