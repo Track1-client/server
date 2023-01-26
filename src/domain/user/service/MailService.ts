@@ -23,7 +23,7 @@ const createTempUser = async(emailDTO: EmailDTO) => {
         const tempUser = await createTempUserTable(emailDTO, authCode);
         
         if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
-        //! TO-DO 메일 보내고 
+        //! 메일 보내기 
         sendAuthCodeMail(emailDTO.userEmail, authCode);
 
         //* 인증시간 30분 지나면 삭제 
@@ -62,7 +62,7 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
 
         if (!data) throw new UpdateAuthCode(rm.REMAKE_VERIFICATION_CODE_FAIL);
 
-        //! TO-DO 메일 보내고 
+        //! 메일 보내기 
         sendAuthCodeMail(emailDTO.userEmail, newAuthCode);
 
         //* 인증시간 30분 지나면 삭제 
