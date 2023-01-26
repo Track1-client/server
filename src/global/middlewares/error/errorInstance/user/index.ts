@@ -13,4 +13,7 @@ export {
 } from './token';
 export {
     AlreadyExistsEmail,
+    UpdateAuthCode,
+    SendAuthCode,
+    ValidAuthTimePassed,
 } from './email';

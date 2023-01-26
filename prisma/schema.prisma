@@ -1,5 +1,6 @@
 generator client {
   provider = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -82,11 +83,12 @@ model ProducerPortfolio {
   ProducerTitle             ProducerTitle?
 }
 
-model TempUser {
-  id                  Int               @id @unique @default(autoincrement())
+model TempUser { 
   tableName           String            @db.VarChar(100)
   userEmail           String            @db.VarChar(100)
   authCode            String            @db.VarChar(100)
+
+  @@unique(fields: [tableName, userEmail], name: "tableEmail")
 }
 
 model ProducerPortfolioDuration {

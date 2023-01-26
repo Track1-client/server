@@ -12,6 +12,7 @@
 # Feature : 새로운 기능 추가
 # Fix : 버그 수정사항
 # Hotfix : 급한 버그 수정
+# Add : 파일 추가 
 # Rename : 파일, 폴더명 수정 또는 이동
 # Remove : 파일 삭제 작업 
 # Docs : 문서 수정

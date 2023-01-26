@@ -1,1 +1,1 @@
-export { ValidatorErrorCallback } from './middlewares';
+export { validatorErrorCallback } from './middlewares';

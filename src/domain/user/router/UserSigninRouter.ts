@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body } from 'express-validator';
-import { ValidatorErrorCallback } from '../../../global';
+import { validatorErrorCallback } from '../../../global';
 import { authJWT } from '../../../global/middlewares';
 import { TokenController, UserController } from '../controller';
 
@@ -14,7 +14,7 @@ router.post(
         body("ID").notEmpty(),
         body("PW").notEmpty(),
         body("PW").isLength({ min: 6 }),
-        ValidatorErrorCallback
+        validatorErrorCallback
     ],
     UserController.signIn
 );
