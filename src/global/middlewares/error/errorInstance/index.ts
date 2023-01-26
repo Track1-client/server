@@ -17,4 +17,5 @@ export {
     UpdateAuthCode,
     SendAuthCode,
     ValidAuthTimePassed,
+    CreateAuthCode,
 } from './user';

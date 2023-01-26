@@ -2,7 +2,7 @@ import prisma from '../../../global/config/prismaClient';
 
 const deleteTempUserByEmail = async(tableName: string, userEmail: string) => {
     try {
-        prisma.tempUser.delete({
+        await prisma.tempUser.delete({
             where: {
                 tableEmail: {
                     tableName,

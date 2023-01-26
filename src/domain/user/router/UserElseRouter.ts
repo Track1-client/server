@@ -22,7 +22,7 @@ router.post(
 
 //! 회원가입 인증코드 메일 재전송 
 router.patch(
-    '/auth-mail',
+    '/auth-mail-repost',
     [
         body("tableName").notEmpty(),
         body("userEmail").isEmail(),

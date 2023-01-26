@@ -3,11 +3,11 @@ import { EmailDTO } from '../interfaces';
 
 const createTempUserTable = async(emailDTO: EmailDTO, authCode: string) => {
     try {
-        const data = prisma.tempUser.create({
+        const data = await prisma.tempUser.create({
             data: {
                 tableName: emailDTO.tableName,
                 userEmail: emailDTO.userEmail,
-                authCode
+                authCode,
             },
         });
     

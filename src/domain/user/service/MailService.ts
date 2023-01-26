@@ -1,5 +1,5 @@
 import { rm } from '../../../global/constants';
-import { AlreadyExistsEmail, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
+import { AlreadyExistsEmail, CreateAuthCode, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
 import randomAccessCode from '../../../global/modules/getAccessCode';
 import sendAuthCodeMail from '../../../global/modules/sendAuthCodeMail';
 import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
@@ -7,8 +7,10 @@ import { createTempUserTable, deleteTempUserByEmail, findTempUserByEmail, getUse
 
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
-        const result = (emailDTO.tableName === 'producer') ? await getUserByEmail.playerEmailExists : await getUserByEmail.nonPlayerEmailExists;
-        if (!result) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
+        const result = (emailDTO.tableName === 'producer') ? 
+                        await getUserByEmail.playerEmailExists(emailDTO.userEmail) : await getUserByEmail.nonPlayerEmailExists(emailDTO.userEmail);
+        
+        if (result) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
     } catch(error) {
         throw error;
     }
@@ -20,6 +22,7 @@ const createTempUser = async(emailDTO: EmailDTO) => {
         let authCode = randomAccessCode();
         const tempUser = await createTempUserTable(emailDTO, authCode);
         
+        if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
         //! TO-DO 메일 보내고 
         sendAuthCodeMail(emailDTO.userEmail, authCode);
 
@@ -31,6 +34,14 @@ const createTempUser = async(emailDTO: EmailDTO) => {
                 }
             });
         }, 30 * 60 * 1000);
+
+        const result: AuthCodeReturnDTO = {
+            tableName: tempUser.tableName,
+            userEmail: tempUser.userEmail,
+            authCode : tempUser.authCode,
+        }
+
+        return result;
     } catch(error) {
         throw error;
     }
@@ -40,8 +51,7 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
     try {
         let newAuthCode: string;
         const oldAuthCode = await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail) as unknown as string;
-
-        if (!oldAuthCode) throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST);
+        
         //! 원래 코드와 일치하지 않는 인증코드 생성 
         do {
             newAuthCode = randomAccessCode();
@@ -50,7 +60,7 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
         
         const data = await upsertCodeInTempUser(emailDTO, newAuthCode);
 
-        if (!data) throw new UpdateAuthCode(rm.REMKAE_VERIFICATION_CODE_FAIL);
+        if (!data) throw new UpdateAuthCode(rm.REMAKE_VERIFICATION_CODE_FAIL);
 
         //! TO-DO 메일 보내고 
         sendAuthCodeMail(emailDTO.userEmail, newAuthCode);

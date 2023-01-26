@@ -1,17 +1,16 @@
-import MailDTO from '../interfaces/MailDTO';
 import prisma from '../../../global/config/prismaClient';
 
 //! player email 중복 확인 
 const playerEmailExists = async(userEmail: string) => {
     try {
-        const player = prisma.producer.findFirst({
+        const player = await prisma.producer.findFirst({
             where: {
                 producerID: {
                     equals: userEmail,
                 },
             },
         });
-    
+        
         const result = (!player) ? false : true;
         return result;
     } catch(error) {
@@ -22,7 +21,7 @@ const playerEmailExists = async(userEmail: string) => {
 //! non-player email 중복 확인 
 const nonPlayerEmailExists = async(userEmail: string) => {
     try {
-        const nonPlayer = prisma.vocal.findFirst({
+        const nonPlayer = await prisma.vocal.findFirst({
             where: {
                 vocalID: {
                     equals: userEmail,

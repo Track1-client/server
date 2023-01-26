@@ -4,7 +4,7 @@ const ejsAuthCode = (authCode: string) => {
     let authEmailForm;
 
     ejs.renderFile(
-        __dirname + 'src/global/template/authMail.ejs', 
+        __dirname + '/template/authMail.ejs', 
         { authCode }, 
         (err, data) => {
             if (err) console.log(err);

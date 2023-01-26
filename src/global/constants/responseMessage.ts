@@ -41,7 +41,8 @@ export default {
 
     // 이메일 
     ALREADY_EXISTS_EMAIL: "중복된 이메일입니다",
-    REMKAE_VERIFICATION_CODE_FAIL: "인증코드 재생성 실패",
+    MAKE_VERIFICATION_CODE_FAIL: "인증코드 생성 실패",
+    REMAKE_VERIFICATION_CODE_FAIL: "인증코드 재생성 실패",
     CREATE_VERIFICATION_CODE_SUCCESS: "인증코드 생성 성공",
     RECREATE_VERIFICATION_CODE_SUCCESS: "인증코드 재생성 성공",
     CODE_VERIFY_SUCCESS: "인증코드 인증 성공",

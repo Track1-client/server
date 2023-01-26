@@ -16,4 +16,5 @@ export {
     UpdateAuthCode,
     SendAuthCode,
     ValidAuthTimePassed,
+    CreateAuthCode,
 } from './email';

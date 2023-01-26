@@ -2,7 +2,7 @@ import prisma from '../../../global/config/prismaClient';
 
 const findTempUserByEmail = async(tableName: string, userEmail: string) => {
     try {
-        const authCode = prisma.tempUser.findUnique({
+        const authCode = await prisma.tempUser.findUnique({
             where: {
                 tableEmail: {
                     tableName,

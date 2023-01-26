@@ -6,7 +6,7 @@ const ejsPasswordSetting = (endPoint: string) => {
     const clientAddr = 'https://www.track1.site' || 'https://localhost:3000';
 
     ejs.renderFile(
-        __dirname + 'src/global/template/newPasswordMail.ejs', 
+        __dirname + '/template/newPasswordMail.ejs', 
         { clientAddr, endPoint }, 
         (err, data) => {
             if (err) console.log(err);

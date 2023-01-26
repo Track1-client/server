@@ -9,10 +9,9 @@ const postAuthMail = async(req: Request, res: Response, next: NextFunction) => {
         const emailDTO: EmailDTO = req.body;
         await EmailService.isEmailExists(emailDTO);  //& 이메일 중복 체크 
 
-        //! authcode, email, tablename 넣고 회원가입 완료 시 !!삭제하기!! 
-        await EmailService.createTempUser(emailDTO);
-
-
+        const data = await EmailService.createTempUser(emailDTO);
+        
+        return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_VERIFICATION_CODE_SUCCESS, data));
     } catch(error) {  
         return next(error);
     }
