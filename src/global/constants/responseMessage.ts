@@ -28,7 +28,6 @@ export default {
     VALID_TOKEN: "유효한 토큰입니다.",
     EMPTY_ACCESS_TOKEN: "Access 토큰 값이 없습니다.",
     EMPTY_REFRESH_TOKEN: "Refresh 토큰 값이 없습니다.",
-
   
     // 유저
     READ_USER_SUCCESS: "유저 조회 성공",
@@ -39,6 +38,10 @@ export default {
     NO_USER: "탈퇴했거나 가입하지 않은 유저입니다.",
     SEARCH_USER_FAIL: "유저 서치 실패",
     SEARCH_USER_SUCCESS: "유저 서치 성공",
+
+    // 이메일 
+    ALREADY_EXISTS_EMAIL: "중복된 이메일입니다",
+
   
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",

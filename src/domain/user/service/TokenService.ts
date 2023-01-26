@@ -1,7 +1,7 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { rm, tokenType } from '../../../global/constants';
 import jwtUtils from '../../../global/modules/jwtHandler';
-import redisClient from '../../../global/modules/redisClient';
+import redisClient from '../../../global/config/redisClient';
 import { RefreshAccessTokenDTO } from '../interfaces';
 import { 
     RefreshTokenDoesNotExists, 

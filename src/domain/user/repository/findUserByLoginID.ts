@@ -1,4 +1,4 @@
-import prisma from '../../../global/modules/prismaClient';
+import prisma from '../../../global/config/prismaClient';
 import UserLogInDTO from '../interfaces/SignInDTO';
 
 const producerLogin = async(producerLoginDTO: UserLogInDTO) => {

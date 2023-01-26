@@ -1,5 +1,5 @@
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import redisClient from '../modules/redisClient';
+import redisClient from '../config/redisClient';
 import { promisify } from 'util';
 import config from '../config';
 import tokenType from '../constants/tokenType';

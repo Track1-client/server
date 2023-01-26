@@ -1,6 +1,7 @@
 export { LoginIDNonExists } from './LoginIDDoesNotExists';
 export { IncorrectLoginPassword } from './IncorrectLoginPassword';
 export { UnauthorizedUser } from './UnauthorizedUser';
+export { InvalidValidationFormResult } from './ValidationResult';
 export { 
     AccessTokenDoesNotExists,
     AccessTokenInvalid,
@@ -10,3 +11,6 @@ export {
     RefreshTokenInvalid,
     RefreshTokenExpired,
 } from './token';
+export {
+    AlreadyExistsEmail,
+} from './email';

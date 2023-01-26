@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
-import redisClient from '../../../global/modules/redisClient';
+import redisClient from '../../../global/config/redisClient';
 import { SignInDTO, SignInResultDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
@@ -36,18 +36,10 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const getNewPassword = async(req: Request, res: Response, next: NextFunction) => {
-    try {
-
-    } catch(error) {  
-        return next(error);
-    }
-};
 
 
 const UserController = {
     signIn,
-    getNewPassword,
 };
 
 export default UserController;

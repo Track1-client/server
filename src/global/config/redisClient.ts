@@ -1,4 +1,4 @@
-import config from '../config';
+import config from '.';
 import * as redis from 'redis';
 
 const redisInfo = {

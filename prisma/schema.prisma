@@ -82,6 +82,13 @@ model ProducerPortfolio {
   ProducerTitle             ProducerTitle?
 }
 
+model TempUser {
+  id                  Int               @id @unique @default(autoincrement())
+  tableName           String            @db.VarChar(100)
+  userEmail           String            @db.VarChar(100)
+  authCode            String            @db.VarChar(100)
+}
+
 model ProducerPortfolioDuration {
   id                  Int               @id @unique @default(autoincrement())
   producerPortfolioId Int               @unique

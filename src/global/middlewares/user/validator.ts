@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import { sc } from '../../constants';
-import { fail } from '../../constants/response';
 import  { validationResult } from 'express-validator';
+import { InvalidValidationFormResult } from '../error/errorInstance/user';
 
 
 export default async (req: Request, res: Response, next: NextFunction) => {
@@ -9,7 +8,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     
     if(Object.keys(errors).length !== 0 ) {
         const messages = errors.map(e => String(e.param) + ':' + String(e.msg));
-        return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, String(messages)));
+        throw new InvalidValidationFormResult(String(messages));
     }
 
     next();

@@ -39,4 +39,8 @@ export default {
 
   //? Slack Webhook
   slackAlarm: process.env.SLACK_ALARM_URI as string,
+
+  //? SMTP mail
+  mailUser: process.env.EMAIL_USER as string,
+  mailPassword: process.env.EMAIL_PASSWORD as string,
 };

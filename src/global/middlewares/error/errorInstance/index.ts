@@ -1,9 +1,10 @@
 export { 
-    //user 관련
+    //* user 관련
     LoginIDNonExists, 
     IncorrectLoginPassword, 
     UnauthorizedUser,
-    //token 관련
+    InvalidValidationFormResult,
+    //* token 관련
     AccessTokenDoesNotExists,
     AccessTokenInvalid,
     AccessTokenExpired,
@@ -11,4 +12,7 @@ export {
     RefreshTokenDoesNotExists,
     RefreshTokenInvalid,
     RefreshTokenExpired,
+    //* email 관련
+    AlreadyExistsEmail,
+
 } from './user';
