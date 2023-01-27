@@ -1,4 +1,5 @@
 import { readFile } from 'fs';
+import config from '../../../global/config';
 import { rm } from '../../../global/constants';
 import { AlreadyExistsEmail, CreateAuthCode, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
 import randomAccessCode from '../../../global/modules/getAccessCode';
@@ -25,8 +26,9 @@ const createTempUser = async(emailDTO: EmailDTO) => {
         
         if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
 
-        //! 메일 보내기 
-        sendAuthCodeMail(emailDTO.userEmail, authCode);
+        //! 메일 보내기
+        const image = config.track1EmailImage;
+        sendAuthCodeMail(emailDTO.userEmail, authCode, image);
 
         //* 인증시간 30분 지나면 삭제 
         setTimeout(async() => {
@@ -63,9 +65,10 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
         const data = await upsertCodeInTempUser(emailDTO, newAuthCode);
 
         if (!data) throw new UpdateAuthCode(rm.REMAKE_VERIFICATION_CODE_FAIL);
-
+        
         //! 메일 보내기 
-        sendAuthCodeMail(emailDTO.userEmail, newAuthCode);
+        const image = config.track1EmailImage;
+        sendAuthCodeMail(emailDTO.userEmail, newAuthCode, image);
 
         //* 인증시간 30분 지나면 삭제 
         setTimeout(async() => {

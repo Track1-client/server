@@ -35,7 +35,7 @@ export default {
   defaultUserImage2: process.env.S3_DEFAULT_USER_IMAGE2 as string, //* default user image file
   defaultVocalPortfolioImage: process.env.S3_DEFAULT_VOCAL_PORTFOLIO_IMAGE as string,  //* default vocal portfolio image
   defaultJacketAndProducerPortfolioImage: process.env.S3_DEFUALT_JACKET_PRODUCER_PORTFOLIO_IMAGE as string, //* default beat jacket + producer potfolio image
-
+  track1EmailImage: process.env.S3_TRACK1_EMAIL_IMAGE as string,
 
   //? Slack Webhook
   slackAlarm: process.env.SLACK_ALARM_URI as string,

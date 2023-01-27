@@ -25,6 +25,7 @@ app.use(express.json());
 app.use("/", router); 
 app.use(globalErrorHandler);
 app.use(express.static(path.join(__dirname, 'static')));
+
 app.get("/", (req: Request, res: Response, next: NextFunction) => {
     res.send("BTS 손흥민 봉준호 Track-1 Let's go!!!🔥🔥🔥");
 });
