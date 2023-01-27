@@ -1,3 +1,4 @@
+import { readFile } from 'fs';
 import { rm } from '../../../global/constants';
 import { AlreadyExistsEmail, CreateAuthCode, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
 import randomAccessCode from '../../../global/modules/getAccessCode';
@@ -23,6 +24,7 @@ const createTempUser = async(emailDTO: EmailDTO) => {
         const tempUser = await createTempUserTable(emailDTO, authCode);
         
         if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
+
         //! 메일 보내기 
         sendAuthCodeMail(emailDTO.userEmail, authCode);
 
