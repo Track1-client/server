@@ -50,6 +50,11 @@ export default {
     SEND_VERIFY_MAIL_FIRST: "인증메일 먼저 전송받은 후 인증하세요",
     VALID_AUTH_TIME_PASSED: "유효 인증 시간이 지났습니다",
     
+    // 파일 업로드 관련
+    INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",
+    INAVLID_AUDIO_FILE_TYPE: "",
+    NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
+    NOT_AUDIO_FILE: "",
   
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",

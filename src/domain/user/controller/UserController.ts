@@ -7,6 +7,22 @@ import { SignInDTO, SignInResultDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 
+const createProducer = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const createVocal = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const signIn = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const userLogInDTO: SignInDTO = req.body;
@@ -39,6 +55,8 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
 
 
 const UserController = {
+    createProducer,
+    createVocal,
     signIn,
 };
 
