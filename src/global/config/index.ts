@@ -29,13 +29,17 @@ export default {
   //? AWS
   s3AccessKey: process.env.S3_ACCESS_KEY as string,
   s3SecretKey: process.env.S3_SECRET_KEY as string,
-  wavBucketName: process.env.S3_BUCKET_WAV_FILE as string,                //* only wav file
-  imageBucketName: process.env.S3_BUCKET_IMAGE_FILE as string,            //* only image file
-  bothWavImageBucketName: process.env.S3_BUCKET_WAV_AND_IMAGE as string,  //* both wav and image file into one object 
-  defaultUserImage2: process.env.S3_DEFAULT_USER_IMAGE2 as string, //* default user image file
-  defaultVocalPortfolioImage: process.env.S3_DEFAULT_VOCAL_PORTFOLIO_IMAGE as string,  //* default vocal portfolio image
+  
+  tracksBucketName: process.env.S3_BUCKET_TRACKS as string,                        //* Image + Audio
+  profileImageBucketName: process.env.S3_BUCKET_PROFILE as string,                 //* Image
+  commentsBucketName: process.env.S3_BUCKET_COMMENT as string,                     //* Audio 
+  producerPortfolioBucketName: process.env.S3_BUCKET_PRODUCER_PORTFOLIO as string, //* Image + Audio
+  vocalPortfolioBucketName: process.env.S3_BUCKET_VOCAL_PORTFOLIO as string,       //* Image + Audio
+
+  defaultUserProfileImage: process.env.S3_DEFAULT_USER_IMAGE as string,                 //* default user image file
+  defaultVocalPortfolioImage: process.env.S3_DEFAULT_VOCAL_PORTFOLIO_IMAGE as string,   //* default vocal portfolio image
   defaultJacketAndProducerPortfolioImage: process.env.S3_DEFUALT_JACKET_PRODUCER_PORTFOLIO_IMAGE as string, //* default beat jacket + producer potfolio image
-  track1EmailImage: process.env.S3_TRACK1_EMAIL_IMAGE as string,
+  track1EmailImage: process.env.S3_TRACK1_EMAIL_IMAGE as string, //* user-join & reset-password email 
 
   //? Slack Webhook
   slackAlarm: process.env.SLACK_ALARM_URI as string,

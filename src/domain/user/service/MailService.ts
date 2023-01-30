@@ -1,4 +1,3 @@
-import { readFile } from 'fs';
 import config from '../../../global/config';
 import { rm } from '../../../global/constants';
 import { AlreadyExistsEmail, CreateAuthCode, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
