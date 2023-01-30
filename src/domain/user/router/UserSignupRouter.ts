@@ -7,15 +7,20 @@ import { UserController } from '../controller';
 const router: Router = Router();
 
 
-//! Player 회원가입 
+//! producer 회원가입 
 router.post(
-    '/join/producer', 
+    '/producer', 
     s3UploadeMiddleware.uploadS3ProfileImageFile('producer'),
     [
-        body("ID").notEmpty(), 
+        body("ID")
+            .trim()
+            .isEmail()
+            .notEmpty(), 
         body("PW")
+            .trim()
             .notEmpty()
-            .isLength({ min: 6 }), 
+            .isLength({ min: 10 })
+            .matches(/^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]/), 
         body("name").notEmpty(),
         body("contact").notEmpty(), 
         body("category").notEmpty(), 
@@ -27,7 +32,7 @@ router.post(
 
 
 
-//! NonPlayer 회원가입 
+//! vocal 회원가입 
 
 
 

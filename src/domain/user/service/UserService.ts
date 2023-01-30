@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { SignInDTO, SignInResultDTO } from '../interfaces';
-import { getUserByLoginID } from '../repository';
+import { CheckDuplicateNameDTO, CheckNameResultDTO, SignInDTO, SignInResultDTO } from '../interfaces';
+import { getUserByLoginID, getUserByName } from '../repository';
 
 const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     try {
@@ -31,9 +31,25 @@ const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     }
 };
 
+const checkName = async(checkDTO: CheckDuplicateNameDTO) => {
+    try {
+        const data = (checkDTO.tableName === 'producer') ?
+                            await getUserByName.producerNameExists(checkDTO.name) :
+                            await getUserByName.vocalNameExists(checkDTO.name);
+
+        const result: CheckNameResultDTO = {
+            isDuplicate: data,
+            name: checkDTO.name
+        }
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const UserService = {
     userLogin,
+    checkName,
 };
 
 export default UserService;

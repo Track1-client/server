@@ -32,6 +32,7 @@ export default {
     // 유저
     READ_USER_SUCCESS: "유저 조회 성공",
     READ_ALL_USERS_SUCCESS: "모든 유저 조회 성공",
+    DONE_CHECK_USER_NAME: "유저 이름 체크 완료",
     UPDATE_USER_SUCCESS: "유저 수정 성공",
     DELETE_USER_SUCCESS: "유저 탈퇴 성공",
     DELETE_USER_FAIL: "유저 탈퇴 실패",
