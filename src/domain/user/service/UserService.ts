@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckDuplicateNameDTO, CheckNameResultDTO, SignInDTO, SignInResultDTO } from '../interfaces';
+import { CheckNameResultDTO, SignInDTO, SignInResultDTO } from '../interfaces';
 import { getUserByLoginID, getUserByName } from '../repository';
 
 const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
@@ -31,16 +31,22 @@ const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     }
 };
 
-const checkName = async(checkDTO: CheckDuplicateNameDTO) => {
+const checkName = async(userName: string, tableName: string) => {
     try {
-        const data = (checkDTO.tableName === 'producer') ?
-                            await getUserByName.producerNameExists(checkDTO.name) :
-                            await getUserByName.vocalNameExists(checkDTO.name);
+        /**  producer, vocal 내에서 검사하는 경우 
+        const data = (tableName === 'producer') ?
+                            await getUserByName.producerNameExists(userName) :
+                            await getUserByName.vocalNameExists(userName);
+        */
+
+        const producer = await getUserByName.producerNameExists(userName);
+        const vocal = await getUserByName.vocalNameExists(userName);
+        const data = producer || vocal;   //! producer, vocal 테이블 합쳐서 중복검사 
 
         const result: CheckNameResultDTO = {
             isDuplicate: data,
-            name: checkDTO.name
-        }
+            name: userName
+        };
         return result;
     } catch (error) {
         throw error;

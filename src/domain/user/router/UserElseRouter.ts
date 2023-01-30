@@ -9,7 +9,7 @@ const router: Router = Router();
 //! 토큰 재발급
 router.get('/refresh', TokenController.refresh);
 
-//? 프닉네임 중복 검사
+//? 닉네임 중복 검사
 router.get('/check-name', UserController.checkName);
 
 //* 회원가입 인증코드 메일 전송 
