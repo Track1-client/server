@@ -5,3 +5,4 @@ export { default as EmailDTO } from './MailDTO';
 export { default as AuthCodeReturnDTO } from './AuthCodeReturnDTO';
 export { default as VerifyCodeDTO } from './VerifyCodeDTO';
 export { default as CheckNameResultDTO } from './CheckNameResultDTO';
+export { default as ProducerCreateDTO } from './ProducerCreateDTO';

@@ -1,8 +1,25 @@
+import { ProducerJoinFail } from './../../../global/middlewares/error/errorInstance/user/ProducerJoinFail';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, SignInDTO, SignInResultDTO } from '../interfaces';
-import { getUserByLoginID, getUserByName } from '../repository';
+import { CheckNameResultDTO, ProducerCreateDTO, SignInDTO, SignInResultDTO } from '../interfaces';
+import { createUser, getUserByLoginID, getUserByName } from '../repository';
+import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
+
+const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: string) => {
+    try {
+        const producer = await createUser.createProducer(producerCreateDTO, location);
+        if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
+
+        const result: UserCreateResultDTO = {
+            id: producer.id,
+            name: producer.name,
+        };
+        return result;
+    } catch (error) {
+        throw(error);
+    }
+};
 
 const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     try {
@@ -31,7 +48,7 @@ const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     }
 };
 
-const checkName = async(userName: string, tableName: string) => {
+const checkName = async(userName: string, tableName: string): Promise<CheckNameResultDTO> => {
     try {
         /**  producer, vocal 내에서 검사하는 경우 
         const data = (tableName === 'producer') ?
@@ -54,6 +71,7 @@ const checkName = async(userName: string, tableName: string) => {
 };
 
 const UserService = {
+    createProducer,
     userLogin,
     checkName,
 };

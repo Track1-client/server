@@ -3,13 +3,21 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
-import { SignInDTO, SignInResultDTO } from '../interfaces';
+import { ProducerCreateDTO, SignInDTO, SignInResultDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
+import config from '../../../global/config';
 
 const createProducer = async(req: Request, res: Response, next: NextFunction) => {
     try {
+        const producerCreateDTO: ProducerCreateDTO = req.body;
+        const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
 
+        if (!profileImage) var location = config.defaultUserProfileImage; 
+        else var { location } = profileImage;
+
+        const result = await UserService.createProducer(producerCreateDTO, location as string);
+        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
     } catch (error) {
         return next(error);
     }
@@ -17,7 +25,7 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
 
 const createVocal = async(req: Request, res: Response, next: NextFunction) => {
     try {
-
+        
     } catch (error) {
         return next(error);
     }
@@ -62,6 +70,7 @@ const checkName = async(req: Request, res: Response, next: NextFunction) => {
         return next(error);
     }
 };
+
 
 const UserController = {
     createProducer,

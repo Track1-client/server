@@ -11,6 +11,7 @@ const profileImageMulter = (bucketName: string, pathName: string, fileFilter: an
         key: function (req: Express.Request, file: Express.MulterS3.File, cb) {
             var  newFileName = Date.now() + "-" + file.originalname;
             var fullPath = pathName + newFileName;
+            
             cb(null, fullPath);
         },
     }),

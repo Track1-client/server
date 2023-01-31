@@ -9,8 +9,8 @@ function uploadS3ProfileImageFile(tableName: string) {
             const result = (tableName == 'producer') ? 
                 multerModules.profileImageMulter(config.profileImageBucketName, 'producerProfileImage/', fileFilter.imageFileFilter) :
                 multerModules.profileImageMulter(config.profileImageBucketName, 'vocalProfileImage/', fileFilter.imageFileFilter);
-    
-            return result;
+            
+            return result(req, res, next);
         } catch (error) {
             return next(error);
         }

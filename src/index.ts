@@ -22,6 +22,7 @@ app.use(cors(corsOptions));
 app.use(corsMiddleware(corsOriginList));
 
 app.use(express.json());
+
 app.use("/", router); 
 app.use(globalErrorHandler);
 app.use(express.static(path.join(__dirname, 'static')));
