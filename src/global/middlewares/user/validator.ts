@@ -8,7 +8,6 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         
         if(Object.keys(errors).length !== 0 ) {
             const messages = errors.map(e => '[' + String(e.param) + ']: ' + String(e.msg));
-            console.log(messages);
             throw new InvalidValidationFormResult(messages);
         }
         next();

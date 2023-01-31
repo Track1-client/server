@@ -1,8 +1,9 @@
+import { VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user/VocalJoinFail';
 import { ProducerJoinFail } from './../../../global/middlewares/error/errorInstance/user/ProducerJoinFail';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, ProducerCreateDTO, SignInDTO, SignInResultDTO } from '../interfaces';
+import { CheckNameResultDTO, ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
 import { createUser, getUserByLoginID, getUserByName } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 
@@ -18,6 +19,21 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
         return result;
     } catch (error) {
         throw(error);
+    }
+};
+
+const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string) => {
+    try {
+        const vocal = await createUser.createVocal(vocalCreateDTO, location);
+        if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
+
+        const result: UserCreateResultDTO = {
+            id: vocal.id,
+            name: vocal.name,
+        };
+        return result;
+    } catch (error) {
+        throw error;
     }
 };
 
@@ -72,6 +88,7 @@ const checkName = async(userName: string, tableName: string): Promise<CheckNameR
 
 const UserService = {
     createProducer,
+    createVocal,
     userLogin,
     checkName,
 };
