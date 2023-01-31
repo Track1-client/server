@@ -19,3 +19,9 @@ export {
     ValidAuthTimePassed,
     CreateAuthCode,
 } from './user';
+
+export {
+    //* file type 관련
+    InvalidImageFileType,
+    NotImageFile,
+} from './file';

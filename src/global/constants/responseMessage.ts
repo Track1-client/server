@@ -13,7 +13,7 @@ export default {
     SIGNOUT_SUCCESS: "로그아웃 성공",
     SIGNOUT_FAIL: "로그아웃 실패",
     ALREADY_IN_USE_ID: "이미 존재하는 아이디입니다.",
-    ALREADY_IN_USE_NICKNAME: "이미 존재하는 닉네임입니다.",
+    ALREADY_IN_USE_NAME: "이미 존재하는 닉네임입니다.",
     INVALID_ID: "존재하지 않는 아이디입니다.",
     INCORRECT_PASSWORD: "잘못된 비밀번호입니다.",
 
@@ -32,6 +32,7 @@ export default {
     // 유저
     READ_USER_SUCCESS: "유저 조회 성공",
     READ_ALL_USERS_SUCCESS: "모든 유저 조회 성공",
+    DONE_CHECK_USER_NAME: "유저 이름 체크 완료",
     UPDATE_USER_SUCCESS: "유저 수정 성공",
     DELETE_USER_SUCCESS: "유저 탈퇴 성공",
     DELETE_USER_FAIL: "유저 탈퇴 실패",
@@ -50,6 +51,11 @@ export default {
     SEND_VERIFY_MAIL_FIRST: "인증메일 먼저 전송받은 후 인증하세요",
     VALID_AUTH_TIME_PASSED: "유효 인증 시간이 지났습니다",
     
+    // 파일 업로드 관련
+    INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",
+    INAVLID_AUDIO_FILE_TYPE: "",
+    NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
+    NOT_AUDIO_FILE: "",
   
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",

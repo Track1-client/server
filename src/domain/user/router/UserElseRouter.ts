@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { body } from 'express-validator';
 import { validatorErrorCallback } from '../../../global/middlewares';
-import { MailController, TokenController } from '../controller';
+import { MailController, TokenController, UserController } from '../controller';
 
 const router: Router = Router();
 
@@ -9,29 +9,36 @@ const router: Router = Router();
 //! 토큰 재발급
 router.get('/refresh', TokenController.refresh);
 
-//! 회원가입 인증코드 메일 전송 
+//? 닉네임 중복 검사
+router.get('/check-name', UserController.checkName);
+
+//* 회원가입 인증코드 메일 전송 
 router.post(
     '/auth-mail',
     [
         body("tableName").notEmpty(),
-        body("userEmail").isEmail(),
+        body("userEmail")
+            .trim()
+            .isEmail(),
         validatorErrorCallback
     ],
     MailController.postAuthMail
 );
 
-//! 회원가입 인증코드 메일 재전송 
+//* 회원가입 인증코드 메일 재전송 
 router.patch(
     '/auth-mail-repost',
     [
         body("tableName").notEmpty(),
-        body("userEmail").isEmail(),
+        body("userEmail")
+            .trim()
+            .isEmail(),
         validatorErrorCallback
     ],
     MailController.repostAuthMail
 );
 
-//! 인증코드 확인 
+//* 인증코드 확인 
 router.post(
     '/verify',
     [
@@ -43,7 +50,7 @@ router.post(
     MailController.verifyCode
 );
 
-//! 비밀번호 찾기 메일 
+//& 비밀번호 찾기 메일 
 router.post(
     '/newpassword-mail',
     [

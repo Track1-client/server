@@ -2,6 +2,8 @@ export { LoginIDNonExists } from './LoginIDDoesNotExists';
 export { IncorrectLoginPassword } from './IncorrectLoginPassword';
 export { UnauthorizedUser } from './UnauthorizedUser';
 export { InvalidValidationFormResult } from './ValidationResult';
+export { ProducerJoinFail } from './ProducerJoinFail';
+export { VocalJoinFail } from './VocalJoinFail';
 export { 
     AccessTokenDoesNotExists,
     AccessTokenInvalid,

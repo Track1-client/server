@@ -9,11 +9,12 @@ const router: Router = Router();
 
 //! 로그인 
 router.post(
-    "/login",
+    '/login',
     [
         body("ID").notEmpty(),
-        body("PW").notEmpty(),
-        body("PW").isLength({ min: 6 }),
+        body("PW")
+            .notEmpty()
+            .isLength({ min: 6 }),
         validatorErrorCallback
     ],
     UserController.signIn

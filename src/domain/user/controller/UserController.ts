@@ -3,9 +3,40 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
-import { SignInDTO, SignInResultDTO } from '../interfaces';
+import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
+import config from '../../../global/config';
+
+const createProducer = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const producerCreateDTO: ProducerCreateDTO = req.body;
+        const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
+
+        if (!profileImage) var location = config.defaultUserProfileImage; 
+        else var { location } = profileImage;
+
+        const result = await UserService.createProducer(producerCreateDTO, location as string);
+        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const createVocal = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const vocalCreateDTO: VocalCreateDTO = req.body;
+        const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
+
+        if (!profileImage) var location = config.defaultUserProfileImage; 
+        else var { location } = profileImage;
+
+        const result = await UserService.createVocal(vocalCreateDTO, location as string);
+        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
 
 const signIn = async(req: Request, res: Response, next: NextFunction) => {
     try {
@@ -36,10 +67,23 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const checkName = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { name, tableName } = req.query;
+        
+        const result = await UserService.checkName(name as string, tableName as string);  //! false -> 중복 닉네임 없음, true -> 중복 닉네임 존재 
+        return res.status(sc.OK).send(success(sc.OK, rm.DONE_CHECK_USER_NAME, result));
+    } catch (error) {
+        return next(error);
+    }
+};
 
 
 const UserController = {
+    createProducer,
+    createVocal,
     signIn,
+    checkName,
 };
 
 export default UserController;
