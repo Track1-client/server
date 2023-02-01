@@ -3,6 +3,7 @@ import router from './domain';
 import cors from "cors";
 import { corsMiddleware, globalErrorHandler } from './global/middlewares';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 
 const app = express(); 
 const PORT = 3000;
@@ -20,6 +21,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware(corsOriginList));
+app.use(cookieParser());
 
 app.use(express.json());
 
