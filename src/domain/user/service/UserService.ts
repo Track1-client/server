@@ -1,13 +1,14 @@
-import { VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user/VocalJoinFail';
-import { ProducerJoinFail } from './../../../global/middlewares/error/errorInstance/user/ProducerJoinFail';
+import { ProducerJoinFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
+import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
 import { createUser, getUserByLoginID, getUserByName } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
+import jwtUtils from '../../../global/modules/jwtHandler';
+import redisClient from '../../../global/config/redisClient';
 
-const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: string) => {
+const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: string): Promise<UserCreateResultDTO> => {
     try {
         const producer = await createUser.createProducer(producerCreateDTO, location);
         if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
@@ -22,7 +23,7 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
     }
 };
 
-const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string) => {
+const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Promise<UserCreateResultDTO> => {
     try {
         const vocal = await createUser.createVocal(vocalCreateDTO, location);
         if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
@@ -31,6 +32,24 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string) => {
             id: vocal.id,
             name: vocal.name,
         };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const joinToken = async(tableName: string, user: UserCreateResultDTO) => {
+    try {
+        const accessToken = jwtUtils.signAccess(tableName, user.id);
+        const refreshToken = jwtUtils.signRefresh(tableName, user.id);
+
+        const redisKeyArray: string[] = ['Table', tableName, 'UserID', user.id as unknown as string];
+        await redisClient.set(redisKeyArray.join(':'), refreshToken); 
+
+        const result: RefreshAccessTokenDTO = {
+            accessToken,
+            refreshToken,
+        };  
         return result;
     } catch (error) {
         throw error;
@@ -89,6 +108,7 @@ const checkName = async(userName: string, tableName: string): Promise<CheckNameR
 const UserService = {
     createProducer,
     createVocal,
+    joinToken,
     userLogin,
     checkName,
 };

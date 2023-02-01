@@ -8,6 +8,13 @@ import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import config from '../../../global/config';
 
+const cookieInfo: any = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    domain: '.track1.site',
+};
+
 const createProducer = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const producerCreateDTO: ProducerCreateDTO = req.body;
@@ -16,8 +23,18 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
         if (!profileImage) var location = config.defaultUserProfileImage; 
         else var { location } = profileImage;
 
-        const result = await UserService.createProducer(producerCreateDTO, location as string);
-        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
+        const userResult = await UserService.createProducer(producerCreateDTO, location as string); //! DB에 유저 정보 저장 
+        const tokenResult = await UserService.joinToken('producer', userResult); //! access, refresh 토큰 생성 
+
+        const joinResult = {
+            userResult,
+            accessToken: tokenResult.accessToken
+        }
+
+        return res
+                .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
+                .status(sc.CREATED)
+                .send(success(sc.CREATED, rm.SIGNUP_SUCCESS, joinResult));
     } catch (error) {
         return next(error);
     }
@@ -31,8 +48,18 @@ const createVocal = async(req: Request, res: Response, next: NextFunction) => {
         if (!profileImage) var location = config.defaultUserProfileImage; 
         else var { location } = profileImage;
 
-        const result = await UserService.createVocal(vocalCreateDTO, location as string);
-        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
+        const userResult = await UserService.createVocal(vocalCreateDTO, location as string); //! DB에 유저 정보 저장 
+        const tokenResult = await UserService.joinToken('vocal', userResult); //! access, refresh 토큰 생성 
+
+        const joinResult = {
+            userResult,
+            accessToken: tokenResult.accessToken
+        };
+
+        return res
+                .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
+                .status(sc.CREATED)
+                .send(success(sc.CREATED, rm.SIGNUP_SUCCESS, joinResult));
     } catch (error) {
         return next(error);
     }
@@ -57,11 +84,13 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
         const result = {
             tableName: data.tableName,
             id: data.userId,
-            accessToken,
-            refreshToken,
+            accessToken
         };
-    
-        return res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
+        
+        return res
+                .cookie('refreshToken', refreshToken, cookieInfo)
+                .status(sc.OK)
+                .send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
     } catch (error) {
         return next(error);
     }

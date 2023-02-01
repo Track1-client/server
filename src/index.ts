@@ -9,7 +9,6 @@ const app = express();
 const PORT = 3000;
 
 const corsOriginList = [
-    'http://localhost:3000',
     'https://www.track1.site'
 ];
 
@@ -21,7 +20,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware(corsOriginList));
-app.use(cookieParser());
+app.use(cookieParser())
 
 app.use(express.json());
 
