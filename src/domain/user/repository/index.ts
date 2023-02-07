@@ -8,3 +8,4 @@ export { default as getUserByName } from './findUserByName';
 export { default as createUser } from './createUser';
 export { default as updateUserProfile } from './updateUserProfileById';
 export { default as getUserById } from './findUserById'; 
+export { default as updatePassword } from './updatePasswordByEmail';

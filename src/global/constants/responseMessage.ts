@@ -18,6 +18,8 @@ export default {
     INCORRECT_PASSWORD: "잘못된 비밀번호입니다.",
     SUCCESS_UPDATE_USER_PROFILE: "유저 프로필 수정 성공",
     FAIL_UPDATE_USER_PROFILE: "유저 프로필 수정 실패",
+    SUCCESS_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 성공",
+    FAIL_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 실패",
 
     // 토큰
     CREATE_TOKEN_SUCCESS: "토큰 재발급 성공",

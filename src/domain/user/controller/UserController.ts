@@ -3,10 +3,11 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
-import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO } from '../interfaces';
+import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO, NewPasswordDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import config from '../../../global/config';
+import NewPasswordMailDTO from '../interfaces/NewPasswordDTO';
 
 const cookieInfo: any = {
     httpOnly: true,
@@ -118,6 +119,17 @@ const checkName = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const updatePassword = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const passwordDTO: NewPasswordDTO = req.body;
+
+        const result = await UserService.updateUserPassword(passwordDTO);
+        return res.status(sc.OK).send(success(sc.OK, rm.SUCCESS_UPDATE_USER_PASSWORD, result));
+    } catch (error) {
+        return next(error);
+    }
+
+};
 
 const UserController = {
     createProducer,
@@ -125,6 +137,7 @@ const UserController = {
     updateProfile,
     signIn,
     checkName,
+    updatePassword,
 };
 
 export default UserController;

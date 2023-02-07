@@ -2,8 +2,8 @@ import { AlreadyExistsEmail, ProducerJoinFail, UnauthorizedUser, UpdateUserFail,
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile } from '../repository';
+import { CheckNameResultDTO, NewPasswordDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
+import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
@@ -22,6 +22,8 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
         const result: UserCreateResultDTO = {
             id: producer.id,
             name: producer.name,
+            tableName: 'producer',
+            userId: producer.producerID
         };
         return result;
     } catch (error) {
@@ -43,6 +45,8 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
         const result: UserCreateResultDTO = {
             id: vocal.id,
             name: vocal.name,
+            tableName: 'vocal',
+            userId: vocal.vocalID
         };
         return result;
     } catch (error) {
@@ -80,12 +84,11 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
                                 await updateUserProfile.updateVocalProfile(profileDTO);
         if (!updateResult) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
 
-        const data: UserCreateResultDTO = {
-            id: updateResult.id,
-            name: updateResult.name,
-        };
-
-        return data;
+        const result: UserCreateResultDTO = (profileDTO.tableName === 'producer') ?
+                    getProducerReturnData(profileDTO) :
+                    getVocalReturnData(profileDTO);
+            
+        return result;
     } catch (error) {
         throw error;
     }
@@ -141,6 +144,53 @@ const checkName = async(userName: string, tableName: string): Promise<CheckNameR
     }
 };
 
+const updateUserPassword = async(passwordDTO: NewPasswordDTO) => {
+    try {
+        const user = (passwordDTO.tableName === 'producer') ?
+                        await getUserByEmail.producerEmailExists(passwordDTO.userEmail) :
+                        await getUserByEmail.vocalEmailExists(passwordDTO.userEmail);
+        if (!user) throw new UnauthorizedUser(rm.NO_USER);
+        
+        const salt = await bcrypt.genSalt(10);
+        const password = await bcrypt.hash(passwordDTO.password, salt); 
+
+        const data = (passwordDTO.tableName === 'producer') ?
+                            await updatePassword.updateProducerPassword(passwordDTO, password) :
+                            await updatePassword.updateVocalPassword(passwordDTO, password);
+        if (!data) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PASSWORD);
+
+        const result: UserCreateResultDTO = (passwordDTO.tableName === 'producer') ?
+                    getProducerReturnData(passwordDTO) :
+                    getVocalReturnData(passwordDTO);
+            
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getProducerReturnData = (data: any): UserCreateResultDTO => {
+    const returnDTO = {
+        id: data.id,
+        name: data.name,
+        tableName: 'producer',
+        userId: data.producerId
+    };
+
+    return returnDTO;
+};
+
+const getVocalReturnData = (data: any): UserCreateResultDTO => {
+    const returnDTO = {
+        id: data.id,
+        name: data.name,
+        tableName: 'vocal',
+        userId: data.vocalId
+    };
+
+    return returnDTO;
+};
+
 const UserService = {
     createProducer,
     createVocal,
@@ -148,6 +198,7 @@ const UserService = {
     updateUser,
     userLogin,
     checkName,
+    updateUserPassword,
 };
 
 export default UserService;
