@@ -18,7 +18,7 @@ const updateProducerProfile = async(profileDTO: UserUpdateDTO) => {
                 name: true,
             },
             where: {
-                id: profileDTO.id
+                id: profileDTO.userId
             }
         });
 
@@ -45,7 +45,7 @@ const updateVocalProfile = async(profileDTO: UserUpdateDTO) => {
                 name: true,
             },
             where: {
-                id: profileDTO.id
+                id: profileDTO.userId
             }
         });
 

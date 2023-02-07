@@ -71,8 +71,8 @@ const joinToken = async(tableName: string, user: UserCreateResultDTO): Promise<R
 const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO> => {
     try {
         const user = (profileDTO.tableName === 'producer') ?
-                        await getUserById.producer(profileDTO.id) :
-                        await getUserById.vocal(profileDTO.id);
+                        await getUserById.producer(profileDTO.userId) :
+                        await getUserById.vocal(profileDTO.userId);
         if (!user) throw new UnauthorizedUser(rm.NO_USER);
 
         const updateResult = (profileDTO.tableName === 'producer') ? 

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body } from 'express-validator';
-import { validatorErrorCallback } from '../../../global/middlewares';
+import { authJWT, validatorErrorCallback } from '../../../global/middlewares';
 import { MailController, TokenController, UserController } from '../controller';
 
 const router: Router = Router();
@@ -56,7 +56,7 @@ router.post(
         body("tableName").notEmpty(),
         body("userEmail").isEmail(),
         validatorErrorCallback
-    ], 
+    ],
     MailController.getNewPasswordMail
 );
 

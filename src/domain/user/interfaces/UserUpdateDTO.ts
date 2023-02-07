@@ -1,6 +1,6 @@
 export default interface UserUpdateDTO {
     tableName: string;
-    id: number;
+    userId: number;
     contact: string;
     category: string[];
     keyword: string[];
