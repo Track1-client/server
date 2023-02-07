@@ -1,6 +1,6 @@
 import bodyParser from 'body-parser';
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 import { validatorErrorCallback } from '../../../global';
 import { s3UploadeMiddleware } from '../../../global/middlewares';
 import { UserController } from '../controller';
@@ -32,7 +32,6 @@ router.post(
     UserController.createProducer
 );
 
-
 //! vocal 회원가입 
 router.post(
     '/vocal',
@@ -41,5 +40,17 @@ router.post(
     UserController.createVocal 
 );
 
+//! 유저 회원가입 후 프로필 업데이트
+router.patch(
+    '/profile',
+    [   
+        body("tableName")
+            .notEmpty().withMessage("Producer/Vocal table name cannot be empty"),
+        body("id")
+            .notEmpty().withMessage("User Id Number cannot be empty"),
+        validatorErrorCallback
+    ],
+    UserController.updateProfile
+);
 
 export default router;

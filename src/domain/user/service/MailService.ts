@@ -9,7 +9,7 @@ import { createTempUserTable, deleteTempUserByEmail, findTempUserByEmail, getUse
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
         const result = (emailDTO.tableName === 'producer') ? 
-                        await getUserByEmail.playerEmailExists(emailDTO.userEmail) : await getUserByEmail.nonPlayerEmailExists(emailDTO.userEmail);
+                        await getUserByEmail.producerEmailExists(emailDTO.userEmail) : await getUserByEmail.vocalEmailExists(emailDTO.userEmail);
         
         if (result) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
     } catch(error) {

@@ -4,6 +4,7 @@ export { UnauthorizedUser } from './UnauthorizedUser';
 export { InvalidValidationFormResult } from './ValidationResult';
 export { ProducerJoinFail } from './ProducerJoinFail';
 export { VocalJoinFail } from './VocalJoinFail';
+export { UpdateUserFail } from './UserUpdateFail';
 export { 
     AccessTokenDoesNotExists,
     AccessTokenInvalid,

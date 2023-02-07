@@ -7,3 +7,4 @@ export { default as VerifyCodeDTO } from './VerifyCodeDTO';
 export { default as CheckNameResultDTO } from './CheckNameResultDTO';
 export { default as ProducerCreateDTO } from './ProducerCreateDTO';
 export { default as VocalCreateDTO } from './VocalCreateDTO';
+export { default as UserUpdateDTO } from './UserUpdateDTO';

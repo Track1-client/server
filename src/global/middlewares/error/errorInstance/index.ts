@@ -4,6 +4,7 @@ export {
     IncorrectLoginPassword, 
     UnauthorizedUser,
     InvalidValidationFormResult,
+    UpdateUserFail,
     //* token 관련
     AccessTokenDoesNotExists,
     AccessTokenInvalid,

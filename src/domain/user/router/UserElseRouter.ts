@@ -5,7 +5,6 @@ import { MailController, TokenController, UserController } from '../controller';
 
 const router: Router = Router();
 
-
 //! 토큰 재발급
 router.get('/refresh', TokenController.refresh);
 

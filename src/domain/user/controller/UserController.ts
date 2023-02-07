@@ -3,7 +3,7 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
-import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
+import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import config from '../../../global/config';
@@ -65,6 +65,17 @@ const createVocal = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const updateProfile = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userUpdateDTO: UserUpdateDTO = req.body;
+        const userResult = await UserService.updateUser(userUpdateDTO);
+
+        return res.status(sc.OK).send(success(sc.OK,rm.SUCCESS_UPDATE_USER_PROFILE, userResult));
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const signIn = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const userLogInDTO: SignInDTO = req.body;
@@ -111,6 +122,7 @@ const checkName = async(req: Request, res: Response, next: NextFunction) => {
 const UserController = {
     createProducer,
     createVocal,
+    updateProfile,
     signIn,
     checkName,
 };

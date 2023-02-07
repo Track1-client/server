@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -54,8 +54,8 @@ model CommentFileDuration {
 
 model Producer {
   id                Int                 @id @unique @default(autoincrement())
-  name              String              @unique @db.VarChar(200)
-  contact           String              @db.VarChar(200)
+  name              String              @db.VarChar(200)
+  contact           String?             @db.VarChar(200)
   category          String[]            @db.VarChar
   keyword           String[]            @db.VarChar
   introduce         String?
@@ -83,12 +83,12 @@ model ProducerPortfolio {
   ProducerTitle             ProducerTitle?
 }
 
-model TempUser { 
-  tableName           String            @db.VarChar(100)
-  userEmail           String            @db.VarChar(100)
-  authCode            String            @db.VarChar(100)
+model TempUser {
+  tableName String @db.VarChar(100)
+  userEmail String @db.VarChar(100)
+  authCode  String @db.VarChar(100)
 
-  @@unique(fields: [tableName, userEmail], name: "tableEmail")
+  @@unique([tableName, userEmail], name: "tableEmail")
 }
 
 model ProducerPortfolioDuration {
@@ -108,13 +108,13 @@ model ProducerTitle {
 
 model Vocal {
   id             Int              @id @unique @default(autoincrement())
-  name           String           @unique @db.VarChar(200)
-  contact        String           @db.VarChar(200)
+  name           String           @db.VarChar(200)
+  contact        String?          @db.VarChar(200)
   category       String[]         @db.VarChar
   keyword        String[]         @db.VarChar
   introduce      String?
   vocalImage     String           @db.VarChar(10000)
-  isSelected     Boolean          @default(false)
+  isSleeper      Boolean          @default(false)
   vocalID        String           @unique @db.VarChar(200)
   vocalPW        String           @db.VarChar(200)
   Comment        Comment[]

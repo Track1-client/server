@@ -1,16 +1,22 @@
-import { ProducerJoinFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
+import { AlreadyExistsEmail, ProducerJoinFail, UpdateUserFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByLoginID, getUserByName } from '../repository';
+import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
+import { createUser, getUserByEmail, getUserByLoginID, getUserByName, updateUserProfile } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
 
 const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: string): Promise<UserCreateResultDTO> => {
     try {
-        const producer = await createUser.createProducer(producerCreateDTO, location);
+        const emailExists = await getUserByEmail.producerEmailExists(producerCreateDTO.ID);
+        if (emailExists) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
+
+        const salt = await bcrypt.genSalt(10);
+        const password = await bcrypt.hash(producerCreateDTO.PW, salt); 
+
+        const producer = await createUser.createProducer(producerCreateDTO, password, location);
         if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
 
         const result: UserCreateResultDTO = {
@@ -25,7 +31,13 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
 
 const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Promise<UserCreateResultDTO> => {
     try {
-        const vocal = await createUser.createVocal(vocalCreateDTO, location);
+        const emailExists = await getUserByEmail.vocalEmailExists(vocalCreateDTO.ID);
+        if (emailExists) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
+
+        const salt = await bcrypt.genSalt(10);
+        const password = await bcrypt.hash(vocalCreateDTO.PW, salt); 
+
+        const vocal = await createUser.createVocal(vocalCreateDTO, password, location);
         if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
 
         const result: UserCreateResultDTO = {
@@ -38,7 +50,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
     }
 };
 
-const joinToken = async(tableName: string, user: UserCreateResultDTO) => {
+const joinToken = async(tableName: string, user: UserCreateResultDTO): Promise<RefreshAccessTokenDTO> => {
     try {
         const accessToken = jwtUtils.signAccess(tableName, user.id);
         const refreshToken = jwtUtils.signRefresh(tableName, user.id);
@@ -51,6 +63,24 @@ const joinToken = async(tableName: string, user: UserCreateResultDTO) => {
             refreshToken,
         };  
         return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO> => {
+    try {
+        const updateResult = (profileDTO.tableName === 'producer') ? 
+                                await updateUserProfile.updateProducerProfile(profileDTO) :
+                                await updateUserProfile.updateVocalProfile(profileDTO);
+
+        const data: UserCreateResultDTO = {
+            id: updateResult.id,
+            name: updateResult.name,
+        };
+
+        if (!data) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
+        return data;
     } catch (error) {
         throw error;
     }
@@ -83,6 +113,7 @@ const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     }
 };
 
+//~ 현재 필요없는 API
 const checkName = async(userName: string, tableName: string): Promise<CheckNameResultDTO> => {
     try {
         /**  producer, vocal 내에서 검사하는 경우 
@@ -109,6 +140,7 @@ const UserService = {
     createProducer,
     createVocal,
     joinToken,
+    updateUser,
     userLogin,
     checkName,
 };

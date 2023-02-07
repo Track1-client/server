@@ -16,6 +16,8 @@ export default {
     ALREADY_IN_USE_NAME: "이미 존재하는 닉네임입니다.",
     INVALID_ID: "존재하지 않는 아이디입니다.",
     INCORRECT_PASSWORD: "잘못된 비밀번호입니다.",
+    SUCCESS_UPDATE_USER_PROFILE: "유저 프로필 수정 성공",
+    FAIL_UPDATE_USER_PROFILE: "유저 프로필 수정 실패",
 
     // 토큰
     CREATE_TOKEN_SUCCESS: "토큰 재발급 성공",
