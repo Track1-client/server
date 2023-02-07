@@ -1,9 +1,9 @@
-import { AlreadyExistsEmail, ProducerJoinFail, UpdateUserFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
+import { AlreadyExistsEmail, ProducerJoinFail, UnauthorizedUser, UpdateUserFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
 import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByEmail, getUserByLoginID, getUserByName, updateUserProfile } from '../repository';
+import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
@@ -70,16 +70,21 @@ const joinToken = async(tableName: string, user: UserCreateResultDTO): Promise<R
 
 const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO> => {
     try {
+        const user = (profileDTO.tableName === 'producer') ?
+                        await getUserById.producer(profileDTO.id) :
+                        await getUserById.vocal(profileDTO.id);
+        if (!user) throw new UnauthorizedUser(rm.NO_USER);
+
         const updateResult = (profileDTO.tableName === 'producer') ? 
                                 await updateUserProfile.updateProducerProfile(profileDTO) :
                                 await updateUserProfile.updateVocalProfile(profileDTO);
+        if (!updateResult) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
 
         const data: UserCreateResultDTO = {
             id: updateResult.id,
             name: updateResult.name,
         };
 
-        if (!data) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
         return data;
     } catch (error) {
         throw error;

@@ -16,7 +16,8 @@ const expressValidatorArray = [
         .trim()
         .notEmpty().withMessage("PW 비어있음")
         .isLength({ min: 10 }).withMessage("비밀번호는 최소 10자리")
-        .matches(/^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]/).withMessage("정규식 만족 안함"), 
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]/).withMessage("정규식 만족 안함"),
+    //    .matches(/^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]/).withMessage("정규식 만족 안함"), 
     body("name")
         .trim()
         .isLength({ min: 1, max: 16 }).withMessage("1~16자리 만족 안함")

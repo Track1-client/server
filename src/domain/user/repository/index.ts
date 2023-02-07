@@ -7,3 +7,4 @@ export { default as deleteTempUserByEmail } from './deleteTempUserByEmail';
 export { default as getUserByName } from './findUserByName';
 export { default as createUser } from './createUser';
 export { default as updateUserProfile } from './updateUserProfileById';
+export { default as getUserById } from './findUserById'; 
