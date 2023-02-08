@@ -1,12 +1,11 @@
 import prisma from '../../../global/config/prismaClient';
+import UserLogInDTO from '../interfaces/SignInDTO';
 
-const producerLogin = async(userEmail: string) => {
+const producer = async(id: number) => {
     try {
         const producer = await prisma.producer.findFirst({
             where: {
-                producerID: {
-                    equals: userEmail,
-                },
+                id
             },
         });
         
@@ -16,13 +15,11 @@ const producerLogin = async(userEmail: string) => {
     }
 };
 
-const vocalLogin = async(userEmail: string) => {
+const vocal = async(id: number) => {
     try {
         const vocal = await prisma.vocal.findFirst({
             where: {
-                vocalID: {
-                    equals: userEmail,
-                },
+                id
             },
         });
     
@@ -32,9 +29,9 @@ const vocalLogin = async(userEmail: string) => {
     }
 };
 
-const getUserByLoginID = {
-    producerLogin,
-    vocalLogin,
+const getUserById = {
+    producer,
+    vocal
 };
 
-export default getUserByLoginID;
+export default getUserById;

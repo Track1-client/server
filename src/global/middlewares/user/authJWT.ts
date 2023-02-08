@@ -10,7 +10,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         const token = req.headers.authorization?.split(" ").reverse()[0];
         if (!token) throw new AccessTokenDoesNotExists(rm.EMPTY_ACCESS_TOKEN);
 
-        const decoded = await jwtUtils.accessVerify(token);
+        const decoded = jwtUtils.accessVerify(token);
         
         //? 토큰 에러 분기 처리
         if (decoded.message === tokenType.ACCESS_TOKEN_EXPIRED) throw new AccessTokenExpired(rm.EXPIRED_ACCESS_TOKEN);

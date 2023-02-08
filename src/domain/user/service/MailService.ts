@@ -1,17 +1,22 @@
 import config from '../../../global/config';
 import { rm } from '../../../global/constants';
-import { AlreadyExistsEmail, CreateAuthCode, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
+import { CreateAuth, CreateAuthCode, SendAuthCode, SendResetPassword, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
 import randomAccessCode from '../../../global/modules/getAccessCode';
 import sendAuthCodeMail from '../../../global/modules/sendAuthCodeMail';
+import sendPasswordResetMail from '../../../global/modules/sendResetPasswordMail';
 import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
-import { createTempUserTable, deleteTempUserByEmail, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
+import crypto from 'crypto';
+import { createAuth, createTempUserTable, deleteTempUserByEmail, findAuthByToken, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
+import { Auth } from '@prisma/client';
 
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
         const result = (emailDTO.tableName === 'producer') ? 
-                        await getUserByEmail.playerEmailExists(emailDTO.userEmail) : await getUserByEmail.nonPlayerEmailExists(emailDTO.userEmail);
+                        await getUserByEmail.producerEmailExists(emailDTO.userEmail) : 
+                        await getUserByEmail.vocalEmailExists(emailDTO.userEmail);
         
-        if (result) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
+        const data = (result) ? result : false;
+        return data;
     } catch(error) {
         throw error;
     }
@@ -110,11 +115,48 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     return result;
 };
 
+
+//& 비밀번호 재설정 링크 유효시간을 위한 Auth 테이블 생성 
+const createAuthTable = async(userId: number, tableName: string, userEmail: string): Promise<Auth> => {
+    try {
+        let newToken: string;
+        let oldToken: string;
+
+        //! 원래 토큰과 일치하지 않는 토큰 생성 
+        do {
+            newToken = crypto.randomBytes(20).toString('hex');
+            oldToken = await findAuthByToken(newToken) as unknown as string;
+            
+            if (!oldToken) break;
+        } while (oldToken);
+
+        const auth = await createAuth(userId, tableName, userEmail, newToken);
+
+        if (!auth) throw new CreateAuth(rm.FAIL_CREATE_AUTH);
+        return auth;
+    } catch (error) {
+        throw error;
+    }
+};
+
+//& 비밀번호 재설정 메일 보내기 
+const postPasswordMail = async(auth: Auth) => {
+    try {
+        //! 메일 보내기
+        const image = config.track1EmailImage;
+        await sendPasswordResetMail(auth, image);
+    } catch (error) {
+        throw error;
+    }
+};
+
 const EmailService = {
     isEmailExists,
     createTempUser,
     updateAuthCode,
     checkVerify,
+    postPasswordMail,
+    createAuthTable,
 }
 
 export default EmailService;

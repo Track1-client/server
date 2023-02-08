@@ -1,9 +1,9 @@
 import prisma from '../../../global/config/prismaClient';
 
-//! player email 중복 확인 
-const playerEmailExists = async(userEmail: string) => {
+//! producer 중복 확인 
+const producerEmailExists = async(userEmail: string) => {
     try {
-        const player = await prisma.producer.findFirst({
+        const producer = await prisma.producer.findFirst({
             where: {
                 producerID: {
                     equals: userEmail,
@@ -11,17 +11,17 @@ const playerEmailExists = async(userEmail: string) => {
             },
         });
         
-        const result = (!player) ? false : true;
+        const result = (!producer) ? false : producer;
         return result;
     } catch(error) {
         throw error;
     }
 };
 
-//! non-player email 중복 확인 
-const nonPlayerEmailExists = async(userEmail: string) => {
+//! vocal email 중복 확인 
+const vocalEmailExists = async(userEmail: string) => {
     try {
-        const nonPlayer = await prisma.vocal.findFirst({
+        const vocal = await prisma.vocal.findFirst({
             where: {
                 vocalID: {
                     equals: userEmail,
@@ -29,7 +29,7 @@ const nonPlayerEmailExists = async(userEmail: string) => {
             },
         });
     
-        const result = (!nonPlayer) ? false : true;
+        const result = (!vocal) ? false : vocal;
         return result;
     } catch(error) {
         throw error;
@@ -37,8 +37,8 @@ const nonPlayerEmailExists = async(userEmail: string) => {
 };
 
 const getUserByEmail = {
-    playerEmailExists,
-    nonPlayerEmailExists,
+    producerEmailExists,
+    vocalEmailExists,
 };
 
 export default getUserByEmail;

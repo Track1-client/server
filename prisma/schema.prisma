@@ -1,5 +1,5 @@
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
   previewFeatures = ["fullTextSearch", "fullTextIndex"]
 }
 
@@ -54,8 +54,8 @@ model CommentFileDuration {
 
 model Producer {
   id                Int                 @id @unique @default(autoincrement())
-  name              String              @unique @db.VarChar(200)
-  contact           String              @db.VarChar(200)
+  name              String              @db.VarChar(200)
+  contact           String?             @db.VarChar(200)
   category          String[]            @db.VarChar
   keyword           String[]            @db.VarChar
   introduce         String?
@@ -83,12 +83,12 @@ model ProducerPortfolio {
   ProducerTitle             ProducerTitle?
 }
 
-model TempUser { 
-  tableName           String            @db.VarChar(100)
-  userEmail           String            @db.VarChar(100)
-  authCode            String            @db.VarChar(100)
+model TempUser {
+  tableName String @db.VarChar(100)
+  userEmail String @db.VarChar(100)
+  authCode  String @db.VarChar(100)
 
-  @@unique(fields: [tableName, userEmail], name: "tableEmail")
+  @@unique([tableName, userEmail], name: "tableEmail")
 }
 
 model ProducerPortfolioDuration {
@@ -108,8 +108,8 @@ model ProducerTitle {
 
 model Vocal {
   id             Int              @id @unique @default(autoincrement())
-  name           String           @unique @db.VarChar(200)
-  contact        String           @db.VarChar(200)
+  name           String           @db.VarChar(200)
+  contact        String?          @db.VarChar(200)
   category       String[]         @db.VarChar
   keyword        String[]         @db.VarChar
   introduce      String?
@@ -162,4 +162,12 @@ model VocalTitle {
   vocalPortfolioId Int            @unique
   Vocal            Vocal          @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocaltitle_vocal_id_fk")
   VocalPortfolio   VocalPortfolio @relation(fields: [vocalPortfolioId], references: [id], onDelete: Cascade, map: "vocaltitle_vpf_id_fk")
+}
+
+model Auth {
+  token     String @unique @db.VarChar(50)
+  userId    Int
+  tableName String @db.VarChar(50)
+  userEmail String @db.VarChar(100)
+  createdAt DateTime @default(now())
 }

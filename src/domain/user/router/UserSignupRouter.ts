@@ -1,8 +1,8 @@
 import bodyParser from 'body-parser';
 import { Router } from 'express';
-import { body } from 'express-validator';
+import { body, query } from 'express-validator';
 import { validatorErrorCallback } from '../../../global';
-import { s3UploadeMiddleware } from '../../../global/middlewares';
+import { authJWT, s3UploadeMiddleware } from '../../../global/middlewares';
 import { UserController } from '../controller';
 
 const router: Router = Router();
@@ -16,7 +16,8 @@ const expressValidatorArray = [
         .trim()
         .notEmpty().withMessage("PW 비어있음")
         .isLength({ min: 10 }).withMessage("비밀번호는 최소 10자리")
-        .matches(/^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]/).withMessage("정규식 만족 안함"), 
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]/).withMessage("정규식 만족 안함"),
+    //    .matches(/^(?!((?:[A-Za-z]+)|(?:[~!@#$%^&*()_+=]+)|(?:[0-9]+))$)[A-Za-z\d~!@#$%^&*()_+=]/).withMessage("정규식 만족 안함"), 
     body("name")
         .trim()
         .isLength({ min: 1, max: 16 }).withMessage("1~16자리 만족 안함")
@@ -32,7 +33,6 @@ router.post(
     UserController.createProducer
 );
 
-
 //! vocal 회원가입 
 router.post(
     '/vocal',
@@ -41,5 +41,11 @@ router.post(
     UserController.createVocal 
 );
 
+//! 유저 회원가입 후 프로필 업데이트
+router.patch(
+    '/profile',
+    authJWT,
+    UserController.updateProfile
+);
 
 export default router;

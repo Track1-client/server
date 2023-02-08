@@ -3,10 +3,17 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
-import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO } from '../interfaces';
+import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO, NewPasswordDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import config from '../../../global/config';
+
+const cookieInfo: any = {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    domain: '.track1.site',
+};
 
 const createProducer = async(req: Request, res: Response, next: NextFunction) => {
     try {
@@ -16,8 +23,18 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
         if (!profileImage) var location = config.defaultUserProfileImage; 
         else var { location } = profileImage;
 
-        const result = await UserService.createProducer(producerCreateDTO, location as string);
-        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
+        const userResult = await UserService.createProducer(producerCreateDTO, location as string); //! DB에 유저 정보 저장 
+        const tokenResult = await UserService.joinToken('producer', userResult); //! access, refresh 토큰 생성 
+
+        const joinResult = {
+            userResult,
+            accessToken: tokenResult.accessToken
+        }
+
+        return res
+                .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
+                .status(sc.CREATED)
+                .send(success(sc.CREATED, rm.SIGNUP_SUCCESS, joinResult));
     } catch (error) {
         return next(error);
     }
@@ -31,8 +48,29 @@ const createVocal = async(req: Request, res: Response, next: NextFunction) => {
         if (!profileImage) var location = config.defaultUserProfileImage; 
         else var { location } = profileImage;
 
-        const result = await UserService.createVocal(vocalCreateDTO, location as string);
-        return res.status(sc.CREATED).send(success(sc.CREATED, rm.SIGNUP_SUCCESS, result));
+        const userResult = await UserService.createVocal(vocalCreateDTO, location as string); //! DB에 유저 정보 저장 
+        const tokenResult = await UserService.joinToken('vocal', userResult); //! access, refresh 토큰 생성 
+
+        const joinResult = {
+            userResult,
+            accessToken: tokenResult.accessToken
+        };
+
+        return res
+                .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
+                .status(sc.CREATED)
+                .send(success(sc.CREATED, rm.SIGNUP_SUCCESS, joinResult));
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const updateProfile = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userUpdateDTO: UserUpdateDTO = req.body;
+        const userResult = await UserService.updateUser(userUpdateDTO);
+
+        return res.status(sc.OK).send(success(sc.OK,rm.SUCCESS_UPDATE_USER_PROFILE, userResult));
     } catch (error) {
         return next(error);
     }
@@ -57,11 +95,13 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
         const result = {
             tableName: data.tableName,
             id: data.userId,
-            accessToken,
-            refreshToken,
+            accessToken
         };
-    
-        return res.status(sc.OK).send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
+        
+        return res
+                .cookie('refreshToken', refreshToken, cookieInfo)
+                .status(sc.OK)
+                .send(success(sc.OK, rm.SIGNIN_SUCCESS, result));
     } catch (error) {
         return next(error);
     }
@@ -78,12 +118,33 @@ const checkName = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const updatePassword = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const passwordDTO: NewPasswordDTO = req.body;
+        const { token } = req.params;
+
+        const result = await UserService.updateUserPassword(token, passwordDTO.password);
+        
+        //! 비밀번호 초기화 후, refresh token 삭제 (무조건 다시 로그인 필요)
+        await TokenService.deleteRefreshToken(result.tableName, result.id as unknown as string); 
+
+        //! 비밀번호 초기화 후, Auth 테이블 데이터 삭제하기 
+        await UserService.deleteAuthData(result.tableName, result.id);
+
+        return res.status(sc.OK).send(success(sc.OK, rm.SUCCESS_UPDATE_USER_PASSWORD, result));
+    } catch (error) {
+        return next(error);
+    }
+
+};
 
 const UserController = {
     createProducer,
     createVocal,
+    updateProfile,
     signIn,
     checkName,
+    updatePassword,
 };
 
 export default UserController;

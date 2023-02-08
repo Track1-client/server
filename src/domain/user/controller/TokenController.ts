@@ -6,12 +6,20 @@ import { success } from '../../../global/constants/response';
 const refresh = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.headers.authorization?.split(" ").reverse()[0];
-        const refreshToken = req.headers.refresh;
-
+        const { refreshToken } = req.cookies;
+        
         await TokenService.isTokenExists(accessToken as string, refreshToken as string);
         const data = await TokenService.isRefreshValid(accessToken as string, refreshToken as string);
 
-        return res.status(sc.CREATED).send(success(sc.CREATED, rm.CREATE_TOKEN_SUCCESS, data));
+        return res
+                .cookie('refreshToken', data.refreshToken, {
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none',
+                    domain: '.track1.site',
+                })
+                .status(sc.CREATED)
+                .send(success(sc.CREATED, rm.CREATE_TOKEN_SUCCESS, data.accessToken));
     } catch (error) {
         return next(error);
     }

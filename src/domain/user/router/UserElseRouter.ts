@@ -5,6 +5,13 @@ import { MailController, TokenController, UserController } from '../controller';
 
 const router: Router = Router();
 
+const expressValidatorArray = [
+    body("tableName").notEmpty(),
+    body("userEmail")
+        .trim()
+        .isEmail(),
+    validatorErrorCallback
+];
 
 //! 토큰 재발급
 router.get('/refresh', TokenController.refresh);
@@ -15,26 +22,14 @@ router.get('/check-name', UserController.checkName);
 //* 회원가입 인증코드 메일 전송 
 router.post(
     '/auth-mail',
-    [
-        body("tableName").notEmpty(),
-        body("userEmail")
-            .trim()
-            .isEmail(),
-        validatorErrorCallback
-    ],
+    expressValidatorArray,
     MailController.postAuthMail
 );
 
 //* 회원가입 인증코드 메일 재전송 
 router.patch(
     '/auth-mail-repost',
-    [
-        body("tableName").notEmpty(),
-        body("userEmail")
-            .trim()
-            .isEmail(),
-        validatorErrorCallback
-    ],
+    expressValidatorArray,
     MailController.repostAuthMail
 );
 
@@ -50,15 +45,32 @@ router.post(
     MailController.verifyCode
 );
 
-//& 비밀번호 찾기 메일 
+//& 비밀번호 찾기 메일 전송 
 router.post(
     '/newpassword-mail',
-    [
-        body("tableName").notEmpty(),
-        body("userEmail").isEmail(),
-        validatorErrorCallback
-    ], 
+    expressValidatorArray,
     MailController.getNewPasswordMail
+);
+
+//& 비밀번호 찾기 메일 재전송 
+router.post(
+    '/newpassword-mail-repost',
+    expressValidatorArray,
+    MailController.getNewPasswordMailAgain
+);
+
+//& 비밀번호 변경
+router.patch(
+    '/newpassword/:token',
+    [
+        body("password")
+        .trim()
+        .notEmpty().withMessage("PW 비어있음")
+        .isLength({ min: 10 }).withMessage("비밀번호는 최소 10자리")
+        .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?&])[A-Za-z\d$@$!%*#?&]/).withMessage("정규식 만족 안함"),
+        validatorErrorCallback
+    ],
+    UserController.updatePassword
 );
 
 export default router;
