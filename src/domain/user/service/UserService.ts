@@ -167,6 +167,15 @@ const updateUserPassword = async(token: string, password: string) => {
     }
 };
 
+const isPasswordTokenValid = async(token: string) => {
+    try {
+        const auth = await findAuthByToken(token);
+        if (!auth) throw new ResetPasswordTimePassed(rm.PASSWORD_RESET_TIME_PASSED);  //! 비밀번호 재설정 메일 보낸지 3시간 초과한 경우 
+    } catch (error) {
+        throw error;
+    }
+};
+
 const deleteAuthData = async(tableName: string, id: number) => {
     try {
         await deleteEveryAuthById(tableName, id);
@@ -206,6 +215,7 @@ const UserService = {
     checkName,
     updateUserPassword,
     deleteAuthData,
+    isPasswordTokenValid,
 };
 
 export default UserService;

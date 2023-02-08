@@ -138,6 +138,17 @@ const updatePassword = async(req: Request, res: Response, next: NextFunction) =>
 
 };
 
+const isPasswordTokenValid = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { token } = req.params;
+
+        await UserService.isPasswordTokenValid(token);
+        return res.status(sc.OK).send(success(sc.OK, rm.VALID_TOKEN, token));
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const UserController = {
     createProducer,
     createVocal,
@@ -145,6 +156,7 @@ const UserController = {
     signIn,
     checkName,
     updatePassword,
+    isPasswordTokenValid,
 };
 
 export default UserController;

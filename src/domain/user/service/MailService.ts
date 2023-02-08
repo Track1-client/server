@@ -115,9 +115,8 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     return result;
 };
 
-
 //& 비밀번호 재설정 링크 유효시간을 위한 Auth 테이블 생성 
-const createAuthTable = async(userId: number, tableName: string, userEmail: string): Promise<Auth> => {
+const createAuthTable = async(userId: number, tableName: string, userEmail: string) => {
     try {
         let newToken: string;
         let oldToken: string;
@@ -140,7 +139,7 @@ const createAuthTable = async(userId: number, tableName: string, userEmail: stri
 };
 
 //& 비밀번호 재설정 메일 보내기 
-const postPasswordMail = async(auth: Auth) => {
+const postPasswordMail = async(auth: any) => {
     try {
         //! 메일 보내기
         const image = config.track1EmailImage;
