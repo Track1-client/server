@@ -59,6 +59,9 @@ router.post(
     MailController.getNewPasswordMailAgain
 );
 
+//& 토큰 valid 여부 확인 
+router.get('/newpassword/:token', UserController.isPasswordTokenValid);
+
 //& 비밀번호 변경
 router.patch(
     '/newpassword/:token',
