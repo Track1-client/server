@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
 import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuth } from '../repository';
+import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuthById } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
@@ -96,8 +96,8 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
 
 const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     try {
-        const producer = await getUserByLoginID.producerLogin(logInDTO);
-        const vocal = await getUserByLoginID.vocalLogin(logInDTO);
+        const producer = await getUserByLoginID.producerLogin(logInDTO.ID);
+        const vocal = await getUserByLoginID.vocalLogin(logInDTO.ID);
 
         const user = producer || vocal;
         if (!user) throw new LoginIDNonExists(rm.INVALID_ID);  //! 존재하지 않는 ID
@@ -169,7 +169,7 @@ const updateUserPassword = async(token: string, password: string) => {
 
 const deleteAuthData = async(tableName: string, id: number) => {
     try {
-        await deleteEveryAuth(tableName, id);
+        await deleteEveryAuthById(tableName, id);
     } catch (error) {
         throw error;
     }

@@ -11,4 +11,5 @@ export { default as getUserById } from './findUserById';
 export { default as updatePassword } from './updatePasswordById';
 export { default as createAuth } from './createAuth';
 export { default as findAuthByToken } from './findAuthByToken';
-export { default as deleteEveryAuth } from './deleteAuthById';
+export { default as deleteEveryAuthById } from './deleteEveryAuthById';
+export { default as deleteEveryAuthByEmail } from './deleteEveryAuthByEmail';

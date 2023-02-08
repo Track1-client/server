@@ -9,6 +9,12 @@ const createAuth = async(userId: number, tableName: string, userEmail: string, t
                 userEmail,
                 token,
             },
+            select: {
+                userId: true,
+                userEmail: true,
+                tableName: true,
+                token: true,
+            }
         });
 
         return data;

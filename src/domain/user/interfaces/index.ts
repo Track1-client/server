@@ -9,3 +9,4 @@ export { default as ProducerCreateDTO } from './ProducerCreateDTO';
 export { default as VocalCreateDTO } from './VocalCreateDTO';
 export { default as UserUpdateDTO } from './UserUpdateDTO';
 export { default as NewPasswordDTO } from './NewPasswordDTO';
+export { default as ResendMailDTO } from './ResendMailDTO';
