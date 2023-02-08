@@ -6,8 +6,7 @@ import { AlreadyExistsEmail } from '../../../global/middlewares/error/errorInsta
 import { EmailDTO, ResendMailDTO, VerifyCodeDTO } from '../interfaces';
 import MailDTO from '../interfaces/MailDTO';
 import EmailService from '../service/MailService';
-import UserService from '../service/UserService';
-import { deleteEveryAuthByEmail, getUserByEmail, getUserByLoginID } from '../repository';
+import { deleteEveryAuthByEmail, getUserByLoginID } from '../repository';
 
 
 const postAuthMail = async(req: Request, res: Response, next: NextFunction) => {

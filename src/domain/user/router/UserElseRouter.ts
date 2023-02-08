@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { body } from 'express-validator';
-import { authJWT, validatorErrorCallback } from '../../../global/middlewares';
+import { validatorErrorCallback } from '../../../global/middlewares';
 import { MailController, TokenController, UserController } from '../controller';
 
 const router: Router = Router();
