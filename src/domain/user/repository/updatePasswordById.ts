@@ -2,14 +2,14 @@ import prisma from '../../../global/config/prismaClient';
 import { NewPasswordDTO } from '../interfaces';
 
 //! producer 비밀번호 업데이트
-const updateProducerPassword = async(profileDTO: NewPasswordDTO, password: string) => {
+const updateProducerPassword = async(userId: number, password: string) => {
     try {
         const data = await prisma.producer.update({
             data: {
                 producerPW: password,
             },
             where: {
-                producerID: profileDTO.userEmail
+                id: userId,
             },
             select: {
                 id: true,
@@ -25,14 +25,14 @@ const updateProducerPassword = async(profileDTO: NewPasswordDTO, password: strin
 };
 
 //! vocal 비밀번호 업데이트 
-const updateVocalPassword = async(profileDTO: NewPasswordDTO, password: string) => {
+const updateVocalPassword = async(userId: number, password: string) => {
     try {
         const data = await prisma.vocal.update({
             data: {
                 vocalPW: password,
             },
             where: {
-                vocalID: profileDTO.userEmail
+                id: userId,
             },
             select: {
                 id: true,

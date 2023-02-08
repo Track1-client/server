@@ -5,6 +5,7 @@ export {
     UnauthorizedUser,
     InvalidValidationFormResult,
     UpdateUserFail,
+    CreateAuth,
     //* token 관련
     AccessTokenDoesNotExists,
     AccessTokenInvalid,
@@ -13,12 +14,14 @@ export {
     RefreshTokenDoesNotExists,
     RefreshTokenInvalid,
     RefreshTokenExpired,
+    ResetPasswordTimePassed,
     //* email 관련
     AlreadyExistsEmail,
     UpdateAuthCode,
     SendAuthCode,
     ValidAuthTimePassed,
     CreateAuthCode,
+    SendResetPassword,
 } from './user';
 
 export {

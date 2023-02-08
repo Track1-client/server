@@ -7,7 +7,6 @@ import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpda
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import config from '../../../global/config';
-import NewPasswordMailDTO from '../interfaces/NewPasswordDTO';
 
 const cookieInfo: any = {
     httpOnly: true,
@@ -122,8 +121,16 @@ const checkName = async(req: Request, res: Response, next: NextFunction) => {
 const updatePassword = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const passwordDTO: NewPasswordDTO = req.body;
+        const { token } = req.params;
 
-        const result = await UserService.updateUserPassword(passwordDTO);
+        const result = await UserService.updateUserPassword(token, passwordDTO.password);
+        
+        //! 비밀번호 초기화 후, refresh token 삭제 (무조건 다시 로그인 필요)
+        await TokenService.deleteRefreshToken(result.tableName, result.id as unknown as string); 
+
+        //! 비밀번호 초기화 후, Auth 테이블 데이터 삭제하기 
+        await UserService.deleteAuthData(result.tableName, result.id);
+
         return res.status(sc.OK).send(success(sc.OK, rm.SUCCESS_UPDATE_USER_PASSWORD, result));
     } catch (error) {
         return next(error);

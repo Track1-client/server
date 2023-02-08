@@ -5,6 +5,7 @@ export { InvalidValidationFormResult } from './ValidationResult';
 export { ProducerJoinFail } from './ProducerJoinFail';
 export { VocalJoinFail } from './VocalJoinFail';
 export { UpdateUserFail } from './UserUpdateFail';
+export { CreateAuth } from './CreateAuthFail';
 export { 
     AccessTokenDoesNotExists,
     AccessTokenInvalid,
@@ -20,4 +21,6 @@ export {
     SendAuthCode,
     ValidAuthTimePassed,
     CreateAuthCode,
+    SendResetPassword,
+    ResetPasswordTimePassed,
 } from './email';

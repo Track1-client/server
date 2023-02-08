@@ -114,7 +114,7 @@ model Vocal {
   keyword        String[]         @db.VarChar
   introduce      String?
   vocalImage     String           @db.VarChar(10000)
-  isSleeper      Boolean          @default(false)
+  isSelected     Boolean          @default(false)
   vocalID        String           @unique @db.VarChar(200)
   vocalPW        String           @db.VarChar(200)
   Comment        Comment[]
@@ -162,4 +162,12 @@ model VocalTitle {
   vocalPortfolioId Int            @unique
   Vocal            Vocal          @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocaltitle_vocal_id_fk")
   VocalPortfolio   VocalPortfolio @relation(fields: [vocalPortfolioId], references: [id], onDelete: Cascade, map: "vocaltitle_vpf_id_fk")
+}
+
+model Auth {
+  token     String @unique @db.VarChar(50)
+  userId    Int
+  tableName String @db.VarChar(50)
+  userEmail String @db.VarChar(100)
+  createdAt DateTime @default(now())
 }

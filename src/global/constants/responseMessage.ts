@@ -20,6 +20,7 @@ export default {
     FAIL_UPDATE_USER_PROFILE: "유저 프로필 수정 실패",
     SUCCESS_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 성공",
     FAIL_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 실패",
+    FAIL_CREATE_AUTH: "auth 생성 실패",
 
     // 토큰
     CREATE_TOKEN_SUCCESS: "토큰 재발급 성공",
@@ -54,6 +55,9 @@ export default {
     CODE_VERIFY_FAIL: "인증코드 인증 실패",
     SEND_VERIFY_MAIL_FIRST: "인증메일 먼저 전송받은 후 인증하세요",
     VALID_AUTH_TIME_PASSED: "유효 인증 시간이 지났습니다",
+    PASSWORD_RESET_MAIL_SEND_SUCCESS: "비밀번호 재설정 메일 전송 성공",
+    PASSWORD_RESET_MAIL_SEND_FAIL: "비밀번호 재설정 메일 전송 실패",
+    PASSWORD_RESET_TIME_PASSED: "비밀번호 초기화 링크 3시간 초과",
     
     // 파일 업로드 관련
     INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",

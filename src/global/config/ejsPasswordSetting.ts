@@ -1,13 +1,13 @@
 import ejs from 'ejs';
 
-const ejsPasswordSetting = (endPoint: string) => {
+const ejsPasswordSetting = (token: string, image: string, endpoint: string) => {
     let passwordEmailForm;
     //! for redirection
-    const clientAddr = 'https://www.track1.site' || 'https://localhost:3000';
+    const clientAddr = 'https://www.track1.site';
 
     ejs.renderFile(
         __dirname + '/template/newPasswordMail.ejs', 
-        { clientAddr, endPoint }, 
+        { clientAddr, token, image, endpoint }, 
         (err, data) => {
             if (err) console.log(err);
             passwordEmailForm = data;

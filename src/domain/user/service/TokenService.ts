@@ -70,7 +70,7 @@ const isRefreshTokenValid = async(tableName: string, userId: number) => {
 
 const deleteRefreshToken = async(tableName: string, userId: string) => {
     try {
-        const redisKeyArray: string[] = ['Table', tableName, 'UserID', userId as unknown as string];
+        const redisKeyArray: string[] = ['Table', tableName, 'UserID', userId];
         const redisKey = redisKeyArray.join(':');
 
         if (!redisKey) throw new RefreshTokenDoesNotExists(rm.SIGNOUT_FAIL);

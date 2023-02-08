@@ -52,12 +52,17 @@ router.post(
     MailController.getNewPasswordMail
 );
 
+//& 비밀번호 찾기 메일 재전송 
+router.post(
+    '/newpassword-mail-repost',
+    expressValidatorArray,
+    MailController.getNewPasswordMailAgain
+);
+
 //& 비밀번호 변경
 router.patch(
-    '/newpassword',
+    '/newpassword/:token',
     [
-        body("tableName").notEmpty(),
-        body("userEmail").isEmail().notEmpty(),
         body("password")
         .trim()
         .notEmpty().withMessage("PW 비어있음")

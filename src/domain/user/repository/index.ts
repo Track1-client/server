@@ -8,4 +8,7 @@ export { default as getUserByName } from './findUserByName';
 export { default as createUser } from './createUser';
 export { default as updateUserProfile } from './updateUserProfileById';
 export { default as getUserById } from './findUserById'; 
-export { default as updatePassword } from './updatePasswordByEmail';
+export { default as updatePassword } from './updatePasswordById';
+export { default as createAuth } from './createAuth';
+export { default as findAuthByToken } from './findAuthByToken';
+export { default as deleteEveryAuth } from './deleteAuthById';

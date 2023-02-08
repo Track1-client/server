@@ -1,9 +1,9 @@
-import { AlreadyExistsEmail, ProducerJoinFail, UnauthorizedUser, UpdateUserFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
+import { AlreadyExistsEmail, ProducerJoinFail, ResetPasswordTimePassed, UnauthorizedUser, UpdateUserFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, NewPasswordDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword } from '../repository';
+import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
+import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuth } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
@@ -85,9 +85,9 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
         if (!updateResult) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
 
         const result: UserCreateResultDTO = (profileDTO.tableName === 'producer') ?
-                    getProducerReturnData(profileDTO) :
-                    getVocalReturnData(profileDTO);
-            
+                                                getProfileUpdateReturn(updateResult, 'producer') :
+                                                getProfileUpdateReturn(updateResult, 'vocal');
+
         return result;
     } catch (error) {
         throw error;
@@ -144,24 +144,22 @@ const checkName = async(userName: string, tableName: string): Promise<CheckNameR
     }
 };
 
-const updateUserPassword = async(passwordDTO: NewPasswordDTO) => {
+const updateUserPassword = async(token: string, password: string) => {
     try {
-        const user = (passwordDTO.tableName === 'producer') ?
-                        await getUserByEmail.producerEmailExists(passwordDTO.userEmail) :
-                        await getUserByEmail.vocalEmailExists(passwordDTO.userEmail);
-        if (!user) throw new UnauthorizedUser(rm.NO_USER);
+        const auth = await findAuthByToken(token);
+        if (!auth) throw new ResetPasswordTimePassed(rm.PASSWORD_RESET_TIME_PASSED);  //! 비밀번호 재설정 메일 보낸지 3시간 초과한 경우 
         
         const salt = await bcrypt.genSalt(10);
-        const password = await bcrypt.hash(passwordDTO.password, salt); 
+        const newPasword = await bcrypt.hash(password, salt); 
 
-        const data = (passwordDTO.tableName === 'producer') ?
-                            await updatePassword.updateProducerPassword(passwordDTO, password) :
-                            await updatePassword.updateVocalPassword(passwordDTO, password);
+        const data = (auth.tableName === 'producer') ?
+                            await updatePassword.updateProducerPassword(auth.userId, newPasword) :
+                            await updatePassword.updateVocalPassword(auth.userId, newPasword);
         if (!data) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PASSWORD);
 
-        const result: UserCreateResultDTO = (passwordDTO.tableName === 'producer') ?
-                    getProducerReturnData(passwordDTO) :
-                    getVocalReturnData(passwordDTO);
+        const result: UserCreateResultDTO = (auth.tableName === 'producer') ?
+                                                getPasswordUpdateReturn(data.id, data.name, auth.userEmail, 'producer') :
+                                                getPasswordUpdateReturn(data.id, data.name, auth.userEmail, 'vocal');
             
         return result;
     } catch (error) {
@@ -169,26 +167,34 @@ const updateUserPassword = async(passwordDTO: NewPasswordDTO) => {
     }
 };
 
-const getProducerReturnData = (data: any): UserCreateResultDTO => {
-    const returnDTO = {
-        id: data.id,
-        name: data.name,
-        tableName: 'producer',
-        userId: data.producerId
-    };
-
-    return returnDTO;
+const deleteAuthData = async(tableName: string, id: number) => {
+    try {
+        await deleteEveryAuth(tableName, id);
+    } catch (error) {
+        throw error;
+    }
 };
 
-const getVocalReturnData = (data: any): UserCreateResultDTO => {
-    const returnDTO = {
+const getProfileUpdateReturn = (data: any, tableName: string): UserCreateResultDTO => {
+    const result = {
         id: data.id,
         name: data.name,
-        tableName: 'vocal',
-        userId: data.vocalId
+        userId: data.producerID || data.vocalID,
+        tableName,
     };
 
-    return returnDTO;
+    return result;
+};
+
+const getPasswordUpdateReturn = (id: number, name: string, email: string, tableName: string): UserCreateResultDTO => {
+    const result = {
+        id,
+        name,
+        userId: email,
+        tableName,
+    };
+
+    return result;
 };
 
 const UserService = {
@@ -199,6 +205,7 @@ const UserService = {
     userLogin,
     checkName,
     updateUserPassword,
+    deleteAuthData,
 };
 
 export default UserService;

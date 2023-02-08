@@ -11,7 +11,7 @@ const producerEmailExists = async(userEmail: string) => {
             },
         });
         
-        const result = (!producer) ? false : true;
+        const result = (!producer) ? false : producer;
         return result;
     } catch(error) {
         throw error;
@@ -29,7 +29,7 @@ const vocalEmailExists = async(userEmail: string) => {
             },
         });
     
-        const result = (!vocal) ? false : true;
+        const result = (!vocal) ? false : vocal;
         return result;
     } catch(error) {
         throw error;
