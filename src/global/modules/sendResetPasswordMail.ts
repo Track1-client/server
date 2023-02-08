@@ -11,7 +11,7 @@ const sendPasswordResetMail = async(auth: Auth, image: string) => {
         await smtpTransport.sendMail({
             from: 'admin@track-1.link',
             to: auth.userEmail,
-            subject: 'Verify your email address to sign up for Track-1',
+            subject: 'Request to reset your Track-1 password',
             html: ejsPasswordSetting(auth.token, image, endpoint)
         });
 
