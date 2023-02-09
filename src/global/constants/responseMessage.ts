@@ -63,7 +63,8 @@ export default {
     INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",
     INAVLID_AUDIO_FILE_TYPE: "",
     NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
-    NOT_AUDIO_FILE: "",
+    NOT_AUDIO_FILE: "오디오 파일이 아닙니다",
+    IMAGE_FILE_TOO_LARGE: "이미지파일 크기가 5MB를 초과했습니다",
   
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",

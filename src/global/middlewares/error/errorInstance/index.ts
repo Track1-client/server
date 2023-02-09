@@ -27,5 +27,9 @@ export {
 export {
     //* file type 관련
     InvalidImageFileType,
+    InvalidAudioFileType,
     NotImageFile,
+    NotAudioFile,
+    //* file size 관련 
+    ImageFileTooLarge,
 } from './file';
