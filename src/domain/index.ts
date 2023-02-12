@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { default as userRouter } from './user/router/index';
-import tracksRouter from './tracks/router/tracksRouter';
+import { default as tracksRouter } from './tracks/router/index';
 import vocalsRouter from './vocals/router/vocalsRouter';
 import profileRouter from './profile/router/profileRouter';
 import mypageRouter from './mypage/router/mypageRouter';

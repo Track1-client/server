@@ -63,8 +63,23 @@ export default {
     INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",
     INAVLID_AUDIO_FILE_TYPE: "",
     NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
-    NOT_AUDIO_FILE: "",
-  
+    NOT_AUDIO_FILE: "오디오 파일이 아닙니다",
+    IMAGE_FILE_TOO_LARGE: "이미지파일 크기가 5MB를 초과했습니다",
+    UPLOAD_TRACK_FILE_SUCCESS: "트랙 게시글 업로드 성공",
+    UPLOAD_TRACK_FILE_FAIL: "트랙 게시글 업로드 실패",
+
+    // 게시글 관련 
+    DELETE_TRACK_SUCCESS: "게시글 삭제 성공",
+    DELETE_TRACK_FAIL: "게시글 삭제 실패",
+    NOT_PRODUCER: "프로듀서가 아님",
+    PRODUCER_BEAT_UNMATCH: "해당 프로듀서의 게시글이 아님",
+    NO_AUDIO_FILE: "오디오 파일이 존재하지 않음",
+    S3_CANNOT_FIND_AUDIO_FILE_OBJECT: "해당 버킷에서 오디오 객체를 찾을 수 없음",
+
+    // S3 객체 관련
+    SUCCESS_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 성공",
+    FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패 ",
+
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",
   };

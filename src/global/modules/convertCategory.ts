@@ -1,4 +1,4 @@
-async function convertCategory(categoryList: any) {
+function convertCategory(categoryList: any) {
     var mapObj: {[x: string]: string} = {
         0: "R&B",
         1: "Hiphop",

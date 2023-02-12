@@ -1,7 +1,7 @@
 import { AccessTokenExpired, AccessTokenDoesNotExists, AccessTokenInvalid } from './../error/errorInstance/user';
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import { rm, sc } from "../../constants";
+import { rm } from "../../constants";
 import tokenType from "../../constants/tokenType";
 import jwtUtils from '../../modules/jwtHandler';
 

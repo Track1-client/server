@@ -1,12 +1,12 @@
 import { sc } from '../../../../../constants';
 import { AbstractError } from '../../../abstractError';
 
-export class NotAudioFile extends AbstractError {
+export class BeatFileUploadFail extends AbstractError {
     constructor(...args: any) {
         super(...args);
-        this.code = '1003';
-        this.name = 'Not_Audio_File';
+        this.code = '1004';
+        this.name = 'Beat_File_Upload_Fail';
         this.stack = `${this.message}\n${new Error().stack}`;
-        this.statusCode = sc.BAD_REQUEST;
+        this.statusCode = sc.INTERNAL_SERVER_ERROR;
     };
 };

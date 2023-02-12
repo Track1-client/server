@@ -16,6 +16,7 @@ const profileImageMulter = (bucketName: string, pathName: string, fileFilter: an
         },
     }),
     fileFilter: fileFilter,
+    limits: { fileSize: 5 * 1024 * 1024 },   //! 최대 5MB의 이미지 크기  
 }).single('imageFile');
 
 export default profileImageMulter;
