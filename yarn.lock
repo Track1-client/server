@@ -1123,6 +1123,11 @@
   dependencies:
     "@types/node" "*"
 
+"@types/decode-uri-component@^0.2.0":
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/@types/decode-uri-component/-/decode-uri-component-0.2.0.tgz#0660a5c96fdfefdd570840cc7aeb07293907106e"
+  integrity sha512-Sa61t51csZD7DzzzoYLXVmR/lJE6IXjTlflRQFOOCDw5nmmBQb2FZ5DCxl8sEYtAPPBHj//1jCbxFTu9wc8EZQ==
+
 "@types/ejs@^3.1.1":
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/@types/ejs/-/ejs-3.1.1.tgz#29c539826376a65e7f7d672d51301f37ed718f6d"
@@ -1579,6 +1584,11 @@ debug@^3.2.7:
   dependencies:
     ms "^2.1.1"
 
+decode-uri-component@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/decode-uri-component/-/decode-uri-component-0.4.1.tgz#2ac4859663c704be22bf7db760a1494a49ab2cc5"
+  integrity sha512-+8VxcR21HhTy8nOt6jf20w0c9CADrw1O8d+VZ/YzzCt4bJ3uBjw+D1q2osAB8RnpwwaeYBxy0HyKQxD5JBMuuQ==
+
 delayed-stream@~1.0.0:
   version "1.0.0"
   resolved "https://registry.npmjs.org/delayed-stream/-/delayed-stream-1.0.0.tgz"
@@ -1617,6 +1627,13 @@ ejs@^3.1.8:
   integrity sha512-/sXZeMlhS0ArkfX2Aw780gJzXSMPnKjtspYZv+f3NiKLlubezAHDU5+9xz6gd3/NhG3txQCo6xlglmTS+oTGEQ==
   dependencies:
     jake "^10.8.5"
+
+encode-uri-component@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/encode-uri-component/-/encode-uri-component-0.1.0.tgz#530c2c5ab9287a89efa7ee136d730f6da153e304"
+  integrity sha512-T+xk+3Vd6sZ8uG2jYBv68oim4d3GKNWaJUnVfaTE9w4VB88Mp/FGXdvvStulOnCz8eNwEch9S4Sc+QgFcQTe5g==
+  dependencies:
+    minimist "^1.2.5"
 
 encodeurl@~1.0.2:
   version "1.0.2"
@@ -2086,6 +2103,11 @@ minimatch@^5.0.1:
   integrity sha512-lKwV/1brpG6mBUFHtb7NUmtABCb2WZZmm2wNiOA5hAb8VdCS4B3dtMWyvcoViccwAW/COERjXLt0zP1zXUN26g==
   dependencies:
     brace-expansion "^2.0.1"
+
+minimist@^1.2.5:
+  version "1.2.8"
+  resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.8.tgz#c1a464e7693302e082a075cee0c057741ac4772c"
+  integrity sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==
 
 minimist@^1.2.6:
   version "1.2.7"

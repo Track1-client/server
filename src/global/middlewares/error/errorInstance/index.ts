@@ -39,6 +39,7 @@ export {
     NotProducer,
     NotProducerBeat,
     NoAudioFile,
+    BeatFileUploadFail,
 } from './track';
 
 export {

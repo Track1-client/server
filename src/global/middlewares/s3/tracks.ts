@@ -8,11 +8,14 @@ import { ImageFileTooLarge } from '../error/errorInstance';
 const uploadS3TracksFile = (req: Request, res: Response, next: NextFunction) => {
     try {
         const result = multerModules.tracksSoundAndImage(config.tracksBucketName);
-        return result(req, res, (err) => {
-            if (err) {
-                if (err.message === 'File too large') return next(new ImageFileTooLarge(rm.IMAGE_FILE_TOO_LARGE));
-                else throw err;
-            } else { next(); }
+        
+        return result(req, res, (error) => {
+            if (error) {
+                if (error.message === 'File too large') return next(new ImageFileTooLarge(rm.IMAGE_FILE_TOO_LARGE));
+                else throw error;
+            } else { 
+                next(); 
+            }
         });
     } catch (error) {
         return next(error);

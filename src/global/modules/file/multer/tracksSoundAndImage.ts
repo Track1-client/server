@@ -11,7 +11,7 @@ const tracksSoundAndImage = (bucketName: string) => multer({
         contentType: multerS3.AUTO_CONTENT_TYPE,
         acl: "public-read", 
         key: function (req: Express.Request, file: Express.MulterS3.File, cb) {
-            var  newFileName = Date.now() + "-" + file.originalname;
+            var  newFileName = Date.now() + "-" + encodeURI(file.originalname);
             var pathName = (file.mimetype.split('/')[0] === 'audio') ? 'audio/' : 'image/';   //! 파일 타입(audio/image)에 따른 버킷 내부 디렉토리 경로 설정 
 
             var fullPath = pathName + newFileName;

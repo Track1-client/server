@@ -4,7 +4,7 @@ import { NotProducerBeat } from '../../../global/middlewares/error/errorInstance
 
 const deleteBeatByUserId = async(userId: number, beatId: number) => {
     try {
-        const beat = await prisma.beat.delete({
+        await prisma.beat.delete({
             where: {
                 producerBeat: {
                     id: beatId,
@@ -13,8 +13,6 @@ const deleteBeatByUserId = async(userId: number, beatId: number) => {
             },
         });
         
-        if (!beat) throw new NotProducerBeat(rm.PRODUCER_BEAT_UNMATCH);
-        return beat;
     } catch(error) {
         throw error;
     }
