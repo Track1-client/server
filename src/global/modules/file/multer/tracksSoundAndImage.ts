@@ -24,7 +24,7 @@ const tracksSoundAndImage = (bucketName: string) => multer({
     },
 }).fields([ 
     {name: 'jacketImage', maxCount: 1},
-    {name: 'wavFile', maxCount: 1}
+    {name: 'audioFile', maxCount: 1}
 ]);   
 
 

@@ -33,3 +33,14 @@ export {
     //* file size 관련 
     ImageFileTooLarge,
 } from './file';
+
+export { 
+    //* 게시글 업로드 관련 
+    NotProducer,
+    NotProducerBeat,
+    NoAudioFile,
+} from './track';
+
+export {
+    DeleteTrackS3Object,
+} from './S3';

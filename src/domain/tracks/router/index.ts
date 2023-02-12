@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import tracksRouter from './TracksRouter';
+import beatRouter from './BeatRouter';
 
 const router: Router = Router();
 
-router.use('/', tracksRouter);
+router.use('/', beatRouter);
 
 export default router;

@@ -68,7 +68,17 @@ export default {
     UPLOAD_TRACK_FILE_SUCCESS: "트랙 게시글 업로드 성공",
     UPLOAD_TRACK_FILE_FAIL: "트랙 게시글 업로드 실패",
 
-  
+    // 게시글 관련 
+    DELETE_TRACK_SUCCESS: "게시글 삭제 성공",
+    DELETE_TRACK_FAIL: "게시글 삭제 실패",
+    NOT_PRODUCER: "프로듀서가 아님",
+    PRODUCER_BEAT_UNMATCH: "해당 프로듀서의 게시글이 아님",
+    NO_AUDIO_FILE: "오디오 파일이 존재하지 않음",
+
+    // S3 객체 관련
+    SUCCESS_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 성공",
+    FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패 ",
+
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",
   };

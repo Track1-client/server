@@ -1,1 +1,1 @@
-export { default as TrackController } from './TracksController';
+export { default as BeatController } from './BeatController';
