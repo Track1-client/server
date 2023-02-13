@@ -1,5 +1,5 @@
 import deleteS3AudioAndImage from '../../../global/modules/S3Object/delete/deleteOneBeat';
-import { BeatCreatDTO, BeatCreateReturnDTO, DeleteBeatReturnDTO } from '../interfaces';
+import { BeatCreatDTO, BeatCreateReturnDTO, BeatUpdateDTO, DeleteBeatReturnDTO } from '../interfaces';
 import { getUserById } from '../../user/repository';
 import { BeatFileUploadFail, NotProducer, NotProducerBeat } from '../../../global/middlewares/error/errorInstance';
 import { rm } from '../../../global/constants';
@@ -17,6 +17,23 @@ const createBeat = async(beatDTO: BeatCreatDTO, audioFileLocation: string, image
             beatId: data.id,
         };
         return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const updateBeat = async(beatDTO: BeatUpdateDTO, audioFileLocation: string, imageFileLocation: string) => {
+    try {
+        const userBeatData = await findBeatByUserId(beatDTO.userId, beatDTO.beatId);
+        if (!userBeatData) throw new NotProducerBeat(rm.PRODUCER_BEAT_UNMATCH);
+
+        await deleteS3AudioAndImage(userBeatData.beatFile, userBeatData.beatImage);  //! S3 객체 삭제
+
+        //const updateBeatData = await updateBeatById(beatDTO, audioFileLocation, imageFileLocation);
+
+
+
+
     } catch (error) {
         throw error;
     }
@@ -41,6 +58,7 @@ const deleteBeatById = async(userId: number, beatId: number) => {
 
 const BeatService = {
     createBeat,
+    updateBeat,
     deleteBeatById,
 };
 

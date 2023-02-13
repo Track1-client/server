@@ -10,6 +10,11 @@ router.post('/',
             BeatController.createBeat
 );
 
+router.patch('/:beatId', 
+            s3UploadeMiddleware.updateS3TracksFile,
+            authJWT, 
+            BeatController.updateBeat);
+
 router.delete('/:beatId', authJWT, BeatController.deleteBeat);
 
 

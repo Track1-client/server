@@ -69,6 +69,8 @@ export default {
     UPLOAD_TRACK_FILE_FAIL: "트랙 게시글 업로드 실패",
 
     // 게시글 관련 
+    UPDATE_TRACK_SUCCESS: "게시글 수정 성공",
+    UPDATE_TRACK_FAIL: "게시글 수정 실패",
     DELETE_TRACK_SUCCESS: "게시글 삭제 성공",
     DELETE_TRACK_FAIL: "게시글 삭제 실패",
     NOT_PRODUCER: "프로듀서가 아님",
