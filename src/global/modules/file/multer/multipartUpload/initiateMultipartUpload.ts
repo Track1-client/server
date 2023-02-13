@@ -1,15 +1,22 @@
 import { CreateMultipartUploadCommand } from '@aws-sdk/client-s3';
 import s3 from '../../../../../infra/aws/s3Config';
-import config from '../../../../config';
 
-const initParams = {
-    //Key: config.key
-}
+function initParams (bucketName: string, key: string) {
+    const params = {
+        Key: key,
+        Bucket: bucketName, 
+    };
 
-async function initiateMultipartUpload(){
+    return params;
+};
+
+const initiateMultipartUpload = async(bucketName: string, key: string) => {
     try{
-        //await s3.send(new CreateMultipartUploadCommand(initParams))
+        const params = initParams(bucketName, key);
+        await s3.send(new CreateMultipartUploadCommand(params));  //! UploadId 반환
     }catch(err){
-        // error handler function here
+        throw err;
     }
-}
+};
+
+export default initiateMultipartUpload;
