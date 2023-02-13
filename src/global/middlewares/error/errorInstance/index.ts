@@ -31,7 +31,7 @@ export {
     NotImageFile,
     NotAudioFile,
     //* file size 관련 
-    ImageFileTooLarge,
+    FileTooLarge,
 } from './file';
 
 export { 

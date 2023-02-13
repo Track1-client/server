@@ -22,6 +22,7 @@ const tracksSoundAndImage = (bucketName: string) => multer({
         var fileType = (file.mimetype.split('/')[0] === 'audio') ?  fileFilter.audioFileFilter : fileFilter.imageFileFilter;
         return fileType(req, file, cb);
     },
+    limits: { fileSize: 100 * 1024 * 1024 },  //! 최대 100MB의 오디오 크기 
 }).fields([ 
     {name: 'jacketImage', maxCount: 1},
     {name: 'audioFile', maxCount: 1}
