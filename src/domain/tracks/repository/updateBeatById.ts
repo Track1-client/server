@@ -1,9 +1,9 @@
-import prisma from '../../../global/config/prismaClient';
-import { BeatCreateDTO } from '../interfaces';
-import { getAudioDurationInSeconds } from 'get-audio-duration';
-import convertCategory from '../../../global/modules/convertCategory';
+import getAudioDurationInSeconds from 'get-audio-duration';
 import config from '../../../global/config';
+import prisma from '../../../global/config/prismaClient';
+import convertCategory from '../../../global/modules/convertCategory';
 import getS3OneBeatObject from '../../../global/modules/S3Object/get/getOneBeatObject';
+import { BeatCreateDTO } from '../interfaces';
 
 function objectParams_url(audioKey: string) {
     return {
@@ -12,11 +12,11 @@ function objectParams_url(audioKey: string) {
     };
 };
 
-const createBeatByUserId = async(beatDTO: BeatCreateDTO, userId: number, audioKey: string, imageKey: string) => {
+const updateBeatById = async(beatDTO: BeatCreateDTO, beatId: number, userId: number, audioKey: string, imageKey: string) => {
     try {
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
-        
-        const data = await prisma.beat.create({
+
+        const beat = await prisma.beat.update({
             data: {
                 title: beatDTO.title,
                 category: convertCategory(beatDTO.category),
@@ -24,22 +24,22 @@ const createBeatByUserId = async(beatDTO: BeatCreateDTO, userId: number, audioKe
                 introduce: beatDTO.introduce,
                 keyword: beatDTO.keyword,
                 beatImage: imageKey,
-                duration: await getAudioDurationInSeconds(audioSignedURL as string),  //! signedURL을 통해 오디오파일 전체 재생시간 받아오기 
+                duration: await getAudioDurationInSeconds(audioSignedURL as string), 
                 Producer: {
                     connect: {
                         id: userId,
                     },
                 },
             },
-            select: {
-                id: true,
+            where: {
+                id: beatId,
             },
         });
-
-        return data;
+        
+        return beat;
     } catch(error) {
         throw error;
     }
 };
 
-export default createBeatByUserId;
+export default updateBeatById;

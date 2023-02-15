@@ -1,6 +1,4 @@
 import prisma from '../../../global/config/prismaClient';
-import { rm } from '../../../global/constants';
-import { NotProducerBeat } from '../../../global/middlewares/error/errorInstance';
 
 const deleteBeatByUserId = async(userId: number, beatId: number) => {
     try {

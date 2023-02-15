@@ -5,10 +5,15 @@ import { BeatController } from '../controller';
 const router: Router = Router();
 
 router.post('/', 
-            s3UploadeMiddleware.uploadS3TracksFile,
             authJWT, 
+            s3UploadeMiddleware.uploadS3TracksFile,
             BeatController.createBeat
 );
+
+router.patch('/:beatId', 
+            authJWT, 
+            s3UploadeMiddleware.uploadS3TracksFile,
+            BeatController.updateBeat);
 
 router.delete('/:beatId', authJWT, BeatController.deleteBeat);
 

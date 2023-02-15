@@ -3,4 +3,5 @@ export {
     NotProducerBeat,
     NoAudioFile,
     BeatFileUploadFail,
+    BeatFileUpdateFail,
 } from './beat';

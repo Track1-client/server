@@ -17,13 +17,13 @@ export default async (req: Request, res: Response, next: NextFunction) => {
         if (decoded.message === tokenType.ACCESS_TOKEN_INVALID) throw new AccessTokenInvalid(rm.INVALID_ACCESS_TOKEN);
         
         const tableName: string = (decoded.decoded as JwtPayload).tableName; 
-        const userId: number = (decoded.decoded as JwtPayload).userId;
+        const userId: string = (decoded.decoded as JwtPayload).userId;
 
         if (!userId || !tableName ) throw new AccessTokenInvalid(rm.INVALID_ACCESS_TOKEN);
 
-        //? 얻어낸 userId 를 Request Body 내 userId 필드에 담고, 다음 미들웨어로 넘김( next() )
-        req.body.tableName = tableName;
-        req.body.userId = userId;
+        //? 얻어낸 userId 를 Request Headers 내 userId 필드에 담고, 다음 미들웨어로 넘김( next() )
+        req.headers.tableName = tableName;
+        req.headers.userId = userId;
 
         next();
     } catch (error) {

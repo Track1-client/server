@@ -31,7 +31,8 @@ export {
     NotImageFile,
     NotAudioFile,
     //* file size 관련 
-    FileTooLarge,
+    ImageFileTooLarge,
+    AudioFileTooLarge,
 } from './file';
 
 export { 
@@ -40,6 +41,7 @@ export {
     NotProducerBeat,
     NoAudioFile,
     BeatFileUploadFail,
+    BeatFileUpdateFail,
 } from './track';
 
 export {

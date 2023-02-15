@@ -64,11 +64,14 @@ export default {
     INAVLID_AUDIO_FILE_TYPE: "",
     NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
     NOT_AUDIO_FILE: "오디오 파일이 아닙니다",
-    FILE_TOO_LARGE: "이미지파일(5MB) 또는 오디오파일(100MB) 크기가 초과되었음",
+    IMAGE_FILE_TOO_LARGE: "이미지파일(5MB) 크기가 초과되었음",
+    AUDIO_FILE_TOO_LARGE: "오디오파일(100MB) 크기가 초과되었음",
     UPLOAD_TRACK_FILE_SUCCESS: "트랙 게시글 업로드 성공",
     UPLOAD_TRACK_FILE_FAIL: "트랙 게시글 업로드 실패",
 
     // 게시글 관련 
+    UPDATE_TRACK_SUCCESS: "게시글 수정 성공",
+    UPDATE_TRACK_FAIL: "게시글 수정 실패",
     DELETE_TRACK_SUCCESS: "게시글 삭제 성공",
     DELETE_TRACK_FAIL: "게시글 삭제 실패",
     NOT_PRODUCER: "프로듀서가 아님",

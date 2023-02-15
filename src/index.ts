@@ -20,8 +20,8 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware(corsOriginList));
-app.use(cookieParser())
 
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/", router); 

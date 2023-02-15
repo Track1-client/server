@@ -7,7 +7,7 @@ import sendPasswordResetMail from '../../../global/modules/sendResetPasswordMail
 import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
 import crypto from 'crypto';
 import { createAuth, createTempUserTable, deleteTempUserByEmail, findAuthByToken, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
-import { Auth } from '@prisma/client';
+
 
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
