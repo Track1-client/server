@@ -4,4 +4,5 @@ export {
     NoAudioFile,
     BeatFileUploadFail,
     BeatFileUpdateFail,
+    GetBeatsFail,
 } from './beat';

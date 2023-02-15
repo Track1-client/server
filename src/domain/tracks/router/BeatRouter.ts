@@ -9,7 +9,7 @@ router.post('/',
             s3UploadeMiddleware.uploadS3TracksFile,
             BeatController.createBeat);
 
-router.get('/', 
+router.get('/filter', 
             authJWT,
             checkPaginationValue,
             BeatController.getBeatList);

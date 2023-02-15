@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
+import convertCategory from '../../../global/modules/convertCategory';
 import getLocation from '../../../global/modules/file/multer/key';
 import { BeatCreateDTO } from '../interfaces';
 import { BeatService } from '../service';
@@ -15,6 +16,17 @@ const createBeat = async(req: Request, res: Response, next: NextFunction) => {
         
         const result = await BeatService.createBeat(beatDTO, String(tableName), Number(userId), fileData);
         return res.status(sc.OK).send(success(sc.OK, rm.UPLOAD_TRACK_FILE_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const getBeatList = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { page, limit, categ } = req.query;
+
+        const result = await BeatService.getBeatList(Number(page), Number(limit), convertCategory(categ));
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_TRACK_LIST_SUCCESS, result));
     } catch (error) {
         return next(error);
     }
@@ -50,6 +62,7 @@ const deleteBeat = async(req: Request, res: Response, next: NextFunction) => {
 
 const BeatController = {
     createBeat,
+    getBeatList,
     updateBeat,
     deleteBeat,
 };

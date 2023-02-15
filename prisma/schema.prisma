@@ -11,7 +11,7 @@ datasource db {
 model Beat {
   id               Int               @id @unique @default(autoincrement())
   title            String            @db.VarChar(20000)
-  category         String[]          @db.VarChar
+  category         String            @db.VarChar
   beatFile         String            @db.VarChar(10000)
   introduce        String?
   keyword          String[]          @db.VarChar

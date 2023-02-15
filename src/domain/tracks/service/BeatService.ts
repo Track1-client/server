@@ -1,9 +1,9 @@
 import deleteS3AudioAndImage from '../../../global/modules/S3Object/delete/deleteOneBeat';
 import { BeatCreateDTO, BeatCreateReturnDTO, DeleteBeatReturnDTO } from '../interfaces';
 import { getUserById } from '../../user/repository';
-import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail } from '../../../global/middlewares/error/errorInstance';
+import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, GetBeatsFail } from '../../../global/middlewares/error/errorInstance';
 import { rm } from '../../../global/constants';
-import { createBeatByUserId, deleteBeatByUserId, findBeatByUserId, updateBeatById } from '../repository';
+import { createBeatByUserId, deleteBeatByUserId, findBeatByUserId, findBeatsByCateg, updateBeatById } from '../repository';
 import config from '../../../global/config';
 
 const createBeat = async(beatDTO: BeatCreateDTO, tableName: string, userId: number, fileLocation: any) => {
@@ -18,6 +18,17 @@ const createBeat = async(beatDTO: BeatCreateDTO, tableName: string, userId: numb
             beatId: data.id,
         };
         return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getBeatList = async(page: number, limit: number, categ: string[]) => {
+    try {
+        const data = await findBeatsByCateg(page, limit, categ);
+        if (!data) throw new GetBeatsFail(rm.GET_TRACK_LIST_FAIL);
+
+        return data;
     } catch (error) {
         throw error;
     }
@@ -65,6 +76,7 @@ const deleteBeatById = async(userId: number, beatId: number) => {
 
 const BeatService = {
     createBeat,
+    getBeatList,
     updateBeat,
     deleteBeatById,
 };

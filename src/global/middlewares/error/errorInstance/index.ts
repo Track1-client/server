@@ -42,6 +42,7 @@ export {
     NoAudioFile,
     BeatFileUploadFail,
     BeatFileUpdateFail,
+    GetBeatsFail,
 } from './track';
 
 export {
