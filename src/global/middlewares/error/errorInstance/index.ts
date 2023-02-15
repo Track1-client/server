@@ -47,3 +47,5 @@ export {
 export {
     DeleteTrackS3Object,
 } from './S3';
+
+export { InvalidPaginationParams } from './InvalidPaginationParams';

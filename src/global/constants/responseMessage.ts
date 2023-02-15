@@ -83,6 +83,9 @@ export default {
     SUCCESS_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 성공",
     FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패 ",
 
+    // 페이지네이션 변수 관련
+    INVALID_PAGINATION_PARAMETERS: "유효하지 않은 페이지네이션 변수",
+    
     // 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",
   };
