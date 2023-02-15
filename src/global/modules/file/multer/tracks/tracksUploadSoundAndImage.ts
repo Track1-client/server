@@ -13,7 +13,7 @@ const tracksSoundAndImage = (bucketName: string) => multer({
         key: function (req: Express.Request, file: Express.MulterS3.File, cb) {
             var  newFileName = Date.now() + "-" + encodeURI(file.originalname);
             var pathName = (file.mimetype.split('/')[0] === 'audio') ? 'audio/' : 'image/';   //! 파일 타입(audio/image)에 따른 버킷 내부 디렉토리 경로 설정 
-
+            
             var fullPath = pathName + newFileName;
             cb(null, fullPath);
         },
@@ -22,7 +22,6 @@ const tracksSoundAndImage = (bucketName: string) => multer({
         var fileType = (file.mimetype.split('/')[0] === 'audio') ?  fileFilter.audioFileFilter : fileFilter.imageFileFilter;
         return fileType(req, file, cb);
     },
-    limits: { fileSize: 100 * 1024 * 1024 },  //! 최대 100MB의 오디오 크기 
 }).fields([ 
     {name: 'jacketImage', maxCount: 1},
     {name: 'audioFile', maxCount: 1}

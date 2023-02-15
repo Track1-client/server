@@ -4,4 +4,5 @@ export {
     NotImageFile,
     NotAudioFile,
 } from './type';
-export { FileTooLarge } from './FileSize';
+export { ImageFileTooLarge } from './ImageFileSize';
+export { AudioFileTooLarge } from './AudioFileSize';

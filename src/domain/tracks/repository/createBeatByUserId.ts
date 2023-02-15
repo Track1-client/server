@@ -1,5 +1,5 @@
 import prisma from '../../../global/config/prismaClient';
-import { BeatCreatDTO } from '../interfaces';
+import { BeatCreateDTO } from '../interfaces';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
 import convertCategory from '../../../global/modules/convertCategory';
 import config from '../../../global/config';
@@ -12,7 +12,7 @@ function objectParams_url(audioKey: string) {
     };
 };
 
-const createBeatByUserId = async(beatDTO: BeatCreatDTO, audioKey: string, imageKey: string) => {
+const createBeatByUserId = async(beatDTO: BeatCreateDTO, userId: number, audioKey: string, imageKey: string) => {
     try {
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
@@ -23,9 +23,13 @@ const createBeatByUserId = async(beatDTO: BeatCreatDTO, audioKey: string, imageK
                 beatFile: audioKey,
                 introduce: beatDTO.introduce,
                 keyword: beatDTO.keyword,
-                producerId: beatDTO.userId,
                 beatImage: imageKey,
                 duration: await getAudioDurationInSeconds(audioSignedURL as string),  //! signedURL을 통해 오디오파일 전체 재생시간 받아오기 
+                Producer: {
+                    connect: {
+                        id: userId,
+                    },
+                },
             },
             select: {
                 id: true,

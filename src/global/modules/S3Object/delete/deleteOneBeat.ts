@@ -6,21 +6,22 @@ import { rm } from '../../../constants';
 //! S3 버킷에서 게시글의 오디오파일객체, 자켓이미지객체 삭제하기 
 const deleteS3AudioAndImage = async (audioFile: string, imageFile: string) => {
     try {
-        const keyList = (imageFile !== config.defaultJacketAndProducerPortfolioImage) ? 
-                            [{ key: 'audio', value: audioFile }, { key: 'image', value: imageFile }] : 
-                            [{ key: 'audio', value: audioFile }];
-
-        const objects = keyList.map((obj) => {
-            return { Key: obj.value }
-        });
-
-        await multipartS3
-                .deleteObjects
-                    ({
-                        Bucket: config.tracksBucketName,
-                        Delete: { Objects: objects }
-                    })
-                .promise();
+        
+        if (audioFile) {
+            const keyList = (imageFile && imageFile !== config.defaultJacketAndProducerPortfolioImage) ? 
+                                [{ key: 'audio', value: audioFile }, { key: 'image', value: imageFile }] : 
+                                [{ key: 'audio', value: audioFile }];
+            const objects = keyList.map((obj) => {
+                return { Key: obj.value }
+            });
+            await multipartS3
+                    .deleteObjects
+                        ({
+                            Bucket: config.tracksBucketName,
+                            Delete: { Objects: objects }
+                        })
+                    .promise();
+        }
     } catch (error) {
         throw new DeleteTrackS3Object(rm.FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT);
     }
