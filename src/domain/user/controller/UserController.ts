@@ -6,7 +6,6 @@ import redisClient from '../../../global/config/redisClient';
 import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO, NewPasswordDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
-import config from '../../../global/config';
 import getLocation from '../../../global/modules/file/multer/key';
 
 const cookieInfo: any = {
