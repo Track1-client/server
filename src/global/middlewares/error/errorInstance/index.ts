@@ -53,3 +53,8 @@ export {
 } from './S3';
 
 export { InvalidPaginationParams } from './InvalidPaginationParams';
+
+export { 
+    UploadProducerPortfolioFail,
+    UploadVocalPortfolioFail,
+} from './myprofile';

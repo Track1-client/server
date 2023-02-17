@@ -1,13 +1,12 @@
 import { Router } from "express";
 import { authMulterJWT, s3UploadeMiddleware } from '../../../global/middlewares';
-import ProducerController from '../controller/ProducerController';
+import VocalController from '../controller/VocalController';
 
 const router: Router = Router();
 
 router.post('/', 
             authMulterJWT, 
-            s3UploadeMiddleware.uploadS3TracksFile,
-            ProducerController.createProducerPortfolio);
+            s3UploadeMiddleware.uploadS3PortfolioFile,
+            VocalController.createVocalPortfolio);
 
-            
 export default router;

@@ -88,6 +88,14 @@ export default {
     UPLOAD_COMMENT_FAIL: "댓글 업로드 실패",
     INVALID_BEAT_ID: "존재하지 않는 게시글",
 
+    // 포트폴리오 관련
+    NOT_PRODUCER: "프로듀서 아님",
+    NOT_VOCAL: "보컬 아님",
+    UPLOAD_PRODUCER_PORTFOLIO_SUCCESS: "프로듀서 포트폴리오 업로드 성공",
+    UPLOAD_PRODUCER_PORTFOLIO_FAIL: "프로듀서 포트폴리오 업로드 실패",
+    UPLOAD_VOCAL_PORTFOLIO_SUCCESS: "보컬 포트폴리오 업로드 성공",
+    UPLOAD_VOCAL_PORTFOLIO_FAIL: "보컬 포트폴리오 업로드 실패",
+
     // S3 객체 관련
     SUCCESS_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 성공",
     FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패",
