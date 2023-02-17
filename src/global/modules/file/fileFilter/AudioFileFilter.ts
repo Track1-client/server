@@ -1,7 +1,6 @@
 import { NotAudioFile, InvalidAudioFileType, AudioFileTooLarge } from './../../../middlewares/error/errorInstance';
 import { rm } from '../../../constants';
 
-const MAX_AUDIO_SIZE = 100 * 1024 * 1024;
 const fileType = [
     'wav',
     'wave',

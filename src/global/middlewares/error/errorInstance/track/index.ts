@@ -5,4 +5,10 @@ export {
     BeatFileUploadFail,
     BeatFileUpdateFail,
     GetBeatsFail,
+    NotVocal,
 } from './beat';
+
+export { 
+    CommentFileUploadFail,
+    InvalidBeatId,
+} from './comment';

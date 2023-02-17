@@ -4,7 +4,7 @@ import s3 from '../../../../../infra/aws/s3Config';
 import fileFilter from '../../fileFilter';
 
 //* 오디오 & 이미지 파일 S3 업로드
-const tracksSoundAndImage = (bucketName: string) => multer({
+const tracksAudioAndImage = (bucketName: string) => multer({
     storage: multerS3({
         s3: s3,
         bucket: bucketName, 
@@ -28,4 +28,4 @@ const tracksSoundAndImage = (bucketName: string) => multer({
 ]);   
 
 
-export default tracksSoundAndImage;
+export default tracksAudioAndImage;

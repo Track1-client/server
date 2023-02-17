@@ -1,7 +1,6 @@
 import { rm } from '../../../constants';
 import { ImageFileTooLarge, InvalidImageFileType, NotImageFile } from '../../../middlewares/error/errorInstance';
 
-const MAX_IMAGE_SIZE = 5 * 1024 * 1024;
 const fileType = [
     'png',
     'jpg',

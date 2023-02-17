@@ -43,6 +43,9 @@ export {
     BeatFileUploadFail,
     BeatFileUpdateFail,
     GetBeatsFail,
+    NotVocal,
+    CommentFileUploadFail,
+    InvalidBeatId,
 } from './track';
 
 export {

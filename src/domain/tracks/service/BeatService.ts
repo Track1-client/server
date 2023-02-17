@@ -9,7 +9,7 @@ import config from '../../../global/config';
 const createBeat = async(beatDTO: BeatCreateDTO, tableName: string, userId: number, fileLocation: any) => {
     try {
         const isProducer = (await getUserById.producer(userId)) && (tableName === 'producer');
-        if (!isProducer || tableName !== 'producer') throw new NotProducer(rm.NOT_PRODUCER);
+        if (!isProducer) throw new NotProducer(rm.NON_EXISTS_PRODUCER);
         
         const data = await createBeatByUserId(beatDTO, userId, fileLocation.audioFileKey, fileLocation.jacketImageKey);
         if (!data) throw new BeatFileUploadFail(rm.UPLOAD_TRACK_FILE_FAIL);
