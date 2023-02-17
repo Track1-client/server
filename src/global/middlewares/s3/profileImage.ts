@@ -15,7 +15,7 @@ function uploadS3ProfileImageFile(tableName: string) {
             return result(req, res, (err) => {
                 if (err) {
                     if (err.message === 'File too large') return next(new ImageFileTooLarge(rm.IMAGE_FILE_TOO_LARGE));
-                    else throw err;
+                    else throw next(err);
                 } else { next(); }
             });
         } catch (error) {

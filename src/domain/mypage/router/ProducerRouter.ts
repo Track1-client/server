@@ -6,7 +6,7 @@ const router: Router = Router();
 
 router.post('/', 
             authMulterJWT, 
-            s3UploadeMiddleware.uploadS3PortfolioFile,
+            s3UploadeMiddleware.uploadS3ProducerPortfolioFile,
             ProducerController.createProducerPortfolio);
 
             

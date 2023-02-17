@@ -19,7 +19,7 @@ const portfolioAudioAndImage = (bucketName: string) => multer({
         },
     }),
     fileFilter: function (req: Express.Request, file: Express.MulterS3.File, cb) {
-        var fileType = (file.mimetype.split('/')[0] === 'audio') ?  fileFilter.audioFileFilter : fileFilter.imageFileFilter;
+        var fileType = ( file.fieldname === 'audioFile' ) ?  fileFilter.audioFileFilter : fileFilter.imageFileFilter;
         return fileType(req, file, cb);
     },
 }).fields([ 

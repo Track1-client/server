@@ -1,5 +1,5 @@
 import audioFileFilter from './AudioFileFilter';
-import imageFileFilter from './imageFileFilter';
+import imageFileFilter from './ImageFileFilter';
 
 const fileFilter = {
     imageFileFilter,

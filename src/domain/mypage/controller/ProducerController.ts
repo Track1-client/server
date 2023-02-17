@@ -13,7 +13,7 @@ const createProducerPortfolio = async(req: Request, res: Response, next: NextFun
         const portfolioDTO: PortfolioCreateDTO = req.body;
         const { tableName, userId } = req.headers;
         
-        const result = await ProducerService.createProducer(portfolioDTO, String(tableName), Number(userId), fileData);
+        const result = await ProducerService.createProducerPortfolio(portfolioDTO, String(tableName), Number(userId), fileData);
 
         return res.status(sc.OK).send(success(sc.CREATED, rm.UPLOAD_PRODUCER_PORTFOLIO_SUCCESS, result));
     } catch (error) {

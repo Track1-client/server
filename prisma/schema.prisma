@@ -118,6 +118,7 @@ model VocalPortfolio {
   category               String[]                @db.VarChar
   content                String?
   keyword                String[]                @db.VarChar
+  isTitle                Boolean                 @default(false)
   vocalId                Int
   duration               Float
   createdAt              DateTime                @default(now())

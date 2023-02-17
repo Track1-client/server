@@ -3,7 +3,7 @@ import { NotProducer, UploadProducerPortfolioFail } from '../../../global/middle
 import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO } from '../interfaces';
 import { createProducerPortfolioByUserId, findProducerPortfolioNumberByUserId, findProducerPortfolioTitleById } from '../repository';
 
-const createProducer = async(portfolioDTO: PortfolioCreateDTO,tableName: string, userId: number, files: any) => {
+const createProducerPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
         if (tableName !== 'producer') throw new NotProducer(rm.NOT_PRODUCER);
         
@@ -26,7 +26,7 @@ const createProducer = async(portfolioDTO: PortfolioCreateDTO,tableName: string,
 };
 
 const ProducerService = {
-    createProducer,
+    createProducerPortfolio,
 };
 
 export default ProducerService;
