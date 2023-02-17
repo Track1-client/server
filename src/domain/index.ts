@@ -1,9 +1,9 @@
 import { Router } from "express";
 import { default as userRouter } from './user/router/index';
 import { default as tracksRouter } from './tracks/router/index';
+import { default as mypageRouter } from './mypage/router/index';
 import vocalsRouter from './vocals/router/vocalsRouter';
-import profileRouter from './profile/router/profileRouter';
-import mypageRouter from './mypage/router/mypageRouter';
+import { default as profileRouter } from './profile/router/index';
 
 
 const router: Router = Router();

@@ -9,7 +9,7 @@ const uploadS3TracksFile = (req: Request, res: Response, next: NextFunction) => 
         
         return result(req, res, (error) => {
             if (error) {
-                throw error;
+                throw next(error);
             } else { 
                 next(); 
             }

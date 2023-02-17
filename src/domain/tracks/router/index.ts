@@ -5,6 +5,6 @@ import commentRouter from './CommentRouter';
 const router: Router = Router();
 
 router.use('/', beatRouter);
-router.use('/', commentRouter);
+router.use('/comments', commentRouter);
 
 export default router;

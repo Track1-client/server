@@ -11,7 +11,7 @@ datasource db {
 model Beat {
   id               Int               @id @unique @default(autoincrement())
   title            String            @db.VarChar(20000)
-  category         String[]            @db.VarChar
+  category         String[]          @db.VarChar
   beatFile         String            @db.VarChar(10000)
   introduce        String?
   keyword          String[]          @db.VarChar
@@ -55,23 +55,22 @@ model Producer {
   producerPW        String              @db.VarChar(200)
   Beat              Beat[]
   ProducerPortfolio ProducerPortfolio[]
-  ProducerTitle     ProducerTitle?
 }
 
 model ProducerPortfolio {
   id                        Int                        @id(map: "producerPF_pkey") @unique @default(autoincrement())
-  ppfImage                  String                     @db.VarChar(20000)
+  portfolioImage            String                     @db.VarChar(20000)
   title                     String                     @db.VarChar(20000)
-  ppfFile                   String                     @db.VarChar(10000)
+  portfolioFile             String                     @db.VarChar(10000)
   category                  String[]                   @db.VarChar
-  content                   String?
   keyword                   String[]                   @db.VarChar
   duration                  Float
+  content                   String?
+  isTitle                   Boolean                    @default(false)                  
   producerId                Int
   createdAt                 DateTime                   @default(now())
   updatedAt                 DateTime                   @updatedAt
   Producer                  Producer                   @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "producerpf_producer_id_fk")
-  ProducerTitle             ProducerTitle?
 
   @@unique([id, producerId], name: "producerPortfolio")
 }
@@ -84,15 +83,6 @@ model TempUser {
   @@unique([tableName, userEmail], name: "tableEmail")
 }
 
-
-model ProducerTitle {
-  id                  Int               @id(map: "producerTitle_pkey") @unique @default(autoincrement())
-  producerId          Int               @unique
-  producerPortfolioId Int               @unique
-  ProducerPortfolio   ProducerPortfolio @relation(fields: [producerPortfolioId], references: [id], onDelete: Cascade, map: "producertitle_ppf_id_fk")
-  Producer            Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "producertitle_producer_id_fk")
-}
-
 model Vocal {
   id             Int              @id @unique @default(autoincrement())
   name           String           @db.VarChar(200)
@@ -101,13 +91,13 @@ model Vocal {
   keyword        String[]         @db.VarChar
   introduce      String?
   vocalImage     String           @db.VarChar(10000)
+  isTitle        Boolean          @default(false)
   isSelected     Boolean          @default(false)
   vocalID        String           @unique @db.VarChar(200)
   vocalPW        String           @db.VarChar(200)
   Comment        Comment[]
   VocalOrder     VocalOrder[]
   VocalPortfolio VocalPortfolio[]
-  VocalTitle     VocalTitle?
 }
 
 model VocalOrder {
@@ -122,28 +112,20 @@ model VocalOrder {
 
 model VocalPortfolio {
   id                     Int                     @id @unique @default(autoincrement())
-  vpfImage               String                  @db.VarChar(20000)
+  portfolioImage         String                  @db.VarChar(20000)
   title                  String                  @db.VarChar(20000)
-  vpfFile                String                  @db.VarChar(10000)
+  portfolioFile          String                  @db.VarChar(10000)
   category               String[]                @db.VarChar
   content                String?
   keyword                String[]                @db.VarChar
+  isTitle                Boolean                 @default(false)
   vocalId                Int
   duration               Float
   createdAt              DateTime                @default(now())
   updatedAt              DateTime                @updatedAt
   Vocal                  Vocal                   @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocalpf_vocal_id_fk")
-  VocalTitle             VocalTitle?
 
   @@unique([id, vocalId], name: "vocalPortfolio")
-}
-
-model VocalTitle {
-  id               Int            @id @unique @default(autoincrement())
-  vocalId          Int            @unique
-  vocalPortfolioId Int            @unique
-  Vocal            Vocal          @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocaltitle_vocal_id_fk")
-  VocalPortfolio   VocalPortfolio @relation(fields: [vocalPortfolioId], references: [id], onDelete: Cascade, map: "vocaltitle_vpf_id_fk")
 }
 
 model Auth {
