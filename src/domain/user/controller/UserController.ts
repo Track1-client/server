@@ -7,6 +7,7 @@ import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpda
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import config from '../../../global/config';
+import getLocation from '../../../global/modules/file/multer/key';
 
 const cookieInfo: any = {
     httpOnly: true,
@@ -20,8 +21,7 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
         const producerCreateDTO: ProducerCreateDTO = req.body;
         const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
 
-        if (!profileImage) var key = config.defaultUserProfileImage; 
-        else var { key } = profileImage;
+        const key = getLocation.getProfileImageFileKey(profileImage);
 
         const userResult = await UserService.createProducer(producerCreateDTO, key as string); //! DB에 유저 정보 저장 
         const tokenResult = await UserService.joinToken('producer', userResult); //! access, refresh 토큰 생성 
@@ -45,8 +45,7 @@ const createVocal = async(req: Request, res: Response, next: NextFunction) => {
         const vocalCreateDTO: VocalCreateDTO = req.body;
         const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
 
-        if (!profileImage) var key = config.defaultUserProfileImage; 
-        else var { key } = profileImage;
+        const key = getLocation.getProfileImageFileKey(profileImage);
 
         const userResult = await UserService.createVocal(vocalCreateDTO, key as string); //! DB에 유저 정보 저장 
         const tokenResult = await UserService.joinToken('vocal', userResult); //! access, refresh 토큰 생성 
