@@ -6,6 +6,7 @@ import { UserUpdateDTO } from '../interfaces';
 const updateProducerProfile = async(profileDTO: UserUpdateDTO) => {
     try {
         const category = convertCategory(profileDTO.category);
+        
         const profile = await prisma.producer.update({
             data: {
                 contact: profileDTO.contact,
@@ -32,7 +33,7 @@ const updateProducerProfile = async(profileDTO: UserUpdateDTO) => {
 //! vocal 프로필 업데이트 
 const updateVocalProfile = async(profileDTO: UserUpdateDTO) => {
     try {
-        const category = await convertCategory(profileDTO.category);
+        const category = convertCategory(profileDTO.category);
         
         const profile = await prisma.vocal.update({
             data: {

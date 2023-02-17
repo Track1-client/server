@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { authJWT, checkPaginationValue, s3UploadeMiddleware } from '../../../global/middlewares';
+import { authMulterJWT, authJWT, checkPaginationValue, s3UploadeMiddleware } from '../../../global/middlewares';
 import { BeatController } from '../controller';
 
 const router: Router = Router();
 
 router.post('/', 
-            authJWT, 
+            authMulterJWT, 
             s3UploadeMiddleware.uploadS3TracksFile,
             BeatController.createBeat);
 
@@ -15,7 +15,7 @@ router.get('/filter',
             BeatController.getBeatList);
 
 router.patch('/:beatId', 
-            authJWT, 
+            authMulterJWT, 
             s3UploadeMiddleware.uploadS3TracksFile,
             BeatController.updateBeat);
 

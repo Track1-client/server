@@ -110,7 +110,7 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     const result: AuthCodeReturnDTO = {
         tableName: verifyCodeDTO.tableName,
         userEmail: verifyCodeDTO.userEmail,
-        authCode: getAuthCode as unknown as string,
+        authCode: getAuthCode.authCode as unknown as string,
     };
     return result;
 };

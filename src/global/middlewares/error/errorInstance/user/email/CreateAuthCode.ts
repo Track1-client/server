@@ -7,6 +7,6 @@ export class CreateAuthCode extends AbstractError {
         this.code = '1002';
         this.name = 'Create_Auth_Code_Fail';
         this.stack = `${this.message}\n${new Error().stack}`;
-        this.statusCode = sc.BAD_REQUEST;
+        this.statusCode = sc.INTERNAL_SERVER_ERROR;
     };
 };

@@ -78,12 +78,12 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
                         await getUserById.producer(profileDTO.userId) :
                         await getUserById.vocal(profileDTO.userId);
         if (!user) throw new UnauthorizedUser(rm.NO_USER);
-
+        
         const updateResult = (profileDTO.tableName === 'producer') ? 
                                 await updateUserProfile.updateProducerProfile(profileDTO) :
                                 await updateUserProfile.updateVocalProfile(profileDTO);
         if (!updateResult) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
-
+        
         const result: UserCreateResultDTO = (profileDTO.tableName === 'producer') ?
                                                 getProfileUpdateReturn(updateResult, 'producer') :
                                                 getProfileUpdateReturn(updateResult, 'vocal');
