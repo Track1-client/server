@@ -1,22 +1,19 @@
-import { NextFunction } from 'express';
-import multer from "multer";
-import multerS3 from "multer-s3";
+import { Request, Response, NextFunction } from 'express';
 import config from '../../config';
-import s3 from '../../../infra/aws/s3Config';
-
-//? 파일 타입 검사 
-const fileFilter = (req: Express.Request, file: Express.MulterS3.File, cb: any) => {
-    
-};
-
-const commentMulter = multer({
-
-}).single('audioFile');
+import multerModules from '../../modules/file/multer';
 
 
 const uploadS3CommentFile = (req: Request, res: Response, next: NextFunction) => {
     try {
+        const result = multerModules.commentAudioMulter(config.commentsBucketName);
 
+        return result(req, res, (error) => {
+            if (error) {
+                throw error;
+            } else { 
+                next(); 
+            }
+        });
     } catch (error) {
         return next(error);
     }

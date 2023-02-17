@@ -98,7 +98,7 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
 
 const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     const getAuthCode = await findTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
-
+    
     if (!getAuthCode) throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST);
 
     //! 일치하지 않는 경우 (유효기간 지남)
@@ -110,7 +110,7 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     const result: AuthCodeReturnDTO = {
         tableName: verifyCodeDTO.tableName,
         userEmail: verifyCodeDTO.userEmail,
-        authCode: getAuthCode as unknown as string,
+        authCode: getAuthCode.authCode as unknown as string,
     };
     return result;
 };

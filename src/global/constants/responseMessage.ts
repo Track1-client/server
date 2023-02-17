@@ -61,11 +61,11 @@ export default {
     
     // 파일 업로드 관련
     INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",
-    INAVLID_AUDIO_FILE_TYPE: "",
+    INAVLID_AUDIO_FILE_TYPE: "가능한 오디오 파일 형식(.mp3/.wav)을 벗어남",
     NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
     NOT_AUDIO_FILE: "오디오 파일이 아닙니다",
-    IMAGE_FILE_TOO_LARGE: "이미지파일(5MB) 크기가 초과되었음",
-    AUDIO_FILE_TOO_LARGE: "오디오파일(100MB) 크기가 초과되었음",
+    IMAGE_FILE_TOO_LARGE: "이미지파일(5MB) 크기 초과",
+    AUDIO_FILE_TOO_LARGE: "오디오파일(100MB) 크기 초과",
     UPLOAD_TRACK_FILE_SUCCESS: "트랙 게시글 업로드 성공",
     UPLOAD_TRACK_FILE_FAIL: "트랙 게시글 업로드 실패",
 
@@ -76,15 +76,21 @@ export default {
     DELETE_TRACK_FAIL: "게시글 삭제 실패",
     GET_TRACK_LIST_SUCCESS: "게시글 조회 성공",
     GET_TRACK_LIST_FAIL: "게시글 조회 실패",
-    NOT_PRODUCER: "프로듀서가 아님",
+    NON_EXISTS_PRODUCER: "존재하지 않는 프로듀서",
+    NON_EXISTS_VOCAL: "존재하지 않는 보컬",
     PRODUCER_BEAT_UNMATCH: "해당 프로듀서의 게시글이 아님",
     NO_AUDIO_FILE: "오디오 파일이 존재하지 않음",
-    S3_CANNOT_FIND_AUDIO_FILE_OBJECT: "해당 버킷에서 오디오 객체를 찾을 수 없음",
+    S3_CANNOT_FIND_AUDIO_FILE_OBJEUPDATE_TRACK_FAILCT: "해당 버킷에서 오디오 객체를 찾을 수 없음",
     S3_CANNOT_FIND_IMAGE_FILE_OBJECT: "해당 버킷에서 이미지 객체를 찾을 수 없음",
+
+    // 댓글 관련
+    UPLOAD_COMMENT_SUCCESS: "댓글 업로드 성공",
+    UPLOAD_COMMENT_FAIL: "댓글 업로드 실패",
+    INVALID_BEAT_ID: "존재하지 않는 게시글",
 
     // S3 객체 관련
     SUCCESS_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 성공",
-    FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패 ",
+    FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패",
 
     // 페이지네이션 변수 관련
     INVALID_PAGINATION_PARAMETERS: "유효하지 않은 페이지네이션 변수",

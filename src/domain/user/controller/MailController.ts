@@ -1,8 +1,7 @@
-import { UnauthorizedUser } from './../../../../../backend/src/middlewares/error/constant/unauthorizedUser';
 import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
-import { AlreadyExistsEmail } from '../../../global/middlewares/error/errorInstance';
+import { AlreadyExistsEmail, UnauthorizedUser } from '../../../global/middlewares/error/errorInstance';
 import { EmailDTO, ResendMailDTO, VerifyCodeDTO } from '../interfaces';
 import MailDTO from '../interfaces/MailDTO';
 import EmailService from '../service/MailService';

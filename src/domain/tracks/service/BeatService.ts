@@ -9,7 +9,7 @@ import config from '../../../global/config';
 const createBeat = async(beatDTO: BeatCreateDTO, tableName: string, userId: number, fileLocation: any) => {
     try {
         const isProducer = (await getUserById.producer(userId)) && (tableName === 'producer');
-        if (!isProducer || tableName !== 'producer') throw new NotProducer(rm.NOT_PRODUCER);
+        if (!isProducer) throw new NotProducer(rm.NON_EXISTS_PRODUCER);
         
         const data = await createBeatByUserId(beatDTO, userId, fileLocation.audioFileKey, fileLocation.jacketImageKey);
         if (!data) throw new BeatFileUploadFail(rm.UPLOAD_TRACK_FILE_FAIL);
@@ -39,13 +39,15 @@ const updateBeat = async(beatDTO: BeatCreateDTO, beatId: number, tableName: stri
         const userBeatData = await findBeatByUserId(userId, beatId);
         if (!userBeatData || tableName !== 'producer') throw new NotProducerBeat(rm.PRODUCER_BEAT_UNMATCH);
         
+        //* S3 객체 삭제
         let beatAudio = ( fileLocation.audioFileKey ) ? userBeatData.beatFile : undefined;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
         let beatImage = userBeatData.beatImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
-        await deleteS3AudioAndImage(beatAudio as string, beatImage as string);  //! S3 객체 삭제
+        await deleteS3AudioAndImage(beatAudio as string, beatImage as string);  
 
+        //* DB 업데이트
         beatAudio = ( fileLocation.audioFileKey ) ? fileLocation.audioFileKey : userBeatData.beatFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         beatImage = ( fileLocation.jacketImageKey ) ? fileLocation.jacketImageKey : config.defaultJacketAndProducerPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지 
-        const data = await updateBeatById(beatDTO, beatId, userId, String(beatAudio), beatImage);  //! DB 업데이트 
+        const data = await updateBeatById(beatDTO, beatId, userId, String(beatAudio), beatImage); 
         if (!data) throw new BeatFileUpdateFail(rm.UPDATE_TRACK_FAIL);
 
         const result: BeatCreateReturnDTO = {
@@ -66,7 +68,7 @@ const deleteBeatById = async(userId: number, beatId: number) => {
         await deleteBeatByUserId(userId, beatId); //! DB 삭제 
 
         const result: DeleteBeatReturnDTO = {
-            beatId,
+            userId,
         };
         return result;
     } catch (error) {

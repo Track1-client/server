@@ -32,7 +32,7 @@ const findBeatsByCateg = async(page: number, limit: number, categ: string[]) => 
             where: {
                 AND: 
                     [
-                        { category: { in: categ } },
+                        { category: { hasSome: categ } },
                         { isClosed: false }
                     ],
             },
@@ -56,7 +56,7 @@ const findBeatsByCateg = async(page: number, limit: number, categ: string[]) => 
                 producerId: track.Producer.id,
                 producerName: track.Producer.name,
                 keyword: track.keyword,
-                category: track.category,
+                category: track.category[0],
                 wavFileLength: track.duration,
             }
             return returnDTO;
