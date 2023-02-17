@@ -1,3 +1,3 @@
 export default interface DeleteBeatReturnDTO {
-    beatId: number;
+    userId: number;
 };

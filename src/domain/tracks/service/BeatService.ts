@@ -68,7 +68,7 @@ const deleteBeatById = async(userId: number, beatId: number) => {
         await deleteBeatByUserId(userId, beatId); //! DB 삭제 
 
         const result: DeleteBeatReturnDTO = {
-            beatId,
+            userId,
         };
         return result;
     } catch (error) {
