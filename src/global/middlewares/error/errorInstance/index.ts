@@ -46,10 +46,12 @@ export {
     NotVocal,
     CommentFileUploadFail,
     InvalidBeatId,
+    InvalidVocalComment,
 } from './track';
 
 export {
     DeleteTrackS3Object,
+    DeleteCommentS3Object,
 } from './S3';
 
 export { InvalidPaginationParams } from './InvalidPaginationParams';
