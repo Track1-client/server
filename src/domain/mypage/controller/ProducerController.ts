@@ -2,7 +2,7 @@ import { success } from './../../../../../backend/src/constants/response';
 import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import getLocation from '../../../global/modules/file/multer/key';
-import { PortfolioCreateDTO } from '../interfaces';
+import { PortfolioCreateDTO, PortfolioDeleteDTO } from '../interfaces';
 import ProducerService from '../service/ProducerService';
 
 const createProducerPortfolio = async(req: Request, res: Response, next: NextFunction) => {
@@ -21,8 +21,22 @@ const createProducerPortfolio = async(req: Request, res: Response, next: NextFun
     }
 };
 
+const deleteProducerPortfolio = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const portfolioDTO: PortfolioDeleteDTO = req.body;
+        const { producerPortfolioId } = req.params;
+
+        const result = await ProducerService.deleteProducerPortfolio(portfolioDTO, Number(producerPortfolioId));
+
+        return res.status(sc.OK).send(success(sc.CREATED, rm.DELETE_PRODUCER_PORTFOLIO_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const ProducerController = {
     createProducerPortfolio,
+    deleteProducerPortfolio,
 };
 
 export default ProducerController;

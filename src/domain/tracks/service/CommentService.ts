@@ -1,15 +1,16 @@
 import { rm } from '../../../global/constants';
-import { CommentFileUploadFail, InvalidBeatId, NotVocal } from '../../../global/middlewares/error/errorInstance';
+import { CommentFileUploadFail, InvalidBeatId, InvalidVocalComment, NotVocal } from '../../../global/middlewares/error/errorInstance';
+import deleteS3Audio from '../../../global/modules/S3Object/delete/deleteOneComment';
 import { getUserById } from '../../user/repository';
-import { CommentCreateDTO, CommentCreateReturnDTO } from '../interfaces';
-import { createCommentByUserId, findBeatById } from '../repository';
+import { CommentCreateDTO, CommentCreateReturnDTO, CommentDeleteDTO, CommentDeleteReturnDTO } from '../interfaces';
+import { createCommentByUserId, deleteCommentById, getBeatById, getCommentByUserId } from '../repository';
 
 const createComment = async (beatId: number, tableName: string, userId: number, commentDTO: CommentCreateDTO, audioKey: string) => {
     try {
         const isVocal = (await getUserById.vocal(userId)) && (tableName === 'vocal');
         if (!isVocal) throw new NotVocal(rm.NON_EXISTS_VOCAL);
 
-        const isValidBeat = await findBeatById(beatId);
+        const isValidBeat = await getBeatById(beatId);
         if (!isValidBeat) throw new InvalidBeatId(rm.INVALID_BEAT_ID);
 
         const data = await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioKey);
@@ -24,8 +25,27 @@ const createComment = async (beatId: number, tableName: string, userId: number, 
     }
 };
 
+const deleteComment = async (commentDTO: CommentDeleteDTO, commentId: number) => {
+    try {
+        const isValidComment = await getCommentByUserId(commentId, Number(commentDTO.userId));
+        if (!isValidComment || commentDTO.tableName !== 'vocal') throw new InvalidVocalComment(rm.INVALID_COMMENT);
+
+        await deleteS3Audio(isValidComment.commentFile);  //! S3 객체 삭제 
+        await deleteCommentById(commentId, Number(commentDTO.userId)); //! DB 삭제 
+
+        const result: CommentDeleteReturnDTO = {
+            vocalId: isValidComment.vocalId,
+            beatId: isValidComment.beatId,
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const CommentService = {
     createComment,
+    deleteComment,
 };
 
 export default CommentService;

@@ -10,7 +10,6 @@ const deleteBeatByUserId = async(userId: number, beatId: number) => {
                 },
             },
         });
-        
     } catch(error) {
         throw error;
     }

@@ -46,10 +46,14 @@ export {
     NotVocal,
     CommentFileUploadFail,
     InvalidBeatId,
+    InvalidVocalComment,
 } from './track';
 
 export {
     DeleteTrackS3Object,
+    DeleteCommentS3Object,
+    DeleteProducerPortfolioS3Object,
+    DeleteVocalPortfolioS3Object,
 } from './S3';
 
 export { InvalidPaginationParams } from './InvalidPaginationParams';
@@ -57,4 +61,6 @@ export { InvalidPaginationParams } from './InvalidPaginationParams';
 export { 
     UploadProducerPortfolioFail,
     UploadVocalPortfolioFail,
+    InvalidProducerPortfolio,
+    InvalidVocalPortfolio,
 } from './myprofile';

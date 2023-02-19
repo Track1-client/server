@@ -87,6 +87,9 @@ export default {
     UPLOAD_COMMENT_SUCCESS: "댓글 업로드 성공",
     UPLOAD_COMMENT_FAIL: "댓글 업로드 실패",
     INVALID_BEAT_ID: "존재하지 않는 게시글",
+    DELETE_COMMENT_SUCCESS: "댓글 삭제 성공",
+    DELETE_COMMENT_FAIL: "댓글 삭제 실패",
+    INVALID_COMMENT: "올바르지 않은 보컬의 댓글",
 
     // 포트폴리오 관련
     NOT_PRODUCER: "프로듀서 아님",
@@ -95,10 +98,18 @@ export default {
     UPLOAD_PRODUCER_PORTFOLIO_FAIL: "프로듀서 포트폴리오 업로드 실패",
     UPLOAD_VOCAL_PORTFOLIO_SUCCESS: "보컬 포트폴리오 업로드 성공",
     UPLOAD_VOCAL_PORTFOLIO_FAIL: "보컬 포트폴리오 업로드 실패",
+    DELETE_PRODUCER_PORTFOLIO_SUCCESS: "프로듀서 포트폴리오 삭제 성공",
+    DELETE_PRODUCER_PORTFOLIO_FAIL: "프로듀서 포트폴리오 삭제 실패",
+    DELETE_VOCAL_PORTFOLIO_SUCCESS: "보컬 포트폴리오 삭제 성공",
+    DELETE_VOCAL_PORTFOLIO_FAIL: "보컬 포트폴리오 삭제 실패",
+    INVALID_PRODUCER_PORTFOLIO: "유효하지 않은 프로듀서의 포트폴리오",
+    INVALID_VOCAL_PORTFOLIO: "유효하지 않은 보컬의 포트폴리오",
 
     // S3 객체 관련
-    SUCCESS_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 성공",
-    FAIL_DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT: "S3 게시글 오디오, 이미지 객체 삭제 실패",
+    DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 게시글 오디오, 이미지 객체 삭제 실패",
+    DELETE_S3_COMMENT_OBJECT_FAIL: "S3 댓글 오디오 객체 삭제 실패",
+    DELETE_S3_PRODUCER_PORTFOLIO_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 프로듀서 포트폴리오 오디오, 이미지 객체 삭제 실패",
+    DELETE_S3_VOCAL_PORTFOLIO_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 보컬 포트폴리오 오디오, 이미지 객체 삭제 실패",
 
     // 페이지네이션 변수 관련
     INVALID_PAGINATION_PARAMETERS: "유효하지 않은 페이지네이션 변수",
