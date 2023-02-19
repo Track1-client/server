@@ -1,7 +1,7 @@
 import { rm } from '../../../global/constants';
 import { InvalidProducerPortfolio, NotProducer, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneProducerPortfolio';
-import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, ProducerPortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO } from '../interfaces';
+import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, PortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO } from '../interfaces';
 import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleById } from '../repository';
 
 const createProducerPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
@@ -26,7 +26,7 @@ const createProducerPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableNam
     }
 };
 
-const deleteProducerPortfolio = async(portfolioDTO: ProducerPortfolioDeleteDTO, portfolioId: number) => {
+const deleteProducerPortfolio = async(portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
     try {
         const isValidPortfolio = await getProducerPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
         if (!isValidPortfolio || portfolioDTO.tableName !== 'producer') throw new InvalidProducerPortfolio(rm.INVALID_PRODUCER_PORTFOLIO);

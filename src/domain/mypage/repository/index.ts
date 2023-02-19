@@ -5,4 +5,6 @@ export { default as getProducerPortfolioTitleById } from './findProducerPortfoli
 export { default as getVocalPortfolioNumberByUserId } from './findVocalPortfolioNumberByUserId';
 export { default as getVocalPortfolioTitleById } from './findVocalPortfolioTitleById';
 export { default as getProducerPortfolioByUserId } from './findProducerPortfolioByUserId';
+export { default as getVocalPortfolioByUserId } from './findVocalPortfolioByUserId';
 export { default as deleteProducerPortfolioByUserId } from './deleteProducerPortfolioByUserId';
+export { default as deleteVocalPortfolioByUserId } from './deleteVocalPortfolioByUserId';
