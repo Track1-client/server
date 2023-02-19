@@ -1,7 +1,8 @@
 import { rm } from '../../../global/constants';
-import { NotProducer, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
-import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO } from '../interfaces';
-import { createProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleById } from '../repository';
+import { InvalidProducerPortfolio, NotProducer, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
+import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneProducerPortfolio';
+import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, ProducerPortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO } from '../interfaces';
+import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleById } from '../repository';
 
 const createProducerPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -25,8 +26,26 @@ const createProducerPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableNam
     }
 };
 
+const deleteProducerPortfolio = async(portfolioDTO: ProducerPortfolioDeleteDTO, portfolioId: number) => {
+    try {
+        const isValidPortfolio = await getProducerPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
+        if (!isValidPortfolio || portfolioDTO.tableName !== 'producer') throw new InvalidProducerPortfolio(rm.INVALID_PRODUCER_PORTFOLIO);
+
+        await deleteS3ProducerPortfolioAudioAndImage(isValidPortfolio.portfolioFile, isValidPortfolio.portfolioImage);  //! S3 객체 삭제 
+        await deleteProducerPortfolioByUserId(isValidPortfolio.producerId, isValidPortfolio.id); //! DB 삭제 
+
+        const result: ProducerPortfolioDeleteReturnDTO = {
+            producerId: isValidPortfolio.producerId,
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
 const ProducerService = {
     createProducerPortfolio,
+    deleteProducerPortfolio,
 };
 
 export default ProducerService;

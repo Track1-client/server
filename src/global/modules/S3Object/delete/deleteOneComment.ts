@@ -15,7 +15,7 @@ const deleteS3Audio = async (audioFile: string) => {
                         })
                     .promise();
         }
-        else throw new DeleteCommentS3Object(rm.SUCCESS_DELETE_S3_COMMENT_OBJECT);
+        else throw new DeleteCommentS3Object(rm.DELETE_S3_COMMENT_OBJECT_FAIL);
     } catch (error) {
         throw error;
     }

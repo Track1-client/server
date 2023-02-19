@@ -1,4 +1,4 @@
-import deleteS3AudioAndImage from '../../../global/modules/S3Object/delete/deleteOneBeat';
+import deleteS3TrackAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneBeat';
 import { BeatCreateDTO, BeatCreateReturnDTO, BeatDeleteReturnDTO } from '../interfaces';
 import { getUserById } from '../../user/repository';
 import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, GetBeatsFail } from '../../../global/middlewares/error/errorInstance';
@@ -42,7 +42,7 @@ const updateBeat = async(beatDTO: BeatCreateDTO, beatId: number, tableName: stri
         //* S3 객체 삭제
         let beatAudio = ( fileLocation.audioFileKey ) ? userBeatData.beatFile : undefined;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
         let beatImage = userBeatData.beatImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
-        await deleteS3AudioAndImage(beatAudio as string, beatImage as string);  
+        await deleteS3TrackAudioAndImage(beatAudio as string, beatImage as string);  
 
         //* DB 업데이트
         beatAudio = ( fileLocation.audioFileKey ) ? fileLocation.audioFileKey : userBeatData.beatFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
@@ -64,7 +64,7 @@ const deleteBeatById = async(userId: number, beatId: number) => {
         const userBeatData = await getBeatByUserId(userId, beatId);
         if (!userBeatData) throw new NotProducerBeat(rm.PRODUCER_BEAT_UNMATCH);
         
-        await deleteS3AudioAndImage(userBeatData.beatFile, userBeatData.beatImage);  //! S3 객체 삭제 
+        await deleteS3TrackAudioAndImage(userBeatData.beatFile, userBeatData.beatImage);  //! S3 객체 삭제 
         await deleteBeatByUserId(userId, beatId); //! DB 삭제 
 
         const result: BeatDeleteReturnDTO = {
