@@ -1,6 +1,7 @@
 export default interface ProducerProfileUpdateReturnDTO {
     name: string;
     tableName: string;
-    userId: number;
+    id: number;
+    userId: string;
     profileImage: string;
 };
