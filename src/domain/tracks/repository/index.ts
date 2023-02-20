@@ -5,5 +5,6 @@ export { default as getBeatsByCateg } from './findBeatsByCateg';
 export { default as getBeatById } from './findBeatById';
 export { default as getCommentByUserId } from './findCommentByUserId';
 export { default as updateBeatById } from './updateBeatById';
+export { default as updateCommentById } from './updateCommentById'
 export { default as deleteBeatByUserId } from './deleteBeatByUserId';
 export { default as deleteCommentById } from './deleteCommentById';

@@ -32,7 +32,10 @@ const updateBeatById = async(beatDTO: BeatCreateDTO, beatId: number, userId: num
                 },
             },
             where: {
-                id: beatId,
+                producerBeat: {
+                    id: beatId,
+                    producerId: userId,
+                },
             },
         });
         

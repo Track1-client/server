@@ -13,6 +13,7 @@ const deleteS3TrackAudioAndImage = async (audioFile: string, imageFile: string) 
             const objects = keyList.map((obj) => {
                 return { Key: obj.value }
             });
+            
             await multipartS3
                     .deleteObjects
                         ({

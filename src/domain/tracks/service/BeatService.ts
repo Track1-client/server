@@ -5,6 +5,7 @@ import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, G
 import { rm } from '../../../global/constants';
 import { createBeatByUserId, deleteBeatByUserId, getBeatByUserId, getBeatsByCateg, updateBeatById } from '../repository';
 import config from '../../../global/config';
+import updateS3TrackAudioAndImage from '../../../global/modules/S3Object/update/updateOneBeat';
 
 const createBeat = async(beatDTO: BeatCreateDTO, tableName: string, userId: number, fileLocation: any) => {
     try {
@@ -40,13 +41,14 @@ const updateBeat = async(beatDTO: BeatCreateDTO, beatId: number, tableName: stri
         if (!userBeatData || tableName !== 'producer') throw new NotProducerBeat(rm.PRODUCER_BEAT_UNMATCH);
         
         //* S3 객체 삭제
-        let beatAudio = ( fileLocation.audioFileKey ) ? userBeatData.beatFile : undefined;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
+        let beatAudio = ( fileLocation.audioFileKey ) ? userBeatData.beatFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
         let beatImage = userBeatData.beatImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
-        await deleteS3TrackAudioAndImage(beatAudio as string, beatImage as string);  
+        await updateS3TrackAudioAndImage(beatAudio as string, beatImage as string);  
 
         //* DB 업데이트
         beatAudio = ( fileLocation.audioFileKey ) ? fileLocation.audioFileKey : userBeatData.beatFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         beatImage = ( fileLocation.jacketImageKey ) ? fileLocation.jacketImageKey : config.defaultJacketAndProducerPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지 
+        
         const data = await updateBeatById(beatDTO, beatId, userId, String(beatAudio), beatImage); 
         if (!data) throw new BeatFileUpdateFail(rm.UPDATE_TRACK_FAIL);
 

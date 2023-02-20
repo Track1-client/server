@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import getLocation from '../../../global/modules/file/multer/key';
-import { CommentCreateDTO, CommentDeleteDTO } from '../interfaces';
+import { CommentCreateDTO, CommentDeleteDTO, CommentUpdateDTO } from '../interfaces';
 import { CommentService } from '../service';
 
 const createComment = async (req: Request, res: Response, next: NextFunction) => {
@@ -15,7 +15,25 @@ const createComment = async (req: Request, res: Response, next: NextFunction) =>
         const { tableName, userId } = req.headers;
         
         const result = await CommentService.createComment(Number(beatId), String(tableName), Number(userId), commentDTO, audioKey);
-        return res.status(sc.CREATED).send(success(sc.CREATED, rm.UPLOAD_TRACK_FILE_SUCCESS, result));
+        
+        return res.status(sc.CREATED).send(success(sc.CREATED, rm.UPLOAD_COMMENT_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const updateComment = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const audioFileKey: Express.MulterS3.File = req.file as Express.MulterS3.File;
+        const audioKey = getLocation.updateAudioFileKey(audioFileKey);
+
+        const commentDTO: CommentUpdateDTO = req.body;
+        const { tableName, userId } = req.headers;
+        const { commentId } = req.params;
+
+        const result = await CommentService.updateComment(Number(commentId), String(tableName), Number(userId), commentDTO, audioKey);
+
+        return res.status(sc.OK).send(success(sc.OK, rm.UPDATE_COMMENT_SUCCESS, result));
     } catch (error) {
         return next(error);
     }
@@ -35,6 +53,7 @@ const deleteComment = async (req: Request, res: Response, next: NextFunction) =>
 
 const CommentController = {
     createComment,
+    updateComment,
     deleteComment,
 };
 
