@@ -68,4 +68,5 @@ export {
 
 export {
     UpdateProducerProfileFail,
+    GetImageFail,
 } from './profile';

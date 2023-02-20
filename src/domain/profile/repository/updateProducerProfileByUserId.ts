@@ -1,10 +1,19 @@
-import { ProducerProfileUpdateDTO } from '../interfaces';
+import { ProducerProfileUpdateDTO, ProducerProfileUpdateReturnDTO } from '../interfaces';
 import prisma from '../../../global/config/prismaClient';
 import convertCategory from '../../../global/modules/convertCategory';
+import config from '../../../global/config';
+import { getS3OneImageObject } from '../../../global/modules/S3Object/get';
+
+function objectParams_url(imageKey: string) {
+    return {
+        Bucket: config.profileImageBucketName,
+        Key: imageKey,
+    };
+};
 
 const updateProducerProfileByUserId = async(userId: number, profileDTO: ProducerProfileUpdateDTO, imageFileKey: string) => {
     try {
-        const result = await prisma.producer.update({
+        const data = await prisma.producer.update({
             data: {
                 name: profileDTO.name,
                 category: convertCategory(profileDTO.category),
@@ -22,6 +31,16 @@ const updateProducerProfileByUserId = async(userId: number, profileDTO: Producer
                 producerImage: true,
             },
         });
+        
+        const profileImage = (data.producerImage === config.defaultUserProfileImage) ?
+                                config.defaultUserProfileImage : await getS3OneImageObject(objectParams_url(data.producerImage));
+        
+        const result: ProducerProfileUpdateReturnDTO = {
+            name: data.name,
+            tableName: 'producer',
+            producerId: data.id as number,
+            profileImage: profileImage as string,
+        };
 
         return result;
     } catch (error) {

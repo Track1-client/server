@@ -12,7 +12,7 @@ const getS3OneBeatObject = async(objectParams: any) => {
                             return objUrl;
                         })
                         .catch((error) => {
-                            if (error.code === 'NotFound') throw new BeatFileUploadFail(rm.S3_CANNOT_FIND_AUDIO_FILE_OBJECT);
+                            if (error.code === 'NotFound') throw new BeatFileUploadFail(rm.S3_CANNOT_FIND_AUDIO_FILE_OBJEUPDATE_TRACK_FAILCT);
                         });
 
     return result;
