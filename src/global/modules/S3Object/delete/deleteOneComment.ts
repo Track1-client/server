@@ -3,7 +3,7 @@ import multipartS3 from '../../../../infra/aws/s3MultipartConfig';
 import config from '../../../config';
 import { rm } from '../../../constants';
 
-//! S3 버킷에서 게시글의 오디오파일객체, 자켓이미지객체 삭제하기 
+//! S3 버킷에서 게시글의 오디오파일객체 삭제하기 
 const deleteS3CommentAudio = async (audioFile: string) => {
     try {
         if (audioFile) {

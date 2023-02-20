@@ -25,7 +25,7 @@ const createComment = async (req: Request, res: Response, next: NextFunction) =>
 const updateComment = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const audioFileKey: Express.MulterS3.File = req.file as Express.MulterS3.File;
-        const audioKey = getLocation.getAudioFileKey(audioFileKey);
+        const audioKey = getLocation.updateAudioFileKey(audioFileKey);
 
         const commentDTO: CommentUpdateDTO = req.body;
         const { tableName, userId } = req.headers;

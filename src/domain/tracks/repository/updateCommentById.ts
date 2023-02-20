@@ -27,9 +27,20 @@ const updateCommentById = async(commentDTO: CommentUpdateDTO, commentId: number,
                     vocalId: userId,
                 },
             },
+            select: {
+                commentFile: true,
+                duration: true,
+                content: true,
+                Vocal: {
+                    select: {
+                        id: true,
+                        name: true,
+                    },
+                },
+            },
         });
         
-        return comment;
+        return { comment, audioSignedURL };
     } catch(error) {
         throw error;
     }
