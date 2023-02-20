@@ -4,7 +4,7 @@ import config from '../../../config';
 import { rm } from '../../../constants';
 
 //! S3 버킷에서 게시글의 오디오파일객체, 자켓이미지객체 삭제하기 
-const deleteS3Audio = async (audioFile: string) => {
+const deleteS3CommentAudio = async (audioFile: string) => {
     try {
         if (audioFile) {
             await multipartS3
@@ -21,4 +21,4 @@ const deleteS3Audio = async (audioFile: string) => {
     }
 };
 
-export default deleteS3Audio;
+export default deleteS3CommentAudio;

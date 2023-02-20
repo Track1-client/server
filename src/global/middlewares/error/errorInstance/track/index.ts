@@ -1,15 +1,16 @@
 export { 
+    BeatFileUploadFail,
+    BeatFileUpdateFail,
     NotProducer,
     NotProducerBeat,
     NoAudioFile,
-    BeatFileUploadFail,
-    BeatFileUpdateFail,
     GetBeatsFail,
     NotVocal,
 } from './beat';
 
 export { 
     CommentFileUploadFail,
+    CommentFileUpdateFail,
     InvalidBeatId,
     InvalidVocalComment,
 } from './comment';

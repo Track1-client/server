@@ -9,8 +9,13 @@ router.post('/:beatId',
             s3UploadeMiddleware.uploadS3CommentFile,
             CommentController.createComment);
 
+router.patch('/:commentId',
+            authMulterJWT,
+            s3UploadeMiddleware.uploadS3CommentFile,
+            CommentController.updateComment);
+
 router.delete('/:commentId',
-                authJWT,
-                CommentController.deleteComment);
+            authJWT,
+            CommentController.deleteComment);
 
 export default router;

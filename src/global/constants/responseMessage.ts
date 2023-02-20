@@ -86,9 +86,11 @@ export default {
     // 댓글 관련
     UPLOAD_COMMENT_SUCCESS: "댓글 업로드 성공",
     UPLOAD_COMMENT_FAIL: "댓글 업로드 실패",
-    INVALID_BEAT_ID: "존재하지 않는 게시글",
+    UPDATE_COMMENT_SUCCESS: "댓글 수정 성공",
+    UPDATE_COMMENT_FAIL: "댓글 수정 실패",
     DELETE_COMMENT_SUCCESS: "댓글 삭제 성공",
     DELETE_COMMENT_FAIL: "댓글 삭제 실패",
+    INVALID_BEAT_ID: "존재하지 않는 게시글",
     INVALID_COMMENT: "올바르지 않은 보컬의 댓글",
 
     // 포트폴리오 관련
