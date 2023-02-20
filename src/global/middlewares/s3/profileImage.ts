@@ -11,7 +11,7 @@ function uploadS3ProfileImageFile(tableName: string) {
             const result = (tableName == 'producer') ? 
                 multerModules.profileImageMulter(config.profileImageBucketName, 'producerProfileImage/', fileFilter.imageFileFilter) :
                 multerModules.profileImageMulter(config.profileImageBucketName, 'vocalProfileImage/', fileFilter.imageFileFilter);
-        
+            
             return result(req, res, (err) => {
                 if (err) {
                     if (err.message === 'File too large') return next(new ImageFileTooLarge(rm.IMAGE_FILE_TOO_LARGE));
