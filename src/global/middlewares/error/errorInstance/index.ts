@@ -64,4 +64,9 @@ export {
     UploadVocalPortfolioFail,
     InvalidProducerPortfolio,
     InvalidVocalPortfolio,
-} from './myprofile';
+} from './mypage';
+
+export {
+    UpdateProducerProfileFail,
+    GetImageFail,
+} from './profile';

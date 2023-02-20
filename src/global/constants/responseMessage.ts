@@ -107,6 +107,12 @@ export default {
     INVALID_PRODUCER_PORTFOLIO: "유효하지 않은 프로듀서의 포트폴리오",
     INVALID_VOCAL_PORTFOLIO: "유효하지 않은 보컬의 포트폴리오",
 
+    // 프로필 관련
+    UPDATE_PRODUCER_PROFILE_SUCCESS: "프로듀서 프로필 수정 성공",
+    UPDATE_PRODUCER_PROFILE_FAIL: "프로듀서 프로필 수정 실패",
+    UPDATE_VOCAL_PROFILE_SUCCESS: "보컬 프로필 수정 성공",
+    UPDATE_VOCAL_PROFILE_FAIL: "보컬 프로필 수정 실패",
+
     // S3 객체 관련
     DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 게시글 오디오, 이미지 객체 삭제 실패",
     DELETE_S3_COMMENT_OBJECT_FAIL: "S3 댓글 오디오 객체 삭제 실패",

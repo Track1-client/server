@@ -90,9 +90,8 @@ model Vocal {
   category       String[]         @db.VarChar
   keyword        String[]         @db.VarChar
   introduce      String?
-  vocalImage     String           @db.VarChar(10000)
-  isTitle        Boolean          @default(false)
   isSelected     Boolean          @default(false)
+  vocalImage     String           @db.VarChar(10000)
   vocalID        String           @unique @db.VarChar(200)
   vocalPW        String           @db.VarChar(200)
   Comment        Comment[]

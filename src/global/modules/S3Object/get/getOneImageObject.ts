@@ -1,4 +1,4 @@
-import { GetBeatsFail } from './../../../middlewares/error/errorInstance';
+import { GetImageFail } from './../../../middlewares/error/errorInstance';
 import multipartS3 from '../../../../infra/aws/s3MultipartConfig';
 import { rm } from '../../../constants';
 
@@ -12,7 +12,7 @@ const getS3OneImageObject = async(objectParams: any) => {
                             return objUrl;
                         })
                         .catch((error) => {
-                            if (error.code === 'NotFound') throw new GetBeatsFail(rm.S3_CANNOT_FIND_IMAGE_FILE_OBJECT);
+                            if (error.code === 'NotFound') throw new GetImageFail(rm.S3_CANNOT_FIND_IMAGE_FILE_OBJECT);
                         });
 
     return result;
