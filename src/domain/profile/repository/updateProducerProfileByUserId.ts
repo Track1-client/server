@@ -38,7 +38,7 @@ const updateProducerProfileByUserId = async(userId: number, profileDTO: Producer
         const result: ProducerProfileUpdateReturnDTO = {
             name: data.name,
             tableName: 'producer',
-            producerId: data.id as number,
+            userId: data.id as number,
             profileImage: profileImage as string,
         };
 
