@@ -4,5 +4,5 @@ export default interface VocalProfileUpdateDTO {
     category: string[];
     keyword: string[];
     introduce: string;
-    isSelected: boolean;
+    isSelected: string;
 };

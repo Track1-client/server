@@ -68,5 +68,6 @@ export {
 
 export {
     UpdateProducerProfileFail,
+    UpdateVocalProfileFail,
     GetImageFail,
 } from './profile';
