@@ -70,6 +70,7 @@ export {
     UpdateVocalNewTitleFail,
     InvalidProducerPortfolio,
     InvalidVocalPortfolio,
+    InvalidProducerTitlePortfolio,
 } from './mypage';
 
 export {

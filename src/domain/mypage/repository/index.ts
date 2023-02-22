@@ -6,11 +6,12 @@ export { default as getVocalPortfolioNumberByUserId } from './findVocalPortfolio
 export { default as getVocalPortfolioTitleById } from './findVocalPortfolioTitleById';
 export { default as getProducerPortfolioByUserId } from './findProducerPortfolioByUserId';
 export { default as getVocalPortfolioByUserId } from './findVocalPortfolioByUserId';
+export { default as getProducerTitlePortfolio } from './findProducerPortfolioTitleById';
 export { default as updateProducerPortfolioById } from './updateProducerPortfolioById';
 export { default as updateVocalPortfolioById } from './updateVocalPortfolioById';
-export { default as deleteProducerPortfolioByUserId } from './deleteProducerPortfolioByUserId';
-export { default as deleteVocalPortfolioByUserId } from './deleteVocalPortfolioByUserId';
 export { default as updateOldTitleProducerPortfolio } from './updateOldTitleProducerPortfolio';
 export { default as updateNewTitleProducerPortfolio } from './updateNewTitleProducerPortfolio';
 export { default as updateOldTitleVocalPortfolio } from './updateOldTitleVocalPortfolio';
 export { default as updateNewTitleVocalPortfolio } from './updateNewTitleVocalPortfolio';
+export { default as deleteProducerPortfolioByUserId } from './deleteProducerPortfolioByUserId';
+export { default as deleteVocalPortfolioByUserId } from './deleteVocalPortfolioByUserId';

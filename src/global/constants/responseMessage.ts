@@ -110,6 +110,7 @@ export default {
     DELETE_VOCAL_PORTFOLIO_FAIL: "보컬 포트폴리오 삭제 실패",
     INVALID_PRODUCER_PORTFOLIO: "유효하지 않은 프로듀서의 포트폴리오",
     INVALID_VOCAL_PORTFOLIO: "유효하지 않은 보컬의 포트폴리오",
+    INVALID_USER_TITLE: "유효하지 않은 사용자의 타이틀",
 
     // 프로필 관련
     UPDATE_PRODUCER_PROFILE_SUCCESS: "프로듀서 프로필 수정 성공",
