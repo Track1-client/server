@@ -64,8 +64,14 @@ export {
     UploadVocalPortfolioFail,
     UpdateProducerPortfolioFail,
     UpdateVocalPortfolioFail,
+    UpdateProducerOldTitleFail,
+    UpdateProducerNewTitleFail,
+    UpdateVocalOldTitleFail,
+    UpdateVocalNewTitleFail,
     InvalidProducerPortfolio,
     InvalidVocalPortfolio,
+    InvalidProducerTitlePortfolio,
+    InvalidVocalTitlePortfolio,
 } from './mypage';
 
 export {

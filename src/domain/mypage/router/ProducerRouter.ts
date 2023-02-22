@@ -14,6 +14,10 @@ router.patch('/:producerPortfolioId',
                 s3UploadeMiddleware.uploadS3ProducerPortfolioFile,
                 ProducerController.updateProducerPortfolio);
 
+router.patch('/',
+            authJWT,
+            ProducerController.updateProducerTitle);
+
 router.delete('/:producerPortfolioId',
                 authJWT,
                 ProducerController.deleteProducerPortfolio);

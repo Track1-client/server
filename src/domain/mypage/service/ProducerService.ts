@@ -1,11 +1,10 @@
 import config from '../../../global/config';
 import { rm } from '../../../global/constants';
-import { InvalidProducerPortfolio, NotProducer, UpdateProducerPortfolioFail, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
+import { InvalidProducerPortfolio, InvalidProducerTitlePortfolio, NotProducer, UpdateProducerNewTitleFail, UpdateProducerOldTitleFail, UpdateProducerPortfolioFail, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneProducerPortfolio';
 import updateS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneProducerPortfolio';
-import { ProducerProfileUpdateDTO } from '../../profile/interfaces';
-import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, PortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO, PortfolioUpdateDTO, ProducerPortfolioUpdateReturnDTO } from '../interfaces';
-import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleById, updateProducerPortfolioById } from '../repository';
+import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, PortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO, PortfolioUpdateDTO, ProducerPortfolioUpdateReturnDTO, TitleUpdateDTO, TitleUpdateReturnDTO } from '../interfaces';
+import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleByUserId, updateNewTitleProducerPortfolio, updateOldTitleProducerPortfolio, updateProducerPortfolioById } from '../repository';
 
 const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -17,7 +16,7 @@ const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableNa
         const portfolio = await createProducerPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey);
         if (!portfolio) throw new UploadProducerPortfolioFail(rm.UPLOAD_PRODUCER_PORTFOLIO_FAIL);
 
-        const getTitle = await getProducerPortfolioTitleById(userId);
+        const getTitle = await getProducerPortfolioTitleByUserId(userId);
 
         const result: ProducerPortfolioCreateReturnDTO = {
             producerPortfolioId: portfolio.id,
@@ -53,7 +52,31 @@ const updateProducerPortfolio = async (portfolioId: number, tableName: string, u
     } catch (error) {
         throw error;
     }
-}
+};
+
+const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: number) => {
+    try {
+        //& 현재 타이틀 포트폴리오 확인
+        const currentTitle = await getProducerPortfolioTitleByUserId(Number(titleDTO.userId));
+        if (currentTitle?.id !== oldId || titleDTO.tableName !== 'producer') throw new InvalidProducerTitlePortfolio(rm.INVALID_USER_TITLE);
+
+        //& 현재 타이틀 포트폴리오 업데이트
+        const oldData = await updateOldTitleProducerPortfolio(Number(titleDTO.userId), oldId);
+        if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_PRODUCER_OLD_TITLE_FAIL);
+
+        //& 바뀔 타이틀 포트폴리오 업데이트
+        const newData = await updateNewTitleProducerPortfolio(Number(titleDTO.userId), newId);
+        if (!newData) throw new UpdateProducerNewTitleFail(rm.UPDATE_PRODUCER_NEW_TITLE_FAIL);
+
+        const result: TitleUpdateReturnDTO = {
+            oldTitleId: oldData.id,
+            newTitleId: newData.id,
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const deleteProducerPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
     try {
@@ -75,6 +98,7 @@ const deleteProducerPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfol
 const ProducerService = {
     createProducerPortfolio,
     updateProducerPortfolio,
+    updateProducerTitle,
     deleteProducerPortfolio,
 };
 

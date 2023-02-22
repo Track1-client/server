@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import getLocation from '../../../global/modules/file/multer/key';
-import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO } from '../interfaces';
+import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO, TitleUpdateDTO } from '../interfaces';
 import VocalService from '../service/VocalService';
 
 const createVocalPortfolio = async(req: Request, res: Response, next: NextFunction) => {
@@ -38,6 +38,19 @@ const updateVocalPortfolio = async(req: Request, res: Response, next: NextFuncti
     }
 };
 
+const updateVocalTitle = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const titleDTO: TitleUpdateDTO = req.body;
+        const { oldId, newId } = req.query;
+
+        const result = await VocalService.updateVocalTitle(titleDTO, Number(oldId), Number(newId));
+
+        return res.status(sc.OK).send(success(sc.OK, rm.UPDATE_VOCAL_TITLE_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+}; 
+
 const deleteVocalPortfolio = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const portfolioDTO: PortfolioDeleteDTO = req.body;
@@ -54,6 +67,7 @@ const deleteVocalPortfolio = async(req: Request, res: Response, next: NextFuncti
 const VocalController = {
     createVocalPortfolio,
     updateVocalPortfolio,
+    updateVocalTitle,
     deleteVocalPortfolio,
 };
 
