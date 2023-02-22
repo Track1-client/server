@@ -1,4 +1,4 @@
-import { UpdateProducerPortfolioFail } from './../../../middlewares/error/errorInstance';
+import { DeleteProducerPortfolioS3Object, UpdateProducerPortfolioFail } from './../../../middlewares/error/errorInstance';
 import multipartS3 from '../../../../infra/aws/s3MultipartConfig';
 import config from '../../../config';
 import { rm } from '../../../constants';
@@ -22,9 +22,8 @@ const updateS3ProducerPortfolioAudioAndImage = async (audioFile: string, imageFi
                     .promise();
             }
         } catch (error) {
-            throw new UpdateProducerPortfolioFail(rm.UPDATE_PRODUCER_PORTFOLIO_FAIL);
+            throw new DeleteProducerPortfolioS3Object(rm.DELETE_S3_PRODUCER_PORTFOLIO_AUDIO_AND_IMAGE_OBJECT_FAIL);
         }
-
     } catch (error) {
         throw error;
     }

@@ -1,6 +1,6 @@
 import config from '../../../global/config';
 import { rm } from '../../../global/constants';
-import { InvalidProducerPortfolio, NotProducer, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
+import { InvalidProducerPortfolio, NotProducer, UpdateProducerPortfolioFail, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneProducerPortfolio';
 import updateS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneProducerPortfolio';
 import { ProducerProfileUpdateDTO } from '../../profile/interfaces';
@@ -43,6 +43,7 @@ const updateProducerPortfolio = async (portfolioId: number, tableName: string, u
         portfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         portfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultJacketAndProducerPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
         const data = await updateProducerPortfolioById(portfolioDTO, portfolioId, userId, String(portfolioAudio), String(portfolioImage));
+        if (!data) throw new UpdateProducerPortfolioFail(rm.UPDATE_PRODUCER_PORTFOLIO_FAIL);
 
         const result: ProducerPortfolioUpdateReturnDTO = {
             producerPortfolioId: data.id,

@@ -22,7 +22,7 @@ const updateS3TrackAudioAndImage = async (audioFile: string, imageFile: string) 
                     .promise();
             }
         } catch (error) {
-            throw new BeatFileUpdateFail(rm.UPDATE_TRACK_FAIL);
+            throw new DeleteTrackS3Object(rm.DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL);
         }
 
     } catch (error) {

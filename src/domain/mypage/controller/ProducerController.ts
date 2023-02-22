@@ -32,7 +32,7 @@ const updateProducerPortfolio = async(req: Request, res: Response, next: NextFun
 
         const result = await ProducerService.updateProducerPortfolio(Number(producerPortfolioId), String(tableName), Number(userId), portfolioDTO, fileData);
         
-        return res.status(sc.OK).send(success(sc.CREATED, rm.UPDATE_PRODUCER_PORTFOLIO_SUCCESS, result));
+        return res.status(sc.OK).send(success(sc.OK, rm.UPDATE_PRODUCER_PORTFOLIO_SUCCESS, result));
     } catch (error) {
         return next(error)
     }
