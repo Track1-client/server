@@ -62,7 +62,7 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
 
         //& 현재 타이틀 포트폴리오 업데이트
         const oldData = await updateOldTitleProducerPortfolio(Number(titleDTO.userId), oldId);
-        if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
+        if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_PRODUCER_OLD_TITLE_FAIL);
 
         //& 바뀔 타이틀 포트폴리오 업데이트
         const newData = await updateNewTitleProducerPortfolio(Number(titleDTO.userId), newId);
