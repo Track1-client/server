@@ -5,7 +5,7 @@ import { createVocalPortfolioByUserId, deleteVocalPortfolioByUserId, getVocalPor
 import { InvalidVocalPortfolio, UploadVocalPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneVocalPortfolio';
 
-const createVocalPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
+const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
         if (tableName !== 'vocal') throw new NotVocal(rm.NOT_VOCAL);
         
@@ -27,7 +27,7 @@ const createVocalPortfolio = async(portfolioDTO: PortfolioCreateDTO, tableName: 
     }
 };
 
-const deleteVocalPortfolio = async(portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
+const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
     try {
         const isValidPortfolio = await getVocalPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
         if (!isValidPortfolio || portfolioDTO.tableName !== 'vocal') throw new InvalidVocalPortfolio(rm.INVALID_VOCAL_PORTFOLIO);
