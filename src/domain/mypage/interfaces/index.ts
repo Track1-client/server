@@ -7,3 +7,5 @@ export { default as VocalPortfolioDeleteReturnDTO } from './VocalPortfolioDelete
 export { default as PortfolioUpdateDTO } from './PortfolioUpdateDTO'; 
 export { default as ProducerPortfolioUpdateReturnDTO } from './ProducerPortfolioUpdateReturnDTO';
 export { default as VocalPortfolioUpdateReturnDTO } from './VocalPortfolioUpdateReturnDTO';
+export { default as TitleUpdateDTO } from './TitleUpdateDTO';
+export { default as TitleUpdateReturnDTO } from './TitleUpdateReturnDTO';

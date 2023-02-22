@@ -10,3 +10,7 @@ export { default as updateProducerPortfolioById } from './updateProducerPortfoli
 export { default as updateVocalPortfolioById } from './updateVocalPortfolioById';
 export { default as deleteProducerPortfolioByUserId } from './deleteProducerPortfolioByUserId';
 export { default as deleteVocalPortfolioByUserId } from './deleteVocalPortfolioByUserId';
+export { default as updateOldTitleProducerPortfolio } from './updateOldTitleProducerPortfolio';
+export { default as updateNewTitleProducerPortfolio } from './updateNewTitleProducerPortfolio';
+export { default as updateOldTitleVocalPortfolio } from './updateOldTitleVocalPortfolio';
+export { default as updateNewTitleVocalPortfolio } from './updateNewTitleVocalPortfolio';
