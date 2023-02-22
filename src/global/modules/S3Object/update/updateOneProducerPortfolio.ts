@@ -1,10 +1,10 @@
-import { BeatFileUpdateFail, DeleteTrackS3Object } from '../../../middlewares/error/errorInstance';
+import { DeleteProducerPortfolioS3Object, UpdateProducerPortfolioFail } from './../../../middlewares/error/errorInstance';
 import multipartS3 from '../../../../infra/aws/s3MultipartConfig';
 import config from '../../../config';
 import { rm } from '../../../constants';
 
 //! S3 버킷에서 게시글의 오디오파일객체, 자켓이미지객체 삭제하기 
-const updateS3TrackAudioAndImage = async (audioFile: string, imageFile: string) => {
+const updateS3ProducerPortfolioAudioAndImage = async (audioFile: string, imageFile: string) => {
     try {
         let keyList = [];
 
@@ -16,18 +16,17 @@ const updateS3TrackAudioAndImage = async (audioFile: string, imageFile: string) 
                 await multipartS3
                     .deleteObjects
                         ({
-                            Bucket: config.tracksBucketName,
+                            Bucket: config.producerPortfolioBucketName,
                             Delete: { Objects: keyList },
                         })
                     .promise();
             }
         } catch (error) {
-            throw new DeleteTrackS3Object(rm.DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL);
+            throw new DeleteProducerPortfolioS3Object(rm.DELETE_S3_PRODUCER_PORTFOLIO_AUDIO_AND_IMAGE_OBJECT_FAIL);
         }
-
     } catch (error) {
         throw error;
     }
 };
 
-export default updateS3TrackAudioAndImage;
+export default updateS3ProducerPortfolioAudioAndImage;

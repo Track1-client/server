@@ -9,6 +9,11 @@ router.post('/',
             s3UploadeMiddleware.uploadS3ProducerPortfolioFile,
             ProducerController.createProducerPortfolio);
 
+router.patch('/:producerPortfolioId',
+                authMulterJWT,
+                s3UploadeMiddleware.uploadS3ProducerPortfolioFile,
+                ProducerController.updateProducerPortfolio);
+
 router.delete('/:producerPortfolioId',
                 authJWT,
                 ProducerController.deleteProducerPortfolio);

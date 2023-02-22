@@ -62,6 +62,8 @@ export { InvalidPaginationParams } from './InvalidPaginationParams';
 export { 
     UploadProducerPortfolioFail,
     UploadVocalPortfolioFail,
+    UpdateProducerPortfolioFail,
+    UpdateVocalPortfolioFail,
     InvalidProducerPortfolio,
     InvalidVocalPortfolio,
 } from './mypage';

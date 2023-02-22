@@ -4,7 +4,9 @@ import getProfileImageFileKey from './getProfileImageFileKey';
 import getTrackFileKey from './getTrackFileKey';
 import getVocalPortfolioFileKey from './getVocalPortfolioFileKey';
 import updateAudioFileKey from './updateCommentFileKey';
+import updateProducerPortfolioFileKey from './updateProducerPortfolioFileKey';
 import updateTrackFileKey from './updateTrackFileKey';
+import updateVocalPortfolioFileKey from './updateVocalPortfolioFileKey';
 
 const getLocation = {
     getTrackFileKey,
@@ -14,6 +16,8 @@ const getLocation = {
     getVocalPortfolioFileKey,
     updateTrackFileKey,
     updateAudioFileKey,
+    updateProducerPortfolioFileKey,
+    updateVocalPortfolioFileKey,
 };
 
 export default getLocation;
