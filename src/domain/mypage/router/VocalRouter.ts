@@ -14,6 +14,10 @@ router.patch('/:vocalPortfolioId',
             s3UploadeMiddleware.uploadS3VocalPortfolioFile,
             VocalController.updateVocalPortfolio);
 
+router.patch('/',
+            authJWT,
+            VocalController.updateVocalTitle);
+
 router.delete('/:vocalPortfolioId',
                 authJWT,
                 VocalController.deleteVocalPortfolio);

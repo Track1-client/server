@@ -8,4 +8,5 @@ export { UpdateVocalNewTitleFail } from './UpdateVocalNewTitleFail';
 export { UpdateVocalOldTitleFail } from './UpdateVocalOldTitleFail';
 export { InvalidProducerPortfolio } from './InvalidProducerPortfolio';
 export { InvalidVocalPortfolio } from './InvalidVocalPortfolio';
-export{ InvalidProducerTitlePortfolio } from './InvalidProducerTitlePortfolio';
+export { InvalidProducerTitlePortfolio } from './InvalidProducerTitlePortfolio';
+export { InvalidVocalTitlePortfolio } from './InvalidVocalTitlePortfolio';

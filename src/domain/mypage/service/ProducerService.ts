@@ -4,7 +4,7 @@ import { InvalidProducerPortfolio, InvalidProducerTitlePortfolio, NotProducer, U
 import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneProducerPortfolio';
 import updateS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneProducerPortfolio';
 import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, PortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO, PortfolioUpdateDTO, ProducerPortfolioUpdateReturnDTO, TitleUpdateDTO, TitleUpdateReturnDTO } from '../interfaces';
-import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleById, getProducerTitlePortfolio, updateNewTitleProducerPortfolio, updateOldTitleProducerPortfolio, updateProducerPortfolioById } from '../repository';
+import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleByUserId, updateNewTitleProducerPortfolio, updateOldTitleProducerPortfolio, updateProducerPortfolioById } from '../repository';
 
 const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -16,7 +16,7 @@ const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableNa
         const portfolio = await createProducerPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey);
         if (!portfolio) throw new UploadProducerPortfolioFail(rm.UPLOAD_PRODUCER_PORTFOLIO_FAIL);
 
-        const getTitle = await getProducerPortfolioTitleById(userId);
+        const getTitle = await getProducerPortfolioTitleByUserId(userId);
 
         const result: ProducerPortfolioCreateReturnDTO = {
             producerPortfolioId: portfolio.id,
@@ -57,7 +57,7 @@ const updateProducerPortfolio = async (portfolioId: number, tableName: string, u
 const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: number) => {
     try {
         //& 현재 타이틀 포트폴리오 확인
-        const currentTitle = await getProducerTitlePortfolio(Number(titleDTO.userId));
+        const currentTitle = await getProducerPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'producer') throw new InvalidProducerTitlePortfolio(rm.INVALID_USER_TITLE);
 
         //& 현재 타이틀 포트폴리오 업데이트

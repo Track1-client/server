@@ -71,6 +71,7 @@ export {
     InvalidProducerPortfolio,
     InvalidVocalPortfolio,
     InvalidProducerTitlePortfolio,
+    InvalidVocalTitlePortfolio,
 } from './mypage';
 
 export {

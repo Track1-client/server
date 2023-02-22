@@ -1,11 +1,11 @@
 import { NotVocal } from './../../../global/middlewares/error/errorInstance/track/beat/NotVocal';
-import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO, VocalPortfolioCreateReturnDTO, VocalPortfolioDeleteReturnDTO, VocalPortfolioUpdateReturnDTO } from '../interfaces';
+import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO, TitleUpdateDTO, TitleUpdateReturnDTO, VocalPortfolioCreateReturnDTO, VocalPortfolioDeleteReturnDTO, VocalPortfolioUpdateReturnDTO } from '../interfaces';
 import { rm } from '../../../global/constants';
-import { createVocalPortfolioByUserId, deleteVocalPortfolioByUserId, getVocalPortfolioByUserId, getVocalPortfolioNumberByUserId, getVocalPortfolioTitleById, updateVocalPortfolioById } from '../repository';
-import { InvalidVocalPortfolio, UpdateVocalPortfolioFail, UploadVocalPortfolioFail } from '../../../global/middlewares/error/errorInstance';
+import config from '../../../global/config';
+import { createVocalPortfolioByUserId, deleteVocalPortfolioByUserId, getVocalPortfolioByUserId, getVocalPortfolioNumberByUserId, getVocalPortfolioTitleByUserId, updateNewTitleVocalPortfolio, updateOldTitleVocalPortfolio, updateVocalPortfolioById } from '../repository';
+import { InvalidVocalPortfolio, InvalidVocalTitlePortfolio, UpdateVocalNewTitleFail, UpdateVocalOldTitleFail, UpdateVocalPortfolioFail, UploadVocalPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneVocalPortfolio';
 import updateS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneVocalPortfolio';
-import config from '../../../global/config';
 
 const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -17,7 +17,7 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         const portfolio = await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey);
         if (!portfolio) throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL);
         
-        const getTitle = await getVocalPortfolioTitleById(userId);
+        const getTitle = await getVocalPortfolioTitleByUserId(userId);
 
         const result: VocalPortfolioCreateReturnDTO = {
             vocalPortfolioId: portfolio.id,
@@ -53,7 +53,31 @@ const updateVocalPortfolio = async (portfolioId: number, tableName: string, user
     } catch (error) {
         throw error;
     }
-}
+};
+
+const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: number) => {
+    try {
+        //& 현재 타이틀 포트폴리오 확인
+        const currentTitle = await getVocalPortfolioTitleByUserId(Number(titleDTO.userId));
+        if (currentTitle?.id !== oldId || titleDTO.tableName !== 'vocal') throw new InvalidVocalTitlePortfolio(rm.INVALID_USER_TITLE);
+
+        //& 현재 타이틀 포트폴리오 업데이트
+        const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId);
+        if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
+
+        //& 바뀔 타이틀 포트폴리오 업데이트
+        const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId);
+        if (!newData) throw new UpdateVocalNewTitleFail(rm.UPDATE_VOCAL_NEW_TITLE_FAIL);
+
+        const result: TitleUpdateReturnDTO = {
+            oldTitleId: oldData.id,
+            newTitleId: newData.id,
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
 
 const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
     try {
@@ -75,6 +99,7 @@ const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioI
 const VocalService = {
     createVocalPortfolio,
     updateVocalPortfolio,
+    updateVocalTitle,
     deleteVocalPortfolio,
 };
 
