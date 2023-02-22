@@ -1,9 +1,11 @@
 import { NotVocal } from './../../../global/middlewares/error/errorInstance/track/beat/NotVocal';
-import { PortfolioCreateDTO, PortfolioDeleteDTO, VocalPortfolioCreateReturnDTO, VocalPortfolioDeleteReturnDTO } from '../interfaces';
+import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO, VocalPortfolioCreateReturnDTO, VocalPortfolioDeleteReturnDTO, VocalPortfolioUpdateReturnDTO } from '../interfaces';
 import { rm } from '../../../global/constants';
-import { createVocalPortfolioByUserId, deleteVocalPortfolioByUserId, getVocalPortfolioByUserId, getVocalPortfolioNumberByUserId, getVocalPortfolioTitleById } from '../repository';
-import { InvalidVocalPortfolio, UploadVocalPortfolioFail } from '../../../global/middlewares/error/errorInstance';
+import { createVocalPortfolioByUserId, deleteVocalPortfolioByUserId, getVocalPortfolioByUserId, getVocalPortfolioNumberByUserId, getVocalPortfolioTitleById, updateVocalPortfolioById } from '../repository';
+import { InvalidVocalPortfolio, UpdateVocalPortfolioFail, UploadVocalPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneVocalPortfolio';
+import updateS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneVocalPortfolio';
+import config from '../../../global/config';
 
 const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -27,6 +29,32 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
     }
 };
 
+const updateVocalPortfolio = async (portfolioId: number, tableName: string, userId: number, portfolioDTO: PortfolioUpdateDTO, fileData: any) => {
+    try {  
+        const isValidPortfolio = await getVocalPortfolioByUserId(userId, portfolioId);
+        if (!isValidPortfolio || tableName !== 'vocal') throw new InvalidVocalPortfolio(rm.INVALID_VOCAL_PORTFOLIO);
+
+        //* S3 객체 삭제
+        let portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
+        let portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
+        await updateS3VocalPortfolioAudioAndImage(portfolioAudio as string, portfolioImage as string);  
+
+        //* DB 업데이트
+        portfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
+        portfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultVocalPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
+        const data = await updateVocalPortfolioById(portfolioDTO, portfolioId, userId, String(portfolioAudio), String(portfolioImage));
+        if (!data) throw new UpdateVocalPortfolioFail(rm.UPDATE_VOCAL_PORTFOLIO_FAIL);
+
+        const result: VocalPortfolioUpdateReturnDTO = {
+            vocalPortfolioId: data.id,
+            vocalId: data.vocalId,
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
     try {
         const isValidPortfolio = await getVocalPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
@@ -46,6 +74,7 @@ const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioI
 
 const VocalService = {
     createVocalPortfolio,
+    updateVocalPortfolio,
     deleteVocalPortfolio,
 };
 

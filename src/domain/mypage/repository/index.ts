@@ -7,5 +7,6 @@ export { default as getVocalPortfolioTitleById } from './findVocalPortfolioTitle
 export { default as getProducerPortfolioByUserId } from './findProducerPortfolioByUserId';
 export { default as getVocalPortfolioByUserId } from './findVocalPortfolioByUserId';
 export { default as updateProducerPortfolioById } from './updateProducerPortfolioById';
+export { default as updateVocalPortfolioById } from './updateVocalPortfolioById';
 export { default as deleteProducerPortfolioByUserId } from './deleteProducerPortfolioByUserId';
 export { default as deleteVocalPortfolioByUserId } from './deleteVocalPortfolioByUserId';

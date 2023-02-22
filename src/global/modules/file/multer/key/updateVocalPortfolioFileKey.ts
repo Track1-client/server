@@ -1,4 +1,4 @@
-const updateProducerPortfolioFileKey = (myfiles: any) => {
+const updateVocalPortfolioFileKey = (myfiles: any) => {
     let jacketImageKey = '';
     let audioFileKey = '';
 
@@ -11,4 +11,4 @@ const updateProducerPortfolioFileKey = (myfiles: any) => {
     };
 };
 
-export default updateProducerPortfolioFileKey;
+export default updateVocalPortfolioFileKey;

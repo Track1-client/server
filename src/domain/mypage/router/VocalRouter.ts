@@ -9,6 +9,11 @@ router.post('/',
             s3UploadeMiddleware.uploadS3VocalPortfolioFile,
             VocalController.createVocalPortfolio);
 
+router.patch('/:vocalPortfolioId',
+            authMulterJWT,
+            s3UploadeMiddleware.uploadS3VocalPortfolioFile,
+            VocalController.updateVocalPortfolio);
+
 router.delete('/:vocalPortfolioId',
                 authJWT,
                 VocalController.deleteVocalPortfolio);
