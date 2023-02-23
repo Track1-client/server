@@ -1,4 +1,4 @@
-import { NotVocal } from './../../../global/middlewares/error/errorInstance/track/beat/NotVocal';
+import { NotVocal } from '../../../global/middlewares/error/errorInstance/tracks/beat/NotVocal';
 import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO, TitleUpdateDTO, TitleUpdateReturnDTO, VocalPortfolioCreateReturnDTO, VocalPortfolioDeleteReturnDTO, VocalPortfolioUpdateReturnDTO } from '../interfaces';
 import { rm } from '../../../global/constants';
 import config from '../../../global/config';
@@ -6,6 +6,7 @@ import { createVocalPortfolioByUserId, deleteVocalPortfolioByUserId, getVocalPor
 import { InvalidVocalPortfolio, InvalidVocalTitlePortfolio, UpdateVocalNewTitleFail, UpdateVocalOldTitleFail, UpdateVocalPortfolioFail, UploadVocalPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneVocalPortfolio';
 import updateS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneVocalPortfolio';
+import { upsertVocalOrder } from '../../vocals/repository';
 
 const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -14,8 +15,12 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         const getPortfolioNumber = await getVocalPortfolioNumberByUserId(userId);
         const isTitle = ( !getPortfolioNumber ) ? true : false;
         
-        const portfolio = await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey);
-        if (!portfolio) throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL);
+        const portfolio = await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey)
+                                    .then(async (portfolio) => { 
+                                        await upsertVocalOrder(portfolio.vocalId, 'portfolio', portfolio.id); 
+                                        return portfolio;
+                                    })
+                                    .catch((error) => { throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL) })
         
         const getTitle = await getVocalPortfolioTitleByUserId(userId);
 
