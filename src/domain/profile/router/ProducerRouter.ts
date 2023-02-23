@@ -9,6 +9,11 @@ router.get('/:producerId',
             authJWT,
             ProducerController.getProducerProfile);
 
+router.get('/:producerId/beats',
+            checkPaginationValue,
+            authJWT,
+            ProducerController.getProducerBeats);
+
 router.patch('/',
             authMulterJWT,
             s3UploadeMiddleware.uploadS3ProfileImageFile('producer'),

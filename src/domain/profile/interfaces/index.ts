@@ -1,3 +1,5 @@
+export { default as BeatReturnDTO } from './BeatReturnDTO';
+export { default as ProducerBeatsGetReturnDTO } from './ProducerBeatsGetReturnDTO';
 export { default as PortfolioDTO } from './PortfolioDTO';
 export { default as ProducerProfileDTO } from './ProducerProfileDTO';
 export { default as VocalProfileDTO } from './VocalProfileDTO';

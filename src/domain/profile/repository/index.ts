@@ -1,5 +1,6 @@
 export { default as getProducerProfileById } from './findProducerProfileByUserId';
 export { default as getVocalProfileById } from './findVocalProfileByUserId';
+export { default as getProducerBeatsById } from './findProducerBeatsById';
 export { default as updateProducerProfileByUserId } from './updateProducerProfileByUserId';
 export { default as updateVocalProfileByUserId } from './updateVocalProfileByUserId';
 export { default as producerTitleAsPortfolioDTO } from './findProducerTitleByUserIdAsPortfolioDTO';

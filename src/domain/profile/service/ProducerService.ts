@@ -1,9 +1,10 @@
+import { InvalidProducer } from './../../../global/middlewares/error/errorInstance/profile/InvalidProducer';
 import { rm } from '../../../global/constants';
-import { GetProducerInfoFail, UpdateProducerProfileFail } from '../../../global/middlewares/error/errorInstance';
+import { GetProducerBeatsFail, GetProducerInfoFail, UpdateProducerProfileFail } from '../../../global/middlewares/error/errorInstance';
 import updateS3ProfileImage from '../../../global/modules/S3Object/update/updateOneProfileImage';
 import { getUserById } from '../../user/repository';
-import { ProducerProfileGetDTO, ProducerProfileGetReturnDTO, ProducerProfileUpdateDTO } from '../interfaces';
-import { getProducerProfileById, updateProducerProfileByUserId } from '../repository';
+import { ProducerBeatsGetReturnDTO, ProducerProfileGetDTO, ProducerProfileGetReturnDTO, ProducerProfileUpdateDTO } from '../interfaces';
+import { getProducerBeatsById, getProducerProfileById, updateProducerProfileByUserId } from '../repository';
 
 const getProducerProfile = async (profileDTO: ProducerProfileGetDTO, producerId: number, page: number, limit: number) => {
     try {
@@ -17,6 +18,23 @@ const getProducerProfile = async (profileDTO: ProducerProfileGetDTO, producerId:
             isMe: isMe,
             producerProfile: data.profileDTO,
             producerPortfolio: data.portfolioList,
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getProducerBeats = async (producerId: number, page: number, limit: number) => {
+    try {
+        const producer = await getUserById.producer(producerId);
+        if (!producer) throw new InvalidProducer(rm.INVALID_PRODUCER);
+
+        const data = await getProducerBeatsById(producerId, page, limit);
+        if (!data) throw new GetProducerBeatsFail(rm.GET_PRODUCER_BEATS_FAIL);
+        
+        const result: ProducerBeatsGetReturnDTO = {
+            beatList: data,
         };
         return result;
     } catch (error) {
@@ -40,6 +58,7 @@ const updateProducerProfile = async (profileDTO: ProducerProfileUpdateDTO, table
 
 const ProducerService = {
     getProducerProfile,
+    getProducerBeats,
     updateProducerProfile,
 };
 

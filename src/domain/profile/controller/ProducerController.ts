@@ -19,6 +19,19 @@ const getProducerProfile = async(req: Request, res: Response, next: NextFunction
     }
 };
 
+const getProducerBeats = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { producerId } = req.params;
+        const { limit, page } = req.query;
+
+        const result = await ProducerService.getProducerBeats(Number(producerId), Number(limit), Number(page));
+
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_PRODUCER_BEATS_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const updateProducerProfile = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const imageFileKey: Express.MulterS3.File = req.file as Express.MulterS3.File;
@@ -37,6 +50,7 @@ const updateProducerProfile = async(req: Request, res: Response, next: NextFunct
 
 const ProducerController = {
     getProducerProfile,
+    getProducerBeats,
     updateProducerProfile,
 };
 

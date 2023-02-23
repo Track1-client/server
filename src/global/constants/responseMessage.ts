@@ -119,6 +119,8 @@ export default {
     GET_PRODUCER_PROFILE_FAIL: "프로듀서 프로필 조회 실패",
     GET_VOCAL_PROFILE_SUCCESS: "보컬 프로필 조회 성공",
     GET_VOCAL_PROFILE_FAIL: "보컬 프로필 조회 실패",
+    GET_PRODUCER_BEATS_SUCCESS: "프로듀서 보컬서칭 조회 성공",
+    GET_PRODUCER_BEATS_FAIL: "프로듀서 보컬서칭 조회 실패",
     UPDATE_PRODUCER_PROFILE_SUCCESS: "프로듀서 프로필 수정 성공",
     UPDATE_PRODUCER_PROFILE_FAIL: "프로듀서 프로필 수정 실패",
     UPDATE_VOCAL_PROFILE_SUCCESS: "보컬 프로필 수정 성공",

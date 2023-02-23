@@ -79,6 +79,7 @@ export {
     UpdateProducerProfileFail,
     UpdateVocalProfileFail,
     GetImageFail,
+    GetProducerBeatsFail,
     GetProducerInfoFail,
     GetVocalInfoFail,
     InvalidProducer,
