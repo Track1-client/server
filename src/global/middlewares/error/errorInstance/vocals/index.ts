@@ -1,0 +1,1 @@
+export { GetVocalListFail } from './GetVocalListFail';

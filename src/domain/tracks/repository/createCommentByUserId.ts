@@ -37,6 +37,7 @@ const createCommentByUserId = async(beatId: number, commentDTO: CommentCreateDTO
             },
             select: {
                 id: true,
+                vocalId: true,
             },
         });
         

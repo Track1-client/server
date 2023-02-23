@@ -126,6 +126,10 @@ export default {
     UPDATE_VOCAL_TITLE_SUCCESS: "보컬 타이틀 수정 성공",
     UPDATE_VOCAL_TITLE_FAIL: "보컬 타이틀 수정 실패",
 
+    // 보컬검색 관련
+    GET_VOCAL_LIST_SUCCESS: "보컬 필터링 검색 성공",
+    GET_VOCAL_LIST_FAIL: "보컬 필터링 검색 실패",
+
     // S3 객체 관련
     DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 게시글 오디오, 이미지 객체 삭제 실패",
     DELETE_S3_COMMENT_OBJECT_FAIL: "S3 댓글 오디오 객체 삭제 실패",

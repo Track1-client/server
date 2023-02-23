@@ -3,6 +3,7 @@ import { CommentFileUpdateFail, CommentFileUploadFail, InvalidBeatId, InvalidVoc
 import deleteS3CommentAudio from '../../../global/modules/S3Object/delete/deleteOneComment';
 import updateS3CommentAudio from '../../../global/modules/S3Object/update/updateOneComment';
 import { getUserById } from '../../user/repository';
+import { upsertVocalOrder } from '../../vocals/repository';
 import { CommentCreateDTO, CommentCreateReturnDTO, CommentDeleteDTO, CommentDeleteReturnDTO, CommentUpdateDTO, CommentUpdateReturnDTO } from '../interfaces';
 import { createCommentByUserId, deleteCommentById, getBeatById, getCommentByUserId, updateCommentById } from '../repository';
 
@@ -14,8 +15,12 @@ const createComment = async (beatId: number, tableName: string, userId: number, 
         const isValidBeat = await getBeatById(beatId);
         if (!isValidBeat) throw new InvalidBeatId(rm.INVALID_BEAT_ID);
 
-        const data = await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey);
-        if (!data) throw new CommentFileUploadFail(rm.UPLOAD_COMMENT_FAIL);
+        const data = await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey)
+                            .then(async (comment) => {
+                                await upsertVocalOrder(comment.vocalId, 'commemt', comment.id);
+                                return comment;
+                            })  //! vocalOrder 생성 또는 업데이트 
+                            .catch((error) => { throw new CommentFileUploadFail(rm.UPLOAD_COMMENT_FAIL) })
 
         const result: CommentCreateReturnDTO = {
             commentId: data.id,

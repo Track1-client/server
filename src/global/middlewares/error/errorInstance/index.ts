@@ -48,7 +48,7 @@ export {
     NotVocal,
     InvalidBeatId,
     InvalidVocalComment,
-} from './track';
+} from './tracks';
 
 export {
     DeleteTrackS3Object,
@@ -79,3 +79,7 @@ export {
     UpdateVocalProfileFail,
     GetImageFail,
 } from './profile';
+
+export {
+    GetVocalListFail,
+} from './vocals';

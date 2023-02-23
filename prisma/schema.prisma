@@ -9,39 +9,38 @@ datasource db {
 }
 
 model Beat {
-  id               Int               @id @unique @default(autoincrement())
-  title            String            @db.VarChar(20000)
-  category         String[]          @db.VarChar
-  beatFile         String            @db.VarChar(10000)
-  introduce        String?
-  keyword          String[]          @db.VarChar
-  producerId       Int
-  isClosed         Boolean           @default(false)
-  beatImage        String            @db.VarChar(10000)
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  duration         Float
-  Producer         Producer          @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "beat_producer_id_fk")
-  Comment          Comment[]
+  id         Int       @id @unique @default(autoincrement())
+  title      String    @db.VarChar(20000)
+  beatFile   String    @db.VarChar(10000)
+  introduce  String?
+  keyword    String[]  @db.VarChar
+  producerId Int
+  isClosed   Boolean   @default(false)
+  beatImage  String    @db.VarChar(10000)
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  duration   Float
+  category   String[]  @db.VarChar
+  Producer   Producer  @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "beat_producer_id_fk")
+  Comment    Comment[]
 
   @@unique([id, producerId], name: "producerBeat")
 }
 
 model Comment {
-  id                  Int                  @id @unique @default(autoincrement())
-  beatId              Int
-  vocalId             Int
-  commentFile         String               @db.VarChar(10000)
-  content             String?
-  duration            Float
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
-  Beat                Beat                 @relation(fields: [beatId], references: [id], onDelete: Cascade, map: "comment_beat_id_fk")
-  Vocal               Vocal                @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "comment_vocal_id_fk")
+  id          Int      @id @unique @default(autoincrement())
+  beatId      Int
+  vocalId     Int
+  commentFile String   @db.VarChar(10000)
+  content     String?
+  duration    Float
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  Beat        Beat     @relation(fields: [beatId], references: [id], onDelete: Cascade, map: "comment_beat_id_fk")
+  Vocal       Vocal    @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "comment_vocal_id_fk")
 
   @@unique([id, vocalId], name: "vocalComment")
 }
-
 
 model Producer {
   id                Int                 @id @unique @default(autoincrement())
@@ -58,19 +57,19 @@ model Producer {
 }
 
 model ProducerPortfolio {
-  id                        Int                        @id(map: "producerPF_pkey") @unique @default(autoincrement())
-  portfolioImage            String                     @db.VarChar(20000)
-  title                     String                     @db.VarChar(20000)
-  portfolioFile             String                     @db.VarChar(10000)
-  category                  String[]                   @db.VarChar
-  keyword                   String[]                   @db.VarChar
-  duration                  Float
-  content                   String?
-  isTitle                   Boolean                    @default(false)                  
-  producerId                Int
-  createdAt                 DateTime                   @default(now())
-  updatedAt                 DateTime                   @updatedAt
-  Producer                  Producer                   @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "producerpf_producer_id_fk")
+  id             Int      @id(map: "producerPF_pkey") @unique @default(autoincrement())
+  title          String   @db.VarChar(20000)
+  category       String[] @db.VarChar
+  keyword        String[] @db.VarChar
+  duration       Float
+  producerId     Int
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  portfolioFile  String   @db.VarChar(10000)
+  portfolioImage String   @db.VarChar(20000)
+  content        String?
+  isTitle        Boolean  @default(false)
+  Producer       Producer @relation(fields: [producerId], references: [id], onDelete: Cascade, map: "producerpf_producer_id_fk")
 
   @@unique([id, producerId], name: "producerPortfolio")
 }
@@ -90,47 +89,47 @@ model Vocal {
   category       String[]         @db.VarChar
   keyword        String[]         @db.VarChar
   introduce      String?
-  isSelected     Boolean          @default(false)
   vocalImage     String           @db.VarChar(10000)
+  isSelected     Boolean          @default(false)
   vocalID        String           @unique @db.VarChar(200)
   vocalPW        String           @db.VarChar(200)
   Comment        Comment[]
-  VocalOrder     VocalOrder[]
+  VocalOrder     VocalOrder?
   VocalPortfolio VocalPortfolio[]
 }
 
 model VocalOrder {
   id                     Int      @id @unique @default(autoincrement())
-  vocalId                Int
-  orderStandardTableName String   @db.VarChar(100)
-  orderStandardTableId   Int
+  vocalId                Int      @unique
+  commentOrPortfolio     String   @db.VarChar(50)
+  commentIdOrPortfolioId Int
   createdAt              DateTime @default(now())
   updatedAt              DateTime @updatedAt
   Vocal                  Vocal    @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocalorder_vocalId_id_fk")
 }
 
 model VocalPortfolio {
-  id                     Int                     @id @unique @default(autoincrement())
-  portfolioImage         String                  @db.VarChar(20000)
-  title                  String                  @db.VarChar(20000)
-  portfolioFile          String                  @db.VarChar(10000)
-  category               String[]                @db.VarChar
-  content                String?
-  keyword                String[]                @db.VarChar
-  isTitle                Boolean                 @default(false)
-  vocalId                Int
-  duration               Float
-  createdAt              DateTime                @default(now())
-  updatedAt              DateTime                @updatedAt
-  Vocal                  Vocal                   @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocalpf_vocal_id_fk")
+  id             Int      @id @unique @default(autoincrement())
+  title          String   @db.VarChar(20000)
+  category       String[] @db.VarChar
+  content        String?
+  keyword        String[] @db.VarChar
+  vocalId        Int
+  duration       Float
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  portfolioFile  String   @db.VarChar(10000)
+  portfolioImage String   @db.VarChar(20000)
+  isTitle        Boolean  @default(false)
+  Vocal          Vocal    @relation(fields: [vocalId], references: [id], onDelete: Cascade, map: "vocalpf_vocal_id_fk")
 
   @@unique([id, vocalId], name: "vocalPortfolio")
 }
 
 model Auth {
-  token     String @unique @db.VarChar(50)
+  token     String   @unique @db.VarChar(50)
   userId    Int
-  tableName String @db.VarChar(50)
-  userEmail String @db.VarChar(100)
+  tableName String   @db.VarChar(50)
+  userEmail String   @db.VarChar(100)
   createdAt DateTime @default(now())
 }

@@ -34,6 +34,7 @@ const createVocalPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, use
             },
             select: {
                 id: true,
+                vocalId: true,
             },
         });
 
