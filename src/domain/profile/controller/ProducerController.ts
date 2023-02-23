@@ -18,6 +18,7 @@ const getProducerProfile = async(req: Request, res: Response, next: NextFunction
         return next(error);
     }
 };
+
 const updateProducerProfile = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const imageFileKey: Express.MulterS3.File = req.file as Express.MulterS3.File;

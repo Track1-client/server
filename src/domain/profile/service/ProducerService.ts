@@ -9,7 +9,7 @@ const getProducerProfile = async (profileDTO: ProducerProfileGetDTO, producerId:
     try {
         const isMe = (profileDTO.tableName === 'producer' && producerId === Number(profileDTO.userId)) ? true : false;
         
-        const data = await getProducerProfileById(producerId, page, limit);
+        const data = await getProducerProfileById(producerId, limit, page);
         if (!data) throw new GetProducerInfoFail(rm.GET_USER_INFORMATION_FAIL);
 
         const result: ProducerProfileGetReturnDTO = {

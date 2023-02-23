@@ -1,4 +1,4 @@
-export default interface ProfileDTO {
+export default interface ProducerProfileDTO {
     id: number;
     profileImage: string;
     name: string;

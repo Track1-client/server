@@ -1,7 +1,7 @@
 import PortfolioDTO from './PortfolioDTO';
-import ProfileDTO from './ProfileDTO';
+import ProfileDTO from './ProducerProfileDTO';
 
-export default interface ProducerProfileGetDTO {
+export default interface ProducerProfileGetReturnDTO {
     whoamI: string;
     isMe: boolean;
     producerProfile: ProfileDTO;

@@ -1,9 +1,11 @@
-import { InvalidProducer, GetProducerInfoFail } from './../../../global/middlewares/error/errorInstance';
+import { InvalidProducer } from './../../../global/middlewares/error/errorInstance';
 import config from '../../../global/config';
 import prisma from '../../../global/config/prismaClient';
-import { PortfolioDTO, ProfileDTO } from '../interfaces';
+import { PortfolioDTO, ProducerProfileDTO } from '../interfaces';
 import { rm } from '../../../global/constants';
 import { getS3OneBeatObject, getS3OneImageObject } from '../../../global/modules/S3Object/get';
+import { getProducerPortfolioTitleByUserId } from '../../mypage/repository';
+import { producerTitleAsPortfolioDTO } from '.';
 
 function objectParams_url(bucketName: string, fileKey: string) {
     return {
@@ -20,7 +22,10 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
                     id: true, producerImage: true, name: true, contact: true, category: true, keyword: true, introduce: true,
                     ProducerPortfolio: {
                         select: { id: true, portfolioFile: true, portfolioImage: true, title: true, content: true, keyword: true, category: true, duration: true },
-                        orderBy: { isTitle: 'desc' },
+                        orderBy: { createdAt: 'desc' },
+                        where: { isTitle: false },
+                        skip: (page-1)*limit,
+                        take: limit,
                     },
                 },
                 where: { id: producerId },
@@ -30,8 +35,9 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
 
                 const profileImage = (producer.producerImage === config.defaultUserProfileImage) ?
                                         config.defaultUserProfileImage : await getS3OneImageObject(objectParams_url(config.profileImageBucketName, producer.producerImage));
-
-                const profileDTO: ProfileDTO = {
+                console.log(producer);
+                //! 프로필 데이터
+                const profileDTO: ProducerProfileDTO = {
                     id: producer.id,
                     profileImage: profileImage as string,
                     name: producer.name,
@@ -40,7 +46,8 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
                     keyword: producer.keyword,
                     introduce: producer.introduce as string,
                 };
-
+                
+                //! 포트폴리오 데이터 리스트 
                 const portfolioList = await Promise.all(producer.ProducerPortfolio.map(async (portfolio) => {
                     const beatURL = await getS3OneBeatObject(objectParams_url(config.producerPortfolioBucketName, portfolio.portfolioFile));
                     const imageURL = (portfolio.portfolioImage === config.defaultJacketAndProducerPortfolioImage) ? 
@@ -59,6 +66,8 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
                     }
                     return portfolioDTO;
                 }));
+
+                portfolioList.unshift(await producerTitleAsPortfolioDTO(producerId));  //! 포트폴리오배열 [0]에 타이틀 넣기 
 
                 return { profileDTO, portfolioList };
             });

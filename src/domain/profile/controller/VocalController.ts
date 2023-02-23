@@ -2,8 +2,22 @@ import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import getLocation from '../../../global/modules/file/multer/key';
-import { VocalProfileUpdateDTO } from '../interfaces';
+import { VocalProfileGetDTO, VocalProfileUpdateDTO } from '../interfaces';
 import VocalService from '../service/VocalService';
+
+const getVocalProfile = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { vocalId } = req.params;
+        const { page, limit } = req.query;
+        const profileDTO: VocalProfileGetDTO = req.body;
+
+        const result = await VocalService.getVocalProfile(profileDTO, Number(vocalId), Number(page), Number(limit));
+
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_VOCAL_PROFILE_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
 
 const updateVocalProfile = async(req: Request, res: Response, next: NextFunction) => {
     try {
@@ -22,6 +36,7 @@ const updateVocalProfile = async(req: Request, res: Response, next: NextFunction
 };
 
 const VocalController = {
+    getVocalProfile,
     updateVocalProfile,
 };
 
