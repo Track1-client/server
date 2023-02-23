@@ -1,4 +1,6 @@
 export { default as InformationGetDTO } from './InformationGetDTO'; 
+export { default as InformationProducerGetReturnDTO } from './InformationProducerGetReturnDTO';
+export { default as InformationVocalGetReturnDTO } from './InformationVocalGetReturnDTO';
 export { default as PortfolioCreateDTO} from './PortfolioCreateDTO';
 export { default as ProducerPortfolioCreateReturnDTO } from './ProducerPortfolioCreateReturnDTO';
 export { default as VocalPortfolioCreateReturnDTO } from './VocalPortfolioCreateReturnDTO';

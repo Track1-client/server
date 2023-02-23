@@ -72,6 +72,7 @@ export {
     InvalidVocalPortfolio,
     InvalidProducerTitlePortfolio,
     InvalidVocalTitlePortfolio,
+    GetMyInformationFail,
 } from './mypage';
 
 export {
