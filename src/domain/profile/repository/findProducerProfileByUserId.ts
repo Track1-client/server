@@ -35,7 +35,7 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
 
                 const profileImage = (producer.producerImage === config.defaultUserProfileImage) ?
                                         config.defaultUserProfileImage : await getS3OneImageObject(objectParams_url(config.profileImageBucketName, producer.producerImage));
-                console.log(producer);
+
                 //! 프로필 데이터
                 const profileDTO: ProducerProfileDTO = {
                     id: producer.id,
