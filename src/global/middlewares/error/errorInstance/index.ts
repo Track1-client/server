@@ -78,6 +78,10 @@ export {
     UpdateProducerProfileFail,
     UpdateVocalProfileFail,
     GetImageFail,
+    GetProducerInfoFail,
+    GetVocalInfoFail,
+    InvalidProducer,
+    InvalidVocal,
 } from './profile';
 
 export {

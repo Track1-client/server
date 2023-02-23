@@ -47,13 +47,13 @@ const findBeatsByCateg = async(page: number, limit: number, categ: string[]) => 
                     return await Promise.all(trackList.map(async (track) => {
                         const beatURL = await getS3OneBeatObject(objectParams_url(track.beatFile));
                         const imageURL = (track.beatImage === config.defaultJacketAndProducerPortfolioImage) ? 
-                                            track.beatImage : await getS3OneImageObject(track.beatImage);
+                                            track.beatImage : await getS3OneImageObject(objectParams_url(track.beatImage));
             
                         const returnDTO: GetBeatReturnDTO = {
                             beatId: track.id,
-                            jacketImage: track.beatImage,
+                            jacketImage: imageURL as string,
                             wavFile: beatURL as string,
-                            title: imageURL as string,
+                            title: track.title,
                             producerId: track.Producer.id,
                             producerName: track.Producer.name,
                             keyword: track.keyword,
