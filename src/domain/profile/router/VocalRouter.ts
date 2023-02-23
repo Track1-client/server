@@ -7,7 +7,6 @@ const router: Router = Router();
 router.patch('/',
             authMulterJWT,
             s3UploadeMiddleware.uploadS3ProfileImageFile('vocal'),
-            VocalController.updateVocalProfile,
-);
+            VocalController.updateVocalProfile);
 
 export default router;

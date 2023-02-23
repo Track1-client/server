@@ -113,6 +113,12 @@ export default {
     INVALID_USER_TITLE: "유효하지 않은 사용자의 타이틀",
 
     // 프로필 관련
+    GET_USER_INFORMATION_SUCCESS: "유저관련 정보 조회 성공",
+    GET_USER_INFORMATION_FAIL: "유저관련 정보 조회 실패",
+    GET_PRODUCER_PROFILE_SUCCESS: "프로듀서 프로필 조회 성공",
+    GET_PRODUCER_PROFILE_FAIL: "프로듀서 프로필 조회 실패",
+    GET_VOCAL_PROFILE_SUCCESS: "보컬 프로필 조회 성공",
+    GET_VOCAL_PROFILE_FAIL: "보컬 프로필 조회 실패",
     UPDATE_PRODUCER_PROFILE_SUCCESS: "프로듀서 프로필 수정 성공",
     UPDATE_PRODUCER_PROFILE_FAIL: "프로듀서 프로필 수정 실패",
     UPDATE_VOCAL_PROFILE_SUCCESS: "보컬 프로필 수정 성공",
@@ -125,6 +131,8 @@ export default {
     UPDATE_VOCAL_NEW_TITLE_FAIL: "보컬 타이틀이 될 포트폴리오 변경 실패",
     UPDATE_VOCAL_TITLE_SUCCESS: "보컬 타이틀 수정 성공",
     UPDATE_VOCAL_TITLE_FAIL: "보컬 타이틀 수정 실패",
+    INVALID_PRODUCER: "유효하지 않은 프로듀서",
+    INVALID_VOCAL: "유효하지 않은 보컬",
 
     // 보컬검색 관련
     GET_VOCAL_LIST_SUCCESS: "보컬 필터링 검색 성공",

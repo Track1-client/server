@@ -1,9 +1,8 @@
-import { ProducerProfileUpdateDTO, ProducerProfileUpdateReturnDTO, VocalProfileUpdateDTO } from '../interfaces';
+import { VocalProfileUpdateReturnDTO, VocalProfileUpdateDTO } from '../interfaces';
 import prisma from '../../../global/config/prismaClient';
 import convertCategory from '../../../global/modules/convertCategory';
 import config from '../../../global/config';
 import { getS3OneImageObject } from '../../../global/modules/S3Object/get';
-import VocalProfileUpdateReturnDTO from '../interfaces/VocalProfileUpdateReturnDTO';
 
 function objectParams_url(imageKey: string) {
     return {
