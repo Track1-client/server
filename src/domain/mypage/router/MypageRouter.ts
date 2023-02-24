@@ -8,5 +8,5 @@ router.get('/',
             checkPaginationValue,
             authJWT,
             MypageController.getUserInfo);
-                
+
 export default router;

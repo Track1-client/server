@@ -7,7 +7,6 @@ import { VocalService } from '../service';
 
 const getVocalList = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const filterDTO: FilteringDTO = req.body;
         const { categ, isSelected, page, limit } = req.query;
 
         const result = await VocalService.getVocalList(convertCategory(categ), String(isSelected), Number(page), Number(limit));

@@ -72,6 +72,8 @@ export default {
     // 게시글 관련 
     UPDATE_TRACK_SUCCESS: "게시글 수정 성공",
     UPDATE_TRACK_FAIL: "게시글 수정 실패",
+    UPDATE_TRACK_CLOSED_SUCCESS: "게시글 마감 업데이트 성공",
+    UPDATE_TRACK_CLOSED_FAIL: "게시글 마감 업데이트 실패",
     DELETE_TRACK_SUCCESS: "게시글 삭제 성공",
     DELETE_TRACK_FAIL: "게시글 삭제 실패",
     GET_TRACK_LIST_SUCCESS: "게시글 조회 성공",

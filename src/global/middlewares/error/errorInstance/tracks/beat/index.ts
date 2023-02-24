@@ -6,3 +6,4 @@ export { BeatFileUpdateFail } from './BeatFileUpdateFail';
 export { GetBeatsFail } from './GetBeatsFail';
 export { GetBeatFileFail } from './GetBeatFileFail';
 export { NotVocal } from './NotVocal';
+export { BeatClosedUpdateFail } from './BeatClosedUpdateFail';

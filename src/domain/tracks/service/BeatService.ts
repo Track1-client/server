@@ -1,9 +1,9 @@
 import deleteS3TrackAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneBeat';
-import { BeatCreateDTO, BeatCreateReturnDTO, BeatDeleteReturnDTO, GetBeatFileReturnDTO } from '../interfaces';
+import { BeatClosedUpdateDTO, BeatClosedUpdateReturnDTO, BeatCreateDTO, BeatCreateReturnDTO, BeatDeleteReturnDTO, GetBeatFileReturnDTO } from '../interfaces';
 import { getUserById } from '../../user/repository';
-import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, GetBeatsFail, GetBeatFileFail } from '../../../global/middlewares/error/errorInstance';
+import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, GetBeatsFail, GetBeatFileFail, InvalidBeatId, BeatClosedUpdateFail } from '../../../global/middlewares/error/errorInstance';
 import { rm } from '../../../global/constants';
-import { createBeatByUserId, deleteBeatByUserId, getBeatByUserId, getBeatFileById, getBeatsByCateg, updateBeatById } from '../repository';
+import { createBeatByUserId, deleteBeatByUserId, getBeatByUserId, getBeatFileById, getBeatsByCateg, updateBeatById, updateBeatClosedById } from '../repository';
 import config from '../../../global/config';
 import updateS3TrackAudioAndImage from '../../../global/modules/S3Object/update/updateOneBeat';
 
@@ -77,6 +77,23 @@ const updateBeat = async(beatDTO: BeatCreateDTO, beatId: number, tableName: stri
     }
 };
 
+const updateBeatClosed = async(beatId: number, closedDTO: BeatClosedUpdateDTO) => {
+    try {
+        const beat = await getBeatByUserId(Number(closedDTO.userId), beatId);
+        if (!beat) throw new InvalidBeatId(rm.PRODUCER_BEAT_UNMATCH);
+
+        const data = await updateBeatClosedById(beatId, beat.isClosed);
+        if (!data) throw new BeatClosedUpdateFail(rm.UPDATE_TRACK_CLOSED_FAIL);
+
+        const result: BeatClosedUpdateReturnDTO = {
+            closedStatus: data.isClosed,  //! true -> 게시글 마감, false -> 게시글 오픈 
+        };
+        return result;
+    } catch (error) {
+        throw error;
+    }
+}
+
 const deleteBeatById = async(userId: number, beatId: number) => {
     try {
         const userBeatData = await getBeatByUserId(userId, beatId);
@@ -99,6 +116,7 @@ const BeatService = {
     getBeatList,
     getBeatFile,
     updateBeat,
+    updateBeatClosed,
     deleteBeatById,
 };
 

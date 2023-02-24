@@ -39,6 +39,7 @@ export {
     //* 게시글 업로드 관련 
     BeatFileUploadFail,
     BeatFileUpdateFail,
+    BeatClosedUpdateFail,
     CommentFileUploadFail,
     CommentFileUpdateFail,
     NotProducer,

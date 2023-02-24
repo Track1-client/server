@@ -3,7 +3,7 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import convertCategory from '../../../global/modules/convertCategory';
 import getLocation from '../../../global/modules/file/multer/key';
-import { BeatCreateDTO } from '../interfaces';
+import { BeatClosedUpdateDTO, BeatCreateDTO } from '../interfaces';
 import { BeatService } from '../service';
 
 const createBeat = async(req: Request, res: Response, next: NextFunction) => {
@@ -59,6 +59,18 @@ const updateBeat = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const updateBeatClosed = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { beatId } =req.params;
+        const closedDTO: BeatClosedUpdateDTO = req.body;
+
+        const result = await BeatService.updateBeatClosed(Number(beatId), closedDTO);
+        return res.status(sc.OK).send(success(sc.OK, rm.UPDATE_TRACK_CLOSED_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const deleteBeat = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const { userId } = req.body;
@@ -76,6 +88,7 @@ const BeatController = {
     getBeatList,
     getBeatFile,
     updateBeat,
+    updateBeatClosed,
     deleteBeat,
 };
 
