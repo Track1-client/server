@@ -1,6 +1,7 @@
 export { 
     BeatFileUploadFail,
     BeatFileUpdateFail,
+    BeatClosedUpdateFail,
     NotProducer,
     NotProducerBeat,
     NoAudioFile,

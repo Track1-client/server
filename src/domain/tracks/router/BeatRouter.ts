@@ -9,8 +9,7 @@ router.post('/',
             s3UploadeMiddleware.uploadS3TracksFile,
             BeatController.createBeat);
 
-router.get('/filter', 
-            authJWT,
+router.get('/filter',
             checkPaginationValue,
             BeatController.getBeatList);
 
@@ -22,6 +21,10 @@ router.patch('/:beatId',
             authMulterJWT, 
             s3UploadeMiddleware.uploadS3TracksFile,
             BeatController.updateBeat);
+
+router.patch('/:beatId/closed',
+            authJWT,
+            BeatController.updateBeatClosed);
 
 router.delete('/:beatId', authJWT, BeatController.deleteBeat);
 

@@ -9,3 +9,5 @@ export { default as CommentDeleteDTO } from './CommentDeleteDTO';
 export { default as BeatDeleteReturnDTO } from './BeatDeleteReturnDTO';
 export { default as CommentDeleteReturnDTO } from './CommentDeleteReturnDTO';
 export { default as GetBeatFileReturnDTO } from './BeatFileGetReturnDTO';
+export { default as BeatClosedUpdateDTO } from './BeatClosedUpdateDTO';
+export { default as BeatClosedUpdateReturnDTO } from './BeatClosedUpdateReturnDTO';

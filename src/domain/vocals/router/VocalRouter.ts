@@ -6,7 +6,6 @@ const router: Router = Router();
 
 router.get('/',
         checkPaginationValue,
-        authJWT,
         VocalController.getVocalList);
 
 export default router;
