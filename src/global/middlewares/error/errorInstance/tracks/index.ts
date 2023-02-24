@@ -5,6 +5,7 @@ export {
     NotProducerBeat,
     NoAudioFile,
     GetBeatsFail,
+    GetBeatFileFail,
     NotVocal,
 } from './beat';
 

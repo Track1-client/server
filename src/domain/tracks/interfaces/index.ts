@@ -8,3 +8,4 @@ export { default as CommentUpdateReturnDTO } from './CommentUpdateReturnDTO';
 export { default as CommentDeleteDTO } from './CommentDeleteDTO';
 export { default as BeatDeleteReturnDTO } from './BeatDeleteReturnDTO';
 export { default as CommentDeleteReturnDTO } from './CommentDeleteReturnDTO';
+export { default as GetBeatFileReturnDTO } from './BeatFileGetReturnDTO';

@@ -14,6 +14,10 @@ router.get('/filter',
             checkPaginationValue,
             BeatController.getBeatList);
 
+router.get('/:beatId/download',
+            authJWT,
+            BeatController.getBeatFile);
+
 router.patch('/:beatId', 
             authMulterJWT, 
             s3UploadeMiddleware.uploadS3TracksFile,

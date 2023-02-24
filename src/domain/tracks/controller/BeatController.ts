@@ -32,6 +32,17 @@ const getBeatList = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const getBeatFile = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { beatId } = req.params;
+
+        const result = await BeatService.getBeatFile(Number(beatId));
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_TRACK_FILE_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
 const updateBeat = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const myfiles = JSON.parse(JSON.stringify(req.files));
@@ -63,6 +74,7 @@ const deleteBeat = async(req: Request, res: Response, next: NextFunction) => {
 const BeatController = {
     createBeat,
     getBeatList,
+    getBeatFile,
     updateBeat,
     deleteBeat,
 };

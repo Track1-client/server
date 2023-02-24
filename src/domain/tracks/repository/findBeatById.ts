@@ -2,7 +2,7 @@ import prisma from '../../../global/config/prismaClient';
 
 const findBeatById = async(beatId: number) => {
     try {
-        const beat = await prisma.beat.findFirst({
+        const beat = await prisma.beat.findUnique({
             where: {
                 id: beatId,
             },

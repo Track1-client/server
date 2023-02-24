@@ -45,6 +45,7 @@ export {
     NotProducerBeat,
     NoAudioFile,
     GetBeatsFail,
+    GetBeatFileFail,
     NotVocal,
     InvalidBeatId,
     InvalidVocalComment,

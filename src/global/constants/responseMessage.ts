@@ -76,6 +76,8 @@ export default {
     DELETE_TRACK_FAIL: "게시글 삭제 실패",
     GET_TRACK_LIST_SUCCESS: "게시글 조회 성공",
     GET_TRACK_LIST_FAIL: "게시글 조회 실패",
+    GET_TRACK_FILE_SUCCESS: "게시글 파일 다운로드 성공",
+    GET_TRACK_FILE_FAIL: "게시글 파일 다운로드 실패",
     NON_EXISTS_PRODUCER: "존재하지 않는 프로듀서",
     NON_EXISTS_VOCAL: "존재하지 않는 보컬",
     PRODUCER_BEAT_UNMATCH: "해당 프로듀서의 게시글이 아님",
