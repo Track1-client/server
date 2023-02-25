@@ -1,0 +1,36 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]   #main 브랜치 push 또는 main 브랜치로 pr 보낼 때 체크 
+  pull_request:
+    branches: [main]    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}   
+
+      - name: Install dependencies   
+        run: yarn install --frozen-lockfile  
+
+      - name: create env file  
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: build server files   
+        working-directory: ./
+        run: |
+          yarn run dev   
