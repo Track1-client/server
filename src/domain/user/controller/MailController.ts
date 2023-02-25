@@ -7,7 +7,6 @@ import MailDTO from '../interfaces/MailDTO';
 import EmailService from '../service/MailService';
 import { deleteEveryAuthByEmail, getUserByLoginID } from '../repository';
 
-
 const postAuthMail = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const emailDTO: EmailDTO = req.body;

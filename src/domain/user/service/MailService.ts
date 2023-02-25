@@ -8,7 +8,6 @@ import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
 import crypto from 'crypto';
 import { createAuth, createTempUserTable, deleteTempUserByEmail, findAuthByToken, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
 
-
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
         const result = (emailDTO.tableName === 'producer') ? 
@@ -21,7 +20,6 @@ const isEmailExists = async(emailDTO: EmailDTO) => {
         throw error;
     }
 };
-
 
 const createTempUser = async(emailDTO: EmailDTO) => {
     try {

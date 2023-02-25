@@ -1,6 +1,6 @@
-import { success } from './../../../../../backend/src/constants/response';
 import { Request, Response, NextFunction } from 'express';
 import { rm, sc } from '../../../global/constants';
+import { success } from '../../../global/constants/response';
 import getLocation from '../../../global/modules/file/multer/key';
 import { PortfolioCreateDTO, PortfolioDeleteDTO, PortfolioUpdateDTO, TitleUpdateDTO } from '../interfaces';
 import ProducerService from '../service/ProducerService';
