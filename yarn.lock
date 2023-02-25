@@ -2695,9 +2695,8 @@
   "resolved" "https://registry.npmjs.org/typedarray/-/typedarray-0.0.6.tgz"
   "version" "0.0.6"
 
-"typescript@>=2.7":
-  "integrity" "sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g=="
-  "resolved" "https://registry.npmjs.org/typescript/-/typescript-4.9.5.tgz"
+"typescript@>=2.7", "typescript@file:../../../../../../../../usr/local/lib/node_modules/typescript":
+  "resolved" "file:../../../../../../../../usr/local/lib/node_modules/typescript"
   "version" "4.9.5"
 
 "undefsafe@^2.0.5":
