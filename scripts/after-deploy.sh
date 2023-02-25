@@ -4,6 +4,7 @@ sudo pm2 kill
 cd $REPOSITORY
 
 sudo rm -rf node_modules
+sudo cp -r src/global/config/ ./dist/global/config/
 sudo yarn install --frozen-lockfile
 sudo npx prisma generate
 sudo pm2 start dist
