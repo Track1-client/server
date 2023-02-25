@@ -60,6 +60,7 @@
     "@types/passport-jwt": "^3.0.8",
     "@types/passport-local": "^1.0.35",
     "@types/redis": "^4.0.11",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "ts-node": "^10.9.1"
   }
 }
