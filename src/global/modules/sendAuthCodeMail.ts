@@ -8,8 +8,6 @@ const sendAuthCodeMail = async(userEmail: string, authCode: string, image: strin
             to: userEmail,
             subject: 'Verify your email address to sign up for Track-1',
             html: ejsAuthCode(authCode, image)
-        }, function(error, info) {
-            if (error){ console.log(error); }
         });
 
         smtpTransport.close();
