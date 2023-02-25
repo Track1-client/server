@@ -1,5 +1,5 @@
 import { rm } from '../../../constants';
-import { ImageFileTooLarge, InvalidImageFileType, NotImageFile } from '../../../middlewares/error/errorInstance';
+import { InvalidImageFileType, NotImageFile } from '../../../middlewares/error/errorInstance';
 
 const fileType = [
     'png',
