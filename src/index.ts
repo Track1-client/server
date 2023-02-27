@@ -9,7 +9,8 @@ const app = express();
 const PORT = 3000;
 
 const corsOriginList = [
-    'https://www.track1.site'
+    'https://www.track1.site',
+    'http://localhost:3000'
 ];
 
 const corsOptions = {
