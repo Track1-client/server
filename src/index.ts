@@ -15,7 +15,7 @@ const corsOriginList = [
 
 const corsOptions = {
     origin: corsOriginList,
-    credential: true,
+    credentials: true,
     optionsSuccessStatus: 200,
 };
 
