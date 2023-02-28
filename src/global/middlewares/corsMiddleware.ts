@@ -6,6 +6,7 @@ function corsMiddleware(corsOriginList: string[]) {
     
         if (corsOriginList.includes(origin)) {
             res.setHeader('Access-Control-Allow-Origin', origin);
+            res.setHeader('Access-Contol-Allow-Credentials', 'true');
         }
         res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
         res.header(
