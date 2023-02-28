@@ -9,8 +9,10 @@ import TokenService from '../service/TokenService';
 import getLocation from '../../../global/modules/file/multer/key';
 
 const cookieInfo: any = {
-    httpOnly: true,
-    secure: true,
+    //httpOnly: true,
+    httpOnly: false,
+    //secure: true,
+    secure: false,
     sameSite: 'none',
     domain: '.track1.site',
 };
@@ -29,7 +31,6 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
             userResult,
             accessToken: tokenResult.accessToken
         }
-
         return res
                 .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
                 .status(sc.CREATED)
