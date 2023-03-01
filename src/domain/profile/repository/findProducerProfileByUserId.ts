@@ -48,7 +48,8 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
 
 
                 let portfolioList: any[] = [];
-                if (producer.ProducerPortfolio.length === 0) return { profileDTO , portfolioList };
+                const producerTitle = await producerTitleAsPortfolioDTO(producerId);
+                if (producer.ProducerPortfolio.length === 0 && producerTitle === undefined) return { profileDTO , portfolioList };
                 
                 //! 포트폴리오 데이터 리스트 
                 portfolioList = await Promise.all(producer.ProducerPortfolio.map(async (portfolio) => {
@@ -70,7 +71,7 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
                     return portfolioDTO;
                 }));
 
-                portfolioList.unshift(await producerTitleAsPortfolioDTO(producerId));  //! 포트폴리오배열 [0]에 타이틀 넣기 
+                portfolioList.unshift(producerTitle);  //! 포트폴리오배열 [0]에 타이틀 넣기 
 
                 return { profileDTO, portfolioList };
             });

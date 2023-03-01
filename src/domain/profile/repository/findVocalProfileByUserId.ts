@@ -47,7 +47,8 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
                 };
 
                 let portfolioList: any[] = [];
-                if (vocal.VocalPortfolio.length === 0) return { profileDTO , portfolioList };
+                const vocalTitle = await vocalTitleAsPortfolioDTO(vocalId);
+                if (vocal.VocalPortfolio.length === 0 && vocalTitle === undefined) return { profileDTO , portfolioList };
 
                 portfolioList = await Promise.all(vocal.VocalPortfolio.map(async (portfolio) => {
                     const beatURL = await getS3OneBeatObject(objectParams_url(config.vocalPortfolioBucketName, portfolio.portfolioFile));
@@ -68,7 +69,7 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
                     return portfolioDTO;
                 }));
 
-                portfolioList.unshift(await vocalTitleAsPortfolioDTO(vocalId));  //! 포트폴리오배열 [0]에 타이틀 넣기 
+                portfolioList.unshift(vocalTitle);  //! 포트폴리오배열 [0]에 타이틀 넣기 
 
                 return { profileDTO, portfolioList };
             });
