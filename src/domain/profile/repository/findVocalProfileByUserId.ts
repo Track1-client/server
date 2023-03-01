@@ -46,7 +46,10 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
                     isSelected: vocal.isSelected,
                 };
 
-                const portfolioList = await Promise.all(vocal.VocalPortfolio.map(async (portfolio) => {
+                let portfolioList: any[] = [];
+                if (vocal.VocalPortfolio.length === 0) return { profileDTO , portfolioList };
+
+                portfolioList = await Promise.all(vocal.VocalPortfolio.map(async (portfolio) => {
                     const beatURL = await getS3OneBeatObject(objectParams_url(config.vocalPortfolioBucketName, portfolio.portfolioFile));
                     const imageURL = (portfolio.portfolioImage === config.defaultVocalPortfolioImage) ? 
                                         portfolio.portfolioImage : 
