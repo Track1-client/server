@@ -17,7 +17,7 @@ const corsOptions = {
     origin: corsOriginList,
     credentials: true,
     optionsSuccessStatus: 200,
-    exposedHeaders: ['set-cookie'],
+    exposedHeaders: ['Set-Cookie'],
 };
 
 app.use(cors(corsOptions));
