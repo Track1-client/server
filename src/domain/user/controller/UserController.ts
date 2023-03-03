@@ -11,7 +11,7 @@ import getLocation from '../../../global/modules/file/multer/key';
 const cookieInfo: any = {
     httpOnly: true,
     secure: true,
-    sameSite: 'none',
+    sameSite: 'lax',
     domain: '.track1.site',
     maxAge: 60 * 24 * 60 * 60 * 1000,
 };

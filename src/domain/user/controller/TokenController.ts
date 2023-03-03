@@ -6,9 +6,9 @@ import { success } from '../../../global/constants/response';
 const refresh = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.headers.authorization?.split(" ").reverse()[0];
-        console.log(req.headers.cookie);
+        
         const { refreshToken } = req.cookies;
-        //console.log(req);
+        console.log(req);
         console.log(refreshToken);
         await TokenService.isTokenExists(accessToken as string, refreshToken as string);
         const data = await TokenService.isRefreshValid(accessToken as string, refreshToken as string);
@@ -17,7 +17,7 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
                 .cookie('refreshToken', data.refreshToken, {
                     httpOnly: true,
                     secure: true,
-                    sameSite: 'none',
+                    sameSite: 'lax',
                     domain: '.track1.site',
                     maxAge: 60 * 24 * 60 * 60 * 1000 , // 유효기간 60일 
                 })
