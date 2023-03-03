@@ -15,6 +15,7 @@ const cookieInfo: any = {
     secure: false,
     sameSite: 'none',
     domain: '.track1.site',
+    maxAge: 60 * 24 * 60 * 60,
 };
 
 const createProducer = async(req: Request, res: Response, next: NextFunction) => {

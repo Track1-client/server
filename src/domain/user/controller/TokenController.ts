@@ -17,6 +17,7 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
                     secure: false,
                     sameSite: 'none',
                     domain: '.track1.site',
+                    maxAge: 60 * 24 * 60 * 60,
                 })
                 .status(sc.CREATED)
                 .send(success(sc.CREATED, rm.CREATE_TOKEN_SUCCESS, data.accessToken));
