@@ -2,6 +2,8 @@ export { default as BeatCreateDTO } from './BeatCreateDTO';
 export { default as BeatCreateReturnDTO } from './BeatCreateReturnDTO';
 export { default as CommentCreateDTO } from './CommentCreateDTO';
 export { default as CommentCreateReturnDTO } from './CommentCreateReturnDTO';
+export { default as BeatGetDTO } from './BeatGetDTO';
+export { default as GetOneBeatReturnDTO } from './OneBeatGetReturnDTO';
 export { default as GetBeatReturnDTO } from './BeatGetReturnDTO';
 export { default as CommentUpdateDTO } from './CommentUpdateDTO';
 export { default as CommentUpdateReturnDTO } from './CommentUpdateReturnDTO';

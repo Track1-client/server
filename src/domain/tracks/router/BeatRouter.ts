@@ -13,6 +13,10 @@ router.get('/filter',
             checkPaginationValue,
             BeatController.getBeatList);
 
+router.get('/:beatId',
+            authJWT,
+            BeatController.getBeat);
+
 router.get('/:beatId/download',
             authJWT,
             BeatController.getBeatFile);

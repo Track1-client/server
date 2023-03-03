@@ -1,6 +1,7 @@
 export { default as createBeatByUserId } from './createBeatByUserId';
 export { default as createCommentByUserId } from './createCommentByUserId';
 export { default as getBeatByUserId } from './findBeatByUserId';
+export { default as getBeatByIdAndUserId } from './findBeatByIdAndUserId';
 export { default as getBeatsByCateg } from './findBeatsByCateg';
 export { default as getBeatById } from './findBeatById';
 export { default as getBeatFileById } from './fineBeatFileById';
