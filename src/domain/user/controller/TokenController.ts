@@ -16,7 +16,7 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
                     httpOnly: false,
                     secure: false,
                     sameSite: 'none',
-                    domain: '.track1.site',
+                    //domain: '.track1.site',
                     maxAge: 60 * 24 * 60 * 60, // 유효기간 60일 
                 })
                 .status(sc.CREATED)

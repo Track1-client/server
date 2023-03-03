@@ -14,7 +14,7 @@ const cookieInfo: any = {
     //secure: true,
     secure: false,
     sameSite: 'none',
-    domain: '.track1.site',
+    //domain: '.track1.site',
     maxAge: 60 * 24 * 60 * 60,
 };
 
