@@ -40,6 +40,7 @@ export {
     BeatFileUploadFail,
     BeatFileUpdateFail,
     BeatClosedUpdateFail,
+    CommentFilesGetFail,
     CommentFileUploadFail,
     CommentFileUpdateFail,
     NotProducer,

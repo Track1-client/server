@@ -90,6 +90,8 @@ export default {
     S3_CANNOT_FIND_IMAGE_FILE_OBJECT: "해당 버킷에서 이미지 객체를 찾을 수 없음",
 
     // 댓글 관련
+    GET_COMMENT_LIST_SUCCESS: "댓글 조회 성공",
+    GET_COMMENT_LIST_FAIL: "댓글 조회 실패",
     UPLOAD_COMMENT_SUCCESS: "댓글 업로드 성공",
     UPLOAD_COMMENT_FAIL: "댓글 업로드 실패",
     UPDATE_COMMENT_SUCCESS: "댓글 수정 성공",

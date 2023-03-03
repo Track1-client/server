@@ -5,6 +5,7 @@ export { default as CommentCreateReturnDTO } from './CommentCreateReturnDTO';
 export { default as BeatGetDTO } from './BeatGetDTO';
 export { default as GetOneBeatReturnDTO } from './OneBeatGetReturnDTO';
 export { default as GetBeatReturnDTO } from './BeatGetReturnDTO';
+export { default as CommentGetReturnDTO } from './CommentGetReturnDTO';
 export { default as CommentUpdateDTO } from './CommentUpdateDTO';
 export { default as CommentUpdateReturnDTO } from './CommentUpdateReturnDTO';
 export { default as CommentDeleteDTO } from './CommentDeleteDTO';
