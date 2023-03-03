@@ -48,7 +48,7 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
 
                 let portfolioList: any[] = [];
                 const vocalTitle = await vocalTitleAsPortfolioDTO(vocalId);
-                if (vocal.VocalPortfolio.length === 0 && vocalTitle === undefined) return { profileDTO , portfolioList };
+                if (vocal.VocalPortfolio.length === 0 && vocalTitle === undefined) return { profileDTO , portfolioList }; //! 타이틀만 있는 경우 
 
                 portfolioList = await Promise.all(vocal.VocalPortfolio.map(async (portfolio) => {
                     const beatURL = await getS3OneBeatObject(objectParams_url(config.vocalPortfolioBucketName, portfolio.portfolioFile));

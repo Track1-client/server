@@ -49,7 +49,7 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
 
                 let portfolioList: any[] = [];
                 const producerTitle = await producerTitleAsPortfolioDTO(producerId);
-                if (producer.ProducerPortfolio.length === 0 && producerTitle === undefined) return { profileDTO , portfolioList };
+                if (producer.ProducerPortfolio.length === 0 && producerTitle === undefined) return { profileDTO , portfolioList }; //! 타이틀만 있는 경우 
                 
                 //! 포트폴리오 데이터 리스트 
                 portfolioList = await Promise.all(producer.ProducerPortfolio.map(async (portfolio) => {

@@ -13,8 +13,8 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
 
         return res
                 .cookie('refreshToken', data.refreshToken, {
-                    httpOnly: true,
-                    secure: true,
+                    httpOnly: false,
+                    secure: false,
                     sameSite: 'none',
                     domain: '.track1.site',
                 })

@@ -99,7 +99,7 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     
     if (!getAuthCode) throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST);
 
-    //! 일치하지 않는 경우 (유효기간 지남)
+    //! 일치하지 않는 경우 (유효시간 지남)
     if (getAuthCode.authCode !== verifyCodeDTO.verificationCode) throw new ValidAuthTimePassed(rm.VALID_AUTH_TIME_PASSED);
 
     //! 일치하는 경우 삭제시키기 
