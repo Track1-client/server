@@ -12,7 +12,7 @@ app.use(cookieParser());
 
 const corsOriginList = [
     'https://www.track1.site',
-    'http://localhost:3000',
+    'https://localhost:3000',
 ];
 
 const corsOptions = {
