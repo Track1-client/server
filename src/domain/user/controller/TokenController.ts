@@ -7,7 +7,7 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.headers.authorization?.split(" ").reverse()[0];
         const { refreshToken } = req.cookies;
-        
+        console.log(refreshToken);
         await TokenService.isTokenExists(accessToken as string, refreshToken as string);
         const data = await TokenService.isRefreshValid(accessToken as string, refreshToken as string);
 
@@ -17,7 +17,7 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
                     secure: false,
                     sameSite: 'none',
                     domain: '.track1.site',
-                    maxAge: 60 * 24 * 60 * 60,
+                    maxAge: 60 * 24 * 60 * 60, // 유효기간 60일 
                 })
                 .status(sc.CREATED)
                 .send(success(sc.CREATED, rm.CREATE_TOKEN_SUCCESS, data.accessToken));
