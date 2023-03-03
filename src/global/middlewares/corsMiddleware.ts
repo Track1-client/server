@@ -11,9 +11,8 @@ function corsMiddleware(corsOriginList: string[]) {
         res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
         res.setHeader(
             'Access-Control-Allow-Headers',
-            'X-Requested-With, content-type, x-access-token, Set-Cookie',
+            'X-Requested-With, content-type, x-access-token',
         );
-        //res.setHeader('Access-Control-Expose-Headers', 'Set-Cookie');
         next();
     }
 };

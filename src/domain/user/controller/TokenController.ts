@@ -17,7 +17,8 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
                     secure: false,
                     sameSite: 'none',
                     //domain: '.track1.site',
-                    maxAge: 60 * 24 * 60 * 60, // 유효기간 60일 
+                    domain: 'localhost',
+                    maxAge: 60 * 24 * 60 * 60 * 1000 , // 유효기간 60일 
                 })
                 .status(sc.CREATED)
                 .send(success(sc.CREATED, rm.CREATE_TOKEN_SUCCESS, data.accessToken));
