@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 function corsMiddleware(corsOriginList: string[]) {
     return function (req: Request, res: Response, next: NextFunction) {
         const origin: string = req.headers.origin as string;
-        
+        console.log(origin);
         if (corsOriginList.includes(origin)) {
             res.setHeader('Access-Control-Allow-Origin', origin);
             res.setHeader('Access-Control-Allow-Credentials', 'true');

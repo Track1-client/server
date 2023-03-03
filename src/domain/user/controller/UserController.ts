@@ -9,10 +9,11 @@ import TokenService from '../service/TokenService';
 import getLocation from '../../../global/modules/file/multer/key';
 
 const cookieInfo: any = {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    domain: '.track1.site',
+    //httpOnly: true,
+    //secure: true,
+    //sameSite: 'none',
+    //domain: '.track1.site',
+    domain: 'localhost',
     maxAge: 60 * 24 * 60 * 60 * 1000,
 };
 

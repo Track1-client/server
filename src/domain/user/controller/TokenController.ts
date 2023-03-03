@@ -8,17 +8,17 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
         const accessToken = req.headers.authorization?.split(" ").reverse()[0];
         
         const { refreshToken } = req.cookies;
-        console.log(req);
         console.log(refreshToken);
         await TokenService.isTokenExists(accessToken as string, refreshToken as string);
         const data = await TokenService.isRefreshValid(accessToken as string, refreshToken as string);
 
         return res
                 .cookie('refreshToken', data.refreshToken, {
-                    httpOnly: true,
-                    secure: true,
-                    sameSite: 'lax',
-                    domain: '.track1.site',
+                    //httpOnly: true,
+                    //secure: true,
+                    //sameSite: 'none',
+                    //domain: '.track1.site',
+                    domain: 'localhost',
                     maxAge: 60 * 24 * 60 * 60 * 1000 , // 유효기간 60일 
                 })
                 .status(sc.CREATED)
