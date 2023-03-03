@@ -5,12 +5,12 @@ import { InvalidBeatId } from '../../../global/middlewares/error/errorInstance';
 import { getS3OneBeatObject, getS3OneImageObject } from '../../../global/modules/S3Object/get';
 import { GetOneBeatReturnDTO } from '../interfaces';
 
-function objectParams_url(bucket: string, audioKey: string) {
+function objectParams_url(bucket: string, Key: string) {
     const bucketName = (bucket === 'beat') ? config.tracksBucketName : config.profileImageBucketName;
 
     return {
         Bucket: bucketName,
-        Key: audioKey,
+        Key: Key,
     };
 };
 
@@ -28,7 +28,9 @@ const findBeatByIdAndUserId = async(beatId: number, tableName: string, userId: n
         const imageURL = (beat.beatImage === config.defaultJacketAndProducerPortfolioImage) ? 
                             beat.beatImage : await getS3OneImageObject(objectParams_url('beat', beat.beatImage));
 
-        const producerImageURL = await getS3OneImageObject(objectParams_url('profile', beat.Producer.producerImage));
+        const producerImageURL = (beat.Producer.producerImage === config.defaultUserProfileImage) ? 
+                                    beat.Producer.producerImage : await getS3OneImageObject(objectParams_url('profile', beat.Producer.producerImage));
+        
         const isMe = (beat.Producer.id === userId && tableName === 'producer') ? true : false;
         
         const result: GetOneBeatReturnDTO = {

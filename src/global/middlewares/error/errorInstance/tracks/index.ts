@@ -14,6 +14,7 @@ export {
 export { 
     CommentFileUploadFail,
     CommentFileUpdateFail,
+    CommentFilesGetFail,
     InvalidBeatId,
     InvalidVocalComment,
 } from './comment';

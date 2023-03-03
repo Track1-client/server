@@ -9,6 +9,11 @@ router.post('/:beatId',
             s3UploadeMiddleware.uploadS3CommentFile,
             CommentController.createComment);
 
+router.get('/:beatId',
+            checkPaginationValue,
+            authJWT,
+            CommentController.getCommentList);
+
 router.patch('/:commentId',
             authMulterJWT,
             s3UploadeMiddleware.uploadS3CommentFile,
