@@ -104,6 +104,8 @@ export default {
     // 포트폴리오 관련
     NOT_PRODUCER: "프로듀서 아님",
     NOT_VOCAL: "보컬 아님",
+    PRODUCER_TITLE_NOT_FOUND: "프로듀서 타이틀이 존재하지 않음",
+    VOCAL_TITLE_NOT_FOUND: "보컬 타이틀이 존재하지 않음",
     UPLOAD_PRODUCER_PORTFOLIO_SUCCESS: "프로듀서 포트폴리오 업로드 성공",
     UPLOAD_PRODUCER_PORTFOLIO_FAIL: "프로듀서 포트폴리오 업로드 실패",
     UPLOAD_VOCAL_PORTFOLIO_SUCCESS: "보컬 포트폴리오 업로드 성공",

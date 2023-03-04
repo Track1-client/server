@@ -2,6 +2,7 @@ import prisma from '../../../global/config/prismaClient';
 
 const updateNewTitleProducerPortfolio = async(userId: number, newId: number) => {
     try {
+        
         const data = await prisma.producerPortfolio.update({
             data: {
                 isTitle: true,
@@ -10,7 +11,7 @@ const updateNewTitleProducerPortfolio = async(userId: number, newId: number) => 
                 producerPortfolio: {
                     producerId: userId,
                     id: newId,
-                },
+                }, 
             },
         });
 

@@ -1,4 +1,5 @@
 import config from '../../../global/config';
+import prisma from '../../../global/config/prismaClient';
 import { rm } from '../../../global/constants';
 import { InvalidProducerPortfolio, InvalidProducerTitlePortfolio, NotProducer, UpdateProducerNewTitleFail, UpdateProducerOldTitleFail, UpdateProducerPortfolioFail, UploadProducerPortfolioFail } from '../../../global/middlewares/error/errorInstance';
 import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneProducerPortfolio';
@@ -60,17 +61,21 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
         const currentTitle = await getProducerPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'producer') throw new InvalidProducerTitlePortfolio(rm.INVALID_USER_TITLE);
 
-        //& 현재 타이틀 포트폴리오 업데이트
-        const oldData = await updateOldTitleProducerPortfolio(Number(titleDTO.userId), oldId);
-        if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_PRODUCER_OLD_TITLE_FAIL);
+        const prismaResult = await prisma.$transaction(async (prisma) => {
+            //& 현재 타이틀 포트폴리오 업데이트
+            const oldData = await updateOldTitleProducerPortfolio(Number(titleDTO.userId), oldId);
+            if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_PRODUCER_OLD_TITLE_FAIL);
+    
+            //& 바뀔 타이틀 포트폴리오 업데이트
+            const newData = await updateNewTitleProducerPortfolio(Number(titleDTO.userId), newId);
+            if (!newData) throw new UpdateProducerNewTitleFail(rm.UPDATE_PRODUCER_NEW_TITLE_FAIL);
 
-        //& 바뀔 타이틀 포트폴리오 업데이트
-        const newData = await updateNewTitleProducerPortfolio(Number(titleDTO.userId), newId);
-        if (!newData) throw new UpdateProducerNewTitleFail(rm.UPDATE_PRODUCER_NEW_TITLE_FAIL);
+            return { oldData, newData };
+        });
 
         const result: TitleUpdateReturnDTO = {
-            oldTitleId: oldData.id,
-            newTitleId: newData.id,
+            oldTitleId: prismaResult.oldData.id,
+            newTitleId: prismaResult.newData.id,
         };
         return result;
     } catch (error) {
