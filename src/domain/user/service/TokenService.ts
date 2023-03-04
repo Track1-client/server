@@ -3,13 +3,7 @@ import { rm, tokenType } from '../../../global/constants';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
 import { RefreshAccessTokenDTO } from '../interfaces';
-import { 
-    RefreshTokenDoesNotExists, 
-    AccessTokenDoesNotExists,
-    AccessTokenInvalid,
-    UnauthorizedUser,
-    AccessTokenNotExpired,
-} from './../../../global/middlewares/error/errorInstance/user';
+import { RefreshTokenDoesNotExists, AccessTokenDoesNotExists, AccessTokenInvalid, UnauthorizedUser, AccessTokenNotExpired } from './../../../global/middlewares/error/errorInstance/user';
 
 
 const isTokenExists = async(accessToken: string, refreshToken: string) => {

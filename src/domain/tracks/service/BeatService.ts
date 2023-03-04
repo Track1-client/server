@@ -103,7 +103,7 @@ const updateBeatClosed = async(beatId: number, closedDTO: BeatClosedUpdateDTO) =
     } catch (error) {
         throw error;
     }
-}
+};
 
 const deleteBeatById = async(userId: number, beatId: number) => {
     try {

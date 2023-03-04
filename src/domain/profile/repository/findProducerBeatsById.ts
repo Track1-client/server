@@ -1,10 +1,7 @@
-import { InvalidProducer } from './../../../global/middlewares/error/errorInstance';
 import config from '../../../global/config';
 import prisma from '../../../global/config/prismaClient';
-import { BeatReturnDTO, PortfolioDTO, ProducerProfileDTO } from '../interfaces';
-import { rm } from '../../../global/constants';
+import { BeatReturnDTO } from '../interfaces';
 import { getS3OneBeatObject, getS3OneImageObject } from '../../../global/modules/S3Object/get';
-import { producerTitleAsPortfolioDTO } from '.';
 
 function objectParams_url(bucketName: string, fileKey: string) {
     return {

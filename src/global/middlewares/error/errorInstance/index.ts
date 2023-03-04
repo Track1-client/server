@@ -77,6 +77,8 @@ export {
     InvalidProducerTitlePortfolio,
     InvalidVocalTitlePortfolio,
     GetMyInformationFail,
+    ProducerTitleNotFound,
+    VocalTitleNotFound,
 } from './mypage';
 
 export {

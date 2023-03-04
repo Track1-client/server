@@ -11,3 +11,5 @@ export { InvalidVocalPortfolio } from './InvalidVocalPortfolio';
 export { InvalidProducerTitlePortfolio } from './InvalidProducerTitlePortfolio';
 export { InvalidVocalTitlePortfolio } from './InvalidVocalTitlePortfolio';
 export { GetMyInformationFail } from './GetMyInformationFail';
+export { ProducerTitleNotFound } from './ProducerTitleNotFound';
+export { VocalTitleNotFound } from './VocalTitleNotFound';
