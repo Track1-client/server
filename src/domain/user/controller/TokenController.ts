@@ -14,11 +14,11 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
 
         return res
                 .cookie('refreshToken', data.refreshToken, {
-                    //httpOnly: true,
-                    //secure: true,
-                    //sameSite: 'none',
-                    //domain: '.track1.site',
-                    domain: 'localhost',
+                    httpOnly: true,
+                    secure: true,
+                    sameSite: 'none',
+                    domain: '.track1.site',
+                    path: '/',
                     maxAge: 60 * 24 * 60 * 60 * 1000 , // 유효기간 60일 
                 })
                 .status(sc.CREATED)
