@@ -1,3 +1,4 @@
+import prisma from '../../../global/config/prismaClient';
 import { rm } from '../../../global/constants';
 import { CommentFilesGetFail, CommentFileUpdateFail, CommentFileUploadFail, InvalidBeatId, InvalidVocalComment, NotVocal } from '../../../global/middlewares/error/errorInstance';
 import deleteS3CommentAudio from '../../../global/modules/S3Object/delete/deleteOneComment';
@@ -15,15 +16,17 @@ const createComment = async (beatId: number, tableName: string, userId: number, 
         const isValidBeat = await getBeatById(beatId);
         if (!isValidBeat) throw new InvalidBeatId(rm.INVALID_BEAT_ID);
 
-        const data = await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey)
-                            .then(async (comment) => {
-                                await upsertVocalOrder(comment.vocalId, 'commemt', comment.id);
-                                return comment;
-                            })  //! vocalOrder 생성 또는 업데이트 
-                            .catch((error) => { throw new CommentFileUploadFail(rm.UPLOAD_COMMENT_FAIL) })
+        const resultPrisma = await prisma.$transaction(async (prisma) => {
+            return await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey)
+                                .then(async (comment) => {
+                                    await upsertVocalOrder(comment.vocalId, 'commemt', comment.id);
+                                    return comment;
+                                })  //! vocalOrder 생성 또는 업데이트 
+                                .catch((error) => { throw new CommentFileUploadFail(rm.UPLOAD_COMMENT_FAIL) })
+        });
 
         const result: CommentCreateReturnDTO = {
-            commentId: data.id,
+            commentId: resultPrisma.id,
         };
         return result;
     } catch (error) {

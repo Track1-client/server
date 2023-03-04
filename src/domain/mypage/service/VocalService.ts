@@ -17,13 +17,12 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         const isTitle = ( !getPortfolioNumber ) ? true : false;
         
         const prismaResult = await prisma.$transaction(async (prisma) => {
-            const portfolio = await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey)
+            return await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey)
                                         .then(async (portfolio) => { 
                                             await upsertVocalOrder(portfolio.vocalId, 'portfolio', portfolio.id); 
                                             return portfolio;
                                         })
                                         .catch((error) => { throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL) })
-            return portfolio;
         });
 
         const getTitle = await getVocalPortfolioTitleByUserId(userId);
