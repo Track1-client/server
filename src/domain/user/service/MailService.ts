@@ -1,6 +1,6 @@
 import config from '../../../global/config';
 import { rm } from '../../../global/constants';
-import { CreateAuth, CreateAuthCode, SendAuthCode, SendResetPassword, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
+import { CreateAuth, CreateAuthCode, SendAuthCode, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
 import randomAccessCode from '../../../global/modules/getAccessCode';
 import sendAuthCodeMail from '../../../global/modules/sendAuthCodeMail';
 import sendPasswordResetMail from '../../../global/modules/sendResetPasswordMail';
@@ -80,7 +80,6 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
                 }
             });
         }, 30 * 60 * 1000);
-
 
         const result: AuthCodeReturnDTO = {
             tableName: data.tableName,
