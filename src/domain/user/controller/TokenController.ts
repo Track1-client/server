@@ -6,9 +6,8 @@ import { success } from '../../../global/constants/response';
 const refresh = async(req: Request, res: Response, next: NextFunction) => {
     try {
         const accessToken = req.headers.authorization?.split(" ").reverse()[0];
-        
         const { refreshToken } = req.cookies;
-        console.log(refreshToken);
+        
         await TokenService.isTokenExists(accessToken as string, refreshToken as string);
         const data = await TokenService.isRefreshValid(accessToken as string, refreshToken as string);
 
