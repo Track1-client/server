@@ -12,7 +12,7 @@ const cookieInfo: any = {
     httpOnly: true,
     secure: true,
     sameSite: 'none',
-    domain: '.track1.site',
+    domain: '.track-1.link',
     maxAge: 60 * 24 * 60 * 60 * 1000,
 };
 
