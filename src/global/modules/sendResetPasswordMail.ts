@@ -6,7 +6,7 @@ import { SendResetPassword } from '../middlewares/error/errorInstance';
 
 const sendPasswordResetMail = async(auth: Auth, image: string) => {
     try {
-        const endpoint = '/';   //! *********** TO-DO 클라이언트 endpoint 작성하기 ***********
+        const endpoint = '/resetPassword';   //! *********** TO-DO 클라이언트 endpoint 작성하기 ***********
 
         await smtpTransport.sendMail({
             from: 'admin@track-1.link',

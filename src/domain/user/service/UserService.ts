@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
 import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuthById } from '../repository';
+import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuthById, deleteTempUserByEmail } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
@@ -18,6 +18,8 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
 
         const producer = await createUser.createProducer(producerCreateDTO, password, location);
         if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
+
+        await deleteTempUserByEmail('producer', producer.producerID);
 
         const result: UserCreateResultDTO = {
             id: producer.id,
@@ -42,6 +44,8 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
         const vocal = await createUser.createVocal(vocalCreateDTO, password, location);
         if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
 
+        await deleteTempUserByEmail('vocal', vocal.vocalID);
+        
         const result: UserCreateResultDTO = {
             id: vocal.id,
             name: vocal.name,
