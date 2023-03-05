@@ -116,7 +116,7 @@ const checkEmail = async(req: Request, res: Response, next: NextFunction) => {
             isDuplicate,
             email: checkDTO.userEmail,
         };
-        return res.status(sc.OK).send(success(sc.OK, rm.DONE_CHECK_USER_NAME, result));
+        return res.status(sc.OK).send(success(sc.OK, rm.EMAIL_CHECK_DONE, result));
     } catch (error) {
         return next(error);
     }
