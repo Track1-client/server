@@ -3,10 +3,11 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
-import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO, NewPasswordDTO } from '../interfaces';
+import { ProducerCreateDTO, SignInDTO, SignInResultDTO, VocalCreateDTO, UserUpdateDTO, NewPasswordDTO, CheckNameResultDTO, EmailDTO } from '../interfaces';
 import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import getLocation from '../../../global/modules/file/multer/key';
+import MailService from '../service/MailService';
 
 const cookieInfo: any = {
     httpOnly: true,
@@ -105,11 +106,16 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
     }
 };
 
-const checkName = async(req: Request, res: Response, next: NextFunction) => {
+const checkEmail = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const { name, tableName } = req.query;
+        const checkDTO: EmailDTO = req.body;
         
-        const result = await UserService.checkName(name as string, tableName as string);  //! false -> 중복 닉네임 없음, true -> 중복 닉네임 존재 
+        const isDuplicate = (await MailService.isEmailExists(checkDTO)) ? true : false;  //! false -> 중복 닉네임 없음, true -> 중복 닉네임 존재 
+
+        const result: CheckNameResultDTO = {
+            isDuplicate,
+            email: checkDTO.userEmail,
+        };
         return res.status(sc.OK).send(success(sc.OK, rm.DONE_CHECK_USER_NAME, result));
     } catch (error) {
         return next(error);
@@ -152,7 +158,7 @@ const UserController = {
     createVocal,
     updateProfile,
     signIn,
-    checkName,
+    checkEmail,
     updatePassword,
     isPasswordTokenValid,
 };
