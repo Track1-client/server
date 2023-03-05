@@ -46,6 +46,7 @@ export default {
     SEARCH_USER_SUCCESS: "유저 서치 성공",
 
     // 이메일 
+    EMAIL_CHECK_DONE: "이메일 중복 검사 완료",
     ALREADY_EXISTS_EMAIL: "중복된 이메일입니다",
     MAKE_VERIFICATION_CODE_FAIL: "인증코드 생성 실패",
     REMAKE_VERIFICATION_CODE_FAIL: "인증코드 재생성 실패",

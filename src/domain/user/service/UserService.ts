@@ -121,29 +121,6 @@ const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     }
 };
 
-//~ 현재 필요없는 API
-const checkName = async(userName: string, tableName: string): Promise<CheckNameResultDTO> => {
-    try {
-        /**  producer, vocal 내에서 검사하는 경우 
-        const data = (tableName === 'producer') ?
-                            await getUserByName.producerNameExists(userName) :
-                            await getUserByName.vocalNameExists(userName);
-        */
-
-        const producer = await getUserByName.producerNameExists(userName);
-        const vocal = await getUserByName.vocalNameExists(userName);
-        const data = producer || vocal;   //! producer, vocal 테이블 합쳐서 중복검사 
-
-        const result: CheckNameResultDTO = {
-            isDuplicate: data,
-            name: userName
-        };
-        return result;
-    } catch (error) {
-        throw error;
-    }
-};
-
 const updateUserPassword = async(token: string, password: string) => {
     try {
         const auth = await findAuthByToken(token);
@@ -212,7 +189,6 @@ const UserService = {
     joinToken,
     updateUser,
     userLogin,
-    checkName,
     updateUserPassword,
     deleteAuthData,
     isPasswordTokenValid,
