@@ -6,7 +6,7 @@ import sendAuthCodeMail from '../../../global/modules/sendAuthCodeMail';
 import sendPasswordResetMail from '../../../global/modules/sendResetPasswordMail';
 import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
 import crypto from 'crypto';
-import { createAuth, createTempUserTable, deleteTempUserByEmail, findAuthByToken, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
+import { createAuth, deleteTempUserByEmail, findAuthByToken, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
 
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
@@ -25,11 +25,7 @@ const createTempUser = async(emailDTO: EmailDTO) => {
     try {
         let authCode = randomAccessCode();
         
-        const isTempUserExists = await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail);
-        const tempUser = (!isTempUserExists) ? 
-                            await createTempUserTable(emailDTO, authCode) :
-                            await upsertCodeInTempUser(emailDTO, authCode); 
-        
+        const tempUser = await upsertCodeInTempUser(emailDTO, authCode); 
         if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
 
         //! 메일 보내기
@@ -69,7 +65,6 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
         } while (newAuthCode === oldAuthCode);
         
         const data = await upsertCodeInTempUser(emailDTO, newAuthCode);
-
         if (!data) throw new UpdateAuthCode(rm.REMAKE_VERIFICATION_CODE_FAIL);
         
         //! 메일 보내기 
@@ -130,12 +125,9 @@ const createAuthTable = async(userId: number, tableName: string, userEmail: stri
             if (!oldToken) break;
         } while (oldToken);
 
-        //! TO-DO 만약 이미 존재하면 업데이트 
-
-
         const auth = await createAuth(userId, tableName, userEmail, newToken);
-
         if (!auth) throw new CreateAuth(rm.FAIL_CREATE_AUTH);
+
         return auth;
     } catch (error) {
         throw error;

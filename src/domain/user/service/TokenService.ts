@@ -5,7 +5,6 @@ import redisClient from '../../../global/config/redisClient';
 import { RefreshAccessTokenDTO } from '../interfaces';
 import { RefreshTokenDoesNotExists, AccessTokenDoesNotExists, AccessTokenInvalid, UnauthorizedUser, AccessTokenNotExpired } from './../../../global/middlewares/error/errorInstance/user';
 
-
 const isTokenExists = async(accessToken: string, refreshToken: string) => {
     try {
         if (!accessToken) throw new AccessTokenDoesNotExists(rm.EMPTY_ACCESS_TOKEN);
