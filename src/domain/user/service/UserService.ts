@@ -2,7 +2,7 @@ import { AlreadyExistsEmail, ProducerJoinFail, ResetPasswordTimePassed, Unauthor
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
+import { ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
 import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuthById, deleteTempUserByEmail } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';

@@ -24,7 +24,11 @@ const isEmailExists = async(emailDTO: EmailDTO) => {
 const createTempUser = async(emailDTO: EmailDTO) => {
     try {
         let authCode = randomAccessCode();
-        const tempUser = await createTempUserTable(emailDTO, authCode);
+        
+        const isTempUserExists = await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail);
+        const tempUser = (!isTempUserExists) ? 
+                            await createTempUserTable(emailDTO, authCode) :
+                            await upsertCodeInTempUser(emailDTO, authCode); 
         
         if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
 
@@ -125,6 +129,9 @@ const createAuthTable = async(userId: number, tableName: string, userEmail: stri
             
             if (!oldToken) break;
         } while (oldToken);
+
+        //! TO-DO 만약 이미 존재하면 업데이트 
+
 
         const auth = await createAuth(userId, tableName, userEmail, newToken);
 

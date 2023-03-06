@@ -9,7 +9,10 @@ const sendPasswordResetMail = async(auth: Auth, image: string) => {
         const endpoint = '/resetPassword';   //! *********** TO-DO 클라이언트 endpoint 작성하기 ***********
 
         await smtpTransport.sendMail({
-            from: 'admin@track-1.link',
+            from: {
+                name: 'Track-1',
+                address: 'admin@track-1.link'
+            },
             to: auth.userEmail,
             subject: 'Request to reset your Track-1 password',
             html: ejsPasswordSetting(auth.token, image, endpoint)
