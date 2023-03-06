@@ -6,7 +6,7 @@ import sendAuthCodeMail from '../../../global/modules/sendAuthCodeMail';
 import sendPasswordResetMail from '../../../global/modules/sendResetPasswordMail';
 import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
 import crypto from 'crypto';
-import { createAuth, deleteTempUserByEmail, findAuthByToken, findTempUserByEmail, getUserByEmail, upsertCodeInTempUser } from '../repository';
+import { createAuth, findTempUserByEmail, findAuthByToken, findTempUserByEmailAndTime, getUserByEmail, upsertCodeInTempUser } from '../repository';
 
 const isEmailExists = async(emailDTO: EmailDTO) => {
     try {
@@ -97,12 +97,14 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
 };
 
 const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
-    const getAuthCode = await findTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
-    
-    if (!getAuthCode) throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST);
+    const getAuthCode = await findTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail)
+                            .then(async () => {
+                                return await findTempUserByEmailAndTime(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
+                            })
+                            .catch((error) => { throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST) });
 
     //! 일치하지 않는 경우 (유효시간 지났거나 다른 코드 입력)
-    if (getAuthCode.authCode !== verifyCodeDTO.verificationCode) throw new InvalidVerificationCode(rm.INVALID_VERIFICATION_CODE);
+    if (!getAuthCode || getAuthCode.authCode !== verifyCodeDTO.verificationCode) throw new InvalidVerificationCode(rm.INVALID_VERIFICATION_CODE);
 
     //! 일치하는 경우 tempUser 삭제 로직 -> 회원가입 시 삭제로 변경
     //await deleteTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);

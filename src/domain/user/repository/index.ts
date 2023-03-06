@@ -5,6 +5,7 @@ export { default as getUserByLoginID } from './findUserByLoginID';
 export { default as getUserByEmail } from './findUserByEmail';
 export { default as getUserByName } from './findUserByName';
 export { default as findTempUserByEmail } from './findTempUserByEmail';
+export { default as findTempUserByEmailAndTime } from './findTempUserByEmailAndTime';
 export { default as getUserById } from './findUserById'; 
 export { default as findAuthByToken } from './findAuthByToken';
 export { default as updateUserProfile } from './updateUserProfileById';

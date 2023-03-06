@@ -5,15 +5,15 @@ const findTempUserByEmail = async(tableName: string, userEmail: string) => {
         const authCode = await prisma.tempUser.findUnique({
             where: {
                 tableEmail: {
+                    userEmail,
                     tableName,
-                    userEmail
                 },
             },
             select: {
                 authCode: true,
             },
         });
-    
+        
         return authCode;
     } catch(error) {
         throw error;

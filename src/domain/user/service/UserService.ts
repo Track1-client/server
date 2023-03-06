@@ -41,6 +41,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
         const salt = await bcrypt.genSalt(10);
         const password = await bcrypt.hash(vocalCreateDTO.PW, salt); 
 
+        
         const vocal = await createUser.createVocal(vocalCreateDTO, password, location);
         if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
 
