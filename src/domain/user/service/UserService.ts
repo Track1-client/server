@@ -19,7 +19,7 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
         const producer = await createUser.createProducer(producerCreateDTO, password, location);
         if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
 
-        await deleteTempUserByEmail('producer', producer.producerID);
+        await deleteTempUserByEmail('producer', producer.producerID);       //! 인증코드 데이터 삭제
 
         const result: UserCreateResultDTO = {
             id: producer.id,
@@ -44,7 +44,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
         const vocal = await createUser.createVocal(vocalCreateDTO, password, location);
         if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
 
-        await deleteTempUserByEmail('vocal', vocal.vocalID);
+        await deleteTempUserByEmail('vocal', vocal.vocalID);        //! 인증코드 데이터 삭제
         
         const result: UserCreateResultDTO = {
             id: vocal.id,

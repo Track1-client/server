@@ -55,7 +55,7 @@ export default {
     CODE_VERIFY_SUCCESS: "인증코드 인증 성공",
     CODE_VERIFY_FAIL: "인증코드 인증 실패",
     SEND_VERIFY_MAIL_FIRST: "인증메일 먼저 전송받은 후 인증하세요",
-    VALID_AUTH_TIME_PASSED: "유효 인증 시간이 지났습니다",
+    INVALID_VERIFICATION_CODE: "유효 인증 시간 경과 또는 올바르지 않은 인증코드 입력",
     PASSWORD_RESET_MAIL_SEND_SUCCESS: "비밀번호 재설정 메일 전송 성공",
     PASSWORD_RESET_MAIL_SEND_FAIL: "비밀번호 재설정 메일 전송 실패",
     PASSWORD_RESET_TIME_PASSED: "비밀번호 초기화 링크 3시간 초과",

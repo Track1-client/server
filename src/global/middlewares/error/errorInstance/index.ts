@@ -19,7 +19,7 @@ export {
     AlreadyExistsEmail,
     UpdateAuthCode,
     SendAuthCode,
-    ValidAuthTimePassed,
+    InvalidVerificationCode,
     CreateAuthCode,
     SendResetPassword,
 } from './user';
