@@ -78,6 +78,8 @@ model TempUser {
   tableName String @db.VarChar(100)
   userEmail String @db.VarChar(100)
   authCode  String @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([tableName, userEmail], name: "tableEmail")
 }

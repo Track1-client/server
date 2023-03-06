@@ -32,6 +32,7 @@ const createTempUser = async(emailDTO: EmailDTO) => {
         const image = config.track1EmailImage;
         sendAuthCodeMail(emailDTO.userEmail, authCode, image);
 
+        /*
         //* 인증시간 30분 지나면 삭제 
         setTimeout(async() => {
             await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail).then(async(data) => {
@@ -40,7 +41,8 @@ const createTempUser = async(emailDTO: EmailDTO) => {
                 }
             });
         }, 30 * 60 * 1000);
-
+        */
+        
         const result: AuthCodeReturnDTO = {
             tableName: tempUser.tableName,
             userEmail: tempUser.userEmail,
@@ -71,6 +73,7 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
         const image = config.track1EmailImage;
         sendAuthCodeMail(emailDTO.userEmail, newAuthCode, image);
 
+        /*
         //* 인증시간 30분 지나면 삭제 
         setTimeout(async() => {
             await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail).then(async(data) => {
@@ -79,7 +82,8 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
                 }
             });
         }, 30 * 60 * 1000);
-
+        */
+        
         const result: AuthCodeReturnDTO = {
             tableName: data.tableName,
             userEmail: data.userEmail,
