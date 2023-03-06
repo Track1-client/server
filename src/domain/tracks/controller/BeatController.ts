@@ -3,7 +3,7 @@ import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import convertCategory from '../../../global/modules/convertCategory';
 import getLocation from '../../../global/modules/file/multer/key';
-import { BeatClosedUpdateDTO, BeatCreateDTO } from '../interfaces';
+import { BeatClosedUpdateDTO, BeatCreateDTO, BeatGetDTO } from '../interfaces';
 import { BeatService } from '../service';
 
 const createBeat = async(req: Request, res: Response, next: NextFunction) => {
@@ -27,6 +27,18 @@ const getBeatList = async(req: Request, res: Response, next: NextFunction) => {
 
         const result = await BeatService.getBeatList(Number(page), Number(limit), convertCategory(categ));
         return res.status(sc.OK).send(success(sc.OK, rm.GET_TRACK_LIST_SUCCESS, result));
+    } catch (error) {
+        return next(error);
+    }
+};
+
+const getBeat = async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { beatId } = req.params;
+        const beatDTO: BeatGetDTO = req.body;
+
+        const result = await BeatService.getBeat(beatDTO, Number(beatId));
+        return res.status(sc.OK).send(success(sc.OK, rm.GET_TRACK_INFO_SUCCESS, result));
     } catch (error) {
         return next(error);
     }
@@ -86,6 +98,7 @@ const deleteBeat = async(req: Request, res: Response, next: NextFunction) => {
 const BeatController = {
     createBeat,
     getBeatList,
+    getBeat,
     getBeatFile,
     updateBeat,
     updateBeatClosed,

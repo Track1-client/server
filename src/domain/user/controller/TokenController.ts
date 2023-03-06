@@ -16,7 +16,9 @@ const refresh = async(req: Request, res: Response, next: NextFunction) => {
                     httpOnly: true,
                     secure: true,
                     sameSite: 'none',
-                    domain: '.track1.site',
+                    domain: '.track-1.link',
+                    path: '/',
+                    maxAge: 60 * 24 * 60 * 60 * 1000 , // 유효기간 60일 
                 })
                 .status(sc.CREATED)
                 .send(success(sc.CREATED, rm.CREATE_TOKEN_SUCCESS, data.accessToken));

@@ -8,20 +8,23 @@ import cookieParser from 'cookie-parser';
 const app = express(); 
 const PORT = 3000;
 
+app.use(cookieParser());
+
 const corsOriginList = [
-    'https://www.track1.site'
+    'https://www.track1.site',
+    'https://localhost:3000',
+    'http://localhost:3000'
 ];
 
 const corsOptions = {
     origin: corsOriginList,
-    credential: true,
+    credentials: true,
     optionsSuccessStatus: 200,
 };
 
 app.use(cors(corsOptions));
 app.use(corsMiddleware(corsOriginList));
 
-app.use(cookieParser());
 app.use(express.json());
 
 app.use("/", router); 

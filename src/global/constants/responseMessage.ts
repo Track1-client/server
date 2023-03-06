@@ -46,6 +46,7 @@ export default {
     SEARCH_USER_SUCCESS: "유저 서치 성공",
 
     // 이메일 
+    EMAIL_CHECK_DONE: "이메일 중복 검사 완료",
     ALREADY_EXISTS_EMAIL: "중복된 이메일입니다",
     MAKE_VERIFICATION_CODE_FAIL: "인증코드 생성 실패",
     REMAKE_VERIFICATION_CODE_FAIL: "인증코드 재생성 실패",
@@ -54,7 +55,7 @@ export default {
     CODE_VERIFY_SUCCESS: "인증코드 인증 성공",
     CODE_VERIFY_FAIL: "인증코드 인증 실패",
     SEND_VERIFY_MAIL_FIRST: "인증메일 먼저 전송받은 후 인증하세요",
-    VALID_AUTH_TIME_PASSED: "유효 인증 시간이 지났습니다",
+    INVALID_VERIFICATION_CODE: "유효 인증 시간 경과 또는 올바르지 않은 인증코드 입력",
     PASSWORD_RESET_MAIL_SEND_SUCCESS: "비밀번호 재설정 메일 전송 성공",
     PASSWORD_RESET_MAIL_SEND_FAIL: "비밀번호 재설정 메일 전송 실패",
     PASSWORD_RESET_TIME_PASSED: "비밀번호 초기화 링크 3시간 초과",
@@ -76,6 +77,8 @@ export default {
     UPDATE_TRACK_CLOSED_FAIL: "게시글 마감 업데이트 실패",
     DELETE_TRACK_SUCCESS: "게시글 삭제 성공",
     DELETE_TRACK_FAIL: "게시글 삭제 실패",
+    GET_TRACK_INFO_SUCCESS: "게시글 정보 조회 성공",
+    GET_TRACK_INFO_FAIL: "게시글 정보 조회 실패",
     GET_TRACK_LIST_SUCCESS: "게시글 조회 성공",
     GET_TRACK_LIST_FAIL: "게시글 조회 실패",
     GET_TRACK_FILE_SUCCESS: "게시글 파일 다운로드 성공",
@@ -88,6 +91,8 @@ export default {
     S3_CANNOT_FIND_IMAGE_FILE_OBJECT: "해당 버킷에서 이미지 객체를 찾을 수 없음",
 
     // 댓글 관련
+    GET_COMMENT_LIST_SUCCESS: "댓글 조회 성공",
+    GET_COMMENT_LIST_FAIL: "댓글 조회 실패",
     UPLOAD_COMMENT_SUCCESS: "댓글 업로드 성공",
     UPLOAD_COMMENT_FAIL: "댓글 업로드 실패",
     UPDATE_COMMENT_SUCCESS: "댓글 수정 성공",
@@ -100,6 +105,8 @@ export default {
     // 포트폴리오 관련
     NOT_PRODUCER: "프로듀서 아님",
     NOT_VOCAL: "보컬 아님",
+    PRODUCER_TITLE_NOT_FOUND: "프로듀서 타이틀이 존재하지 않음",
+    VOCAL_TITLE_NOT_FOUND: "보컬 타이틀이 존재하지 않음",
     UPLOAD_PRODUCER_PORTFOLIO_SUCCESS: "프로듀서 포트폴리오 업로드 성공",
     UPLOAD_PRODUCER_PORTFOLIO_FAIL: "프로듀서 포트폴리오 업로드 실패",
     UPLOAD_VOCAL_PORTFOLIO_SUCCESS: "보컬 포트폴리오 업로드 성공",

@@ -17,7 +17,7 @@ const expressValidatorArray = [
 router.get('/refresh', TokenController.refresh);
 
 //? 닉네임 중복 검사
-router.get('/check-name', UserController.checkName);
+router.post('/check-email', UserController.checkEmail);
 
 //* 회원가입 인증코드 메일 전송 
 router.post(

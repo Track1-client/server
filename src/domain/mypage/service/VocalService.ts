@@ -7,6 +7,7 @@ import { InvalidVocalPortfolio, InvalidVocalTitlePortfolio, UpdateVocalNewTitleF
 import deleteS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneVocalPortfolio';
 import updateS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneVocalPortfolio';
 import { upsertVocalOrder } from '../../vocals/repository';
+import prisma from '../../../global/config/prismaClient';
 
 const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -15,17 +16,19 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         const getPortfolioNumber = await getVocalPortfolioNumberByUserId(userId);
         const isTitle = ( !getPortfolioNumber ) ? true : false;
         
-        const portfolio = await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey)
-                                    .then(async (portfolio) => { 
-                                        await upsertVocalOrder(portfolio.vocalId, 'portfolio', portfolio.id); 
-                                        return portfolio;
-                                    })
-                                    .catch((error) => { throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL) })
-        
+        const prismaResult = await prisma.$transaction(async (prisma) => {
+            return await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey)
+                                        .then(async (portfolio) => { 
+                                            await upsertVocalOrder(portfolio.vocalId, 'portfolio', portfolio.id); 
+                                            return portfolio;
+                                        })
+                                        .catch((error) => { throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL) })
+        });
+
         const getTitle = await getVocalPortfolioTitleByUserId(userId);
 
         const result: VocalPortfolioCreateReturnDTO = {
-            vocalPortfolioId: portfolio.id,
+            vocalPortfolioId: prismaResult.id,
             vocalTitleId: getTitle?.id as number,
         };  
         return result;
@@ -65,18 +68,22 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
         //& 현재 타이틀 포트폴리오 확인
         const currentTitle = await getVocalPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'vocal') throw new InvalidVocalTitlePortfolio(rm.INVALID_USER_TITLE);
+        
+        const prismaResult = await prisma.$transaction(async (prisma) => {
+            //& 현재 타이틀 포트폴리오 업데이트
+            const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId);
+            if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
+    
+            //& 바뀔 타이틀 포트폴리오 업데이트
+            const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId);
+            if (!newData) throw new UpdateVocalNewTitleFail(rm.UPDATE_VOCAL_NEW_TITLE_FAIL);
 
-        //& 현재 타이틀 포트폴리오 업데이트
-        const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId);
-        if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
-
-        //& 바뀔 타이틀 포트폴리오 업데이트
-        const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId);
-        if (!newData) throw new UpdateVocalNewTitleFail(rm.UPDATE_VOCAL_NEW_TITLE_FAIL);
+            return { oldData, newData };
+        });
 
         const result: TitleUpdateReturnDTO = {
-            oldTitleId: oldData.id,
-            newTitleId: newData.id,
+            oldTitleId: prismaResult.oldData.id,
+            newTitleId: prismaResult.newData.id,
         };
         return result;
     } catch (error) {

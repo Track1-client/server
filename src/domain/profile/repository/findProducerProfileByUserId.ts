@@ -4,7 +4,6 @@ import prisma from '../../../global/config/prismaClient';
 import { PortfolioDTO, ProducerProfileDTO } from '../interfaces';
 import { rm } from '../../../global/constants';
 import { getS3OneBeatObject, getS3OneImageObject } from '../../../global/modules/S3Object/get';
-import { getProducerPortfolioTitleByUserId } from '../../mypage/repository';
 import { producerTitleAsPortfolioDTO } from '.';
 
 function objectParams_url(bucketName: string, fileKey: string) {
@@ -46,9 +45,14 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
                     keyword: producer.keyword,
                     introduce: producer.introduce as string,
                 };
+
+
+                let portfolioList: any[] = [];
+                const producerTitle = await producerTitleAsPortfolioDTO(producerId);
+                if (producer.ProducerPortfolio.length === 0 && producerTitle === undefined) return { profileDTO , portfolioList }; //! 타이틀만 있는 경우 
                 
                 //! 포트폴리오 데이터 리스트 
-                const portfolioList = await Promise.all(producer.ProducerPortfolio.map(async (portfolio) => {
+                portfolioList = await Promise.all(producer.ProducerPortfolio.map(async (portfolio) => {
                     const beatURL = await getS3OneBeatObject(objectParams_url(config.producerPortfolioBucketName, portfolio.portfolioFile));
                     const imageURL = (portfolio.portfolioImage === config.defaultJacketAndProducerPortfolioImage) ? 
                                         portfolio.portfolioImage : 
@@ -67,7 +71,7 @@ const findProducerProfileById = async(producerId: number, limit: number, page: n
                     return portfolioDTO;
                 }));
 
-                portfolioList.unshift(await producerTitleAsPortfolioDTO(producerId));  //! 포트폴리오배열 [0]에 타이틀 넣기 
+                portfolioList.unshift(producerTitle);  //! 포트폴리오배열 [0]에 타이틀 넣기 
 
                 return { profileDTO, portfolioList };
             });

@@ -1,0 +1,57 @@
+name: deploy
+
+on:
+  push:
+    branches: [main]   #main 브랜치 push 또는 main 브랜치로 pr 보낼 때 체크 
+  pull_request:
+    branches: [main]    
+
+jobs:
+  build:
+    runs-on: ubuntu-latest   
+
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - name: Checkout source code.
+        uses: actions/checkout@v3
+
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}   
+
+      - name: Install dependencies   
+        run: yarn install --frozen-lockfile  
+
+      - name: create env file  
+        run: |
+          echo "${{ secrets.ENV_FILE }}" > .env
+
+      - name: build server files   
+        working-directory: ./
+        run: |
+          yarn add typescript && yarn run build       
+
+### for code deploy 
+      - name: zip file
+        run: zip -r track_1.zip ./dist ./scripts ./appspec.yml ./.env ./package.json ./yarn.lock ./nodemon.json ./prisma ./src/global/config/template
+
+      - name: AWS configure credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./track_1.zip s3://devops-track-1/deploy/
+
+      - name: deploy with AWS codeDeploy
+        run: aws deploy create-deployment
+          --application-name Track-1_CD_application
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name Track-1_CD_group
+          --s3-location bucket=devops-track-1,bundleType=zip,key=deploy/track_1.zip   

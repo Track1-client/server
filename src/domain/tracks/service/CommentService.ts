@@ -1,11 +1,12 @@
+import prisma from '../../../global/config/prismaClient';
 import { rm } from '../../../global/constants';
-import { CommentFileUpdateFail, CommentFileUploadFail, InvalidBeatId, InvalidVocalComment, NotVocal } from '../../../global/middlewares/error/errorInstance';
+import { CommentFilesGetFail, CommentFileUpdateFail, CommentFileUploadFail, InvalidBeatId, InvalidVocalComment, NotVocal } from '../../../global/middlewares/error/errorInstance';
 import deleteS3CommentAudio from '../../../global/modules/S3Object/delete/deleteOneComment';
 import updateS3CommentAudio from '../../../global/modules/S3Object/update/updateOneComment';
 import { getUserById } from '../../user/repository';
 import { upsertVocalOrder } from '../../vocals/repository';
-import { CommentCreateDTO, CommentCreateReturnDTO, CommentDeleteDTO, CommentDeleteReturnDTO, CommentUpdateDTO, CommentUpdateReturnDTO } from '../interfaces';
-import { createCommentByUserId, deleteCommentById, getBeatById, getCommentByUserId, updateCommentById } from '../repository';
+import { BeatGetDTO, CommentCreateDTO, CommentCreateReturnDTO, CommentDeleteDTO, CommentDeleteReturnDTO, CommentUpdateDTO, CommentUpdateReturnDTO } from '../interfaces';
+import { createCommentByUserId, deleteCommentById, getBeatById, getCommentById, getCommentByUserId, updateCommentById } from '../repository';
 
 const createComment = async (beatId: number, tableName: string, userId: number, commentDTO: CommentCreateDTO, audioFileKey: string) => {
     try {
@@ -15,17 +16,30 @@ const createComment = async (beatId: number, tableName: string, userId: number, 
         const isValidBeat = await getBeatById(beatId);
         if (!isValidBeat) throw new InvalidBeatId(rm.INVALID_BEAT_ID);
 
-        const data = await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey)
-                            .then(async (comment) => {
-                                await upsertVocalOrder(comment.vocalId, 'commemt', comment.id);
-                                return comment;
-                            })  //! vocalOrder 생성 또는 업데이트 
-                            .catch((error) => { throw new CommentFileUploadFail(rm.UPLOAD_COMMENT_FAIL) })
+        const resultPrisma = await prisma.$transaction(async (prisma) => {
+            return await createCommentByUserId(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey)
+                                .then(async (comment) => {
+                                    await upsertVocalOrder(comment.vocalId, 'commemt', comment.id);
+                                    return comment;
+                                })  //! vocalOrder 생성 또는 업데이트 
+                                .catch((error) => { throw new CommentFileUploadFail(rm.UPLOAD_COMMENT_FAIL) })
+        });
 
         const result: CommentCreateReturnDTO = {
-            commentId: data.id,
+            commentId: resultPrisma.id,
         };
         return result;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getCommentList = async (beatDTO: BeatGetDTO, beatId: number, page: number, limit: number) => {
+    try {
+        const data = await getCommentById(beatDTO, beatId, page, limit);
+        if (!data) throw new CommentFilesGetFail(rm.GET_COMMENT_LIST_FAIL);
+
+        return data;
     } catch (error) {
         throw error;
     }
@@ -77,6 +91,7 @@ const deleteComment = async (commentDTO: CommentDeleteDTO, commentId: number) =>
 
 const CommentService = {
     createComment,
+    getCommentList,
     updateComment,
     deleteComment,
 };

@@ -1,6 +1,6 @@
 import config from '../../../global/config';
 import { rm } from '../../../global/constants';
-import { CreateAuth, CreateAuthCode, SendAuthCode, SendResetPassword, UpdateAuthCode, ValidAuthTimePassed } from '../../../global/middlewares/error/errorInstance';
+import { CreateAuth, CreateAuthCode, SendAuthCode, UpdateAuthCode, InvalidVerificationCode } from '../../../global/middlewares/error/errorInstance';
 import randomAccessCode from '../../../global/modules/getAccessCode';
 import sendAuthCodeMail from '../../../global/modules/sendAuthCodeMail';
 import sendPasswordResetMail from '../../../global/modules/sendResetPasswordMail';
@@ -24,7 +24,11 @@ const isEmailExists = async(emailDTO: EmailDTO) => {
 const createTempUser = async(emailDTO: EmailDTO) => {
     try {
         let authCode = randomAccessCode();
-        const tempUser = await createTempUserTable(emailDTO, authCode);
+        
+        const isTempUserExists = await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail);
+        const tempUser = (!isTempUserExists) ? 
+                            await createTempUserTable(emailDTO, authCode) :
+                            await upsertCodeInTempUser(emailDTO, authCode); 
         
         if (!tempUser) throw new CreateAuthCode(rm.MAKE_VERIFICATION_CODE_FAIL);
 
@@ -81,7 +85,6 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
             });
         }, 30 * 60 * 1000);
 
-
         const result: AuthCodeReturnDTO = {
             tableName: data.tableName,
             userEmail: data.userEmail,
@@ -99,11 +102,11 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     
     if (!getAuthCode) throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST);
 
-    //! 일치하지 않는 경우 (유효기간 지남)
-    if (getAuthCode.authCode !== verifyCodeDTO.verificationCode) throw new ValidAuthTimePassed(rm.VALID_AUTH_TIME_PASSED);
+    //! 일치하지 않는 경우 (유효시간 지났거나 다른 코드 입력)
+    if (getAuthCode.authCode !== verifyCodeDTO.verificationCode) throw new InvalidVerificationCode(rm.INVALID_VERIFICATION_CODE);
 
-    //! 일치하는 경우 삭제시키기 
-    await deleteTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
+    //! 일치하는 경우 tempUser 삭제 로직 -> 회원가입 시 삭제로 변경
+    //await deleteTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
     
     const result: AuthCodeReturnDTO = {
         tableName: verifyCodeDTO.tableName,
@@ -126,6 +129,9 @@ const createAuthTable = async(userId: number, tableName: string, userEmail: stri
             
             if (!oldToken) break;
         } while (oldToken);
+
+        //! TO-DO 만약 이미 존재하면 업데이트 
+
 
         const auth = await createAuth(userId, tableName, userEmail, newToken);
 

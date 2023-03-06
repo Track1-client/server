@@ -2,8 +2,8 @@ import { AlreadyExistsEmail, ProducerJoinFail, ResetPasswordTimePassed, Unauthor
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
-import { CheckNameResultDTO, ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
-import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuthById } from '../repository';
+import { ProducerCreateDTO, RefreshAccessTokenDTO, SignInDTO, SignInResultDTO, UserUpdateDTO, VocalCreateDTO } from '../interfaces';
+import { createUser, getUserByEmail, getUserById, getUserByLoginID, getUserByName, updateUserProfile, updatePassword, findAuthByToken, deleteEveryAuthById, deleteTempUserByEmail } from '../repository';
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
@@ -18,6 +18,8 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
 
         const producer = await createUser.createProducer(producerCreateDTO, password, location);
         if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
+
+        await deleteTempUserByEmail('producer', producer.producerID);       //! 인증코드 데이터 삭제
 
         const result: UserCreateResultDTO = {
             id: producer.id,
@@ -42,6 +44,8 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
         const vocal = await createUser.createVocal(vocalCreateDTO, password, location);
         if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
 
+        await deleteTempUserByEmail('vocal', vocal.vocalID);        //! 인증코드 데이터 삭제
+        
         const result: UserCreateResultDTO = {
             id: vocal.id,
             name: vocal.name,
@@ -121,29 +125,6 @@ const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
     }
 };
 
-//~ 현재 필요없는 API
-const checkName = async(userName: string, tableName: string): Promise<CheckNameResultDTO> => {
-    try {
-        /**  producer, vocal 내에서 검사하는 경우 
-        const data = (tableName === 'producer') ?
-                            await getUserByName.producerNameExists(userName) :
-                            await getUserByName.vocalNameExists(userName);
-        */
-
-        const producer = await getUserByName.producerNameExists(userName);
-        const vocal = await getUserByName.vocalNameExists(userName);
-        const data = producer || vocal;   //! producer, vocal 테이블 합쳐서 중복검사 
-
-        const result: CheckNameResultDTO = {
-            isDuplicate: data,
-            name: userName
-        };
-        return result;
-    } catch (error) {
-        throw error;
-    }
-};
-
 const updateUserPassword = async(token: string, password: string) => {
     try {
         const auth = await findAuthByToken(token);
@@ -212,7 +193,6 @@ const UserService = {
     joinToken,
     updateUser,
     userLogin,
-    checkName,
     updateUserPassword,
     deleteAuthData,
     isPasswordTokenValid,

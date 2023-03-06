@@ -19,7 +19,7 @@ const findVocalTitleByUserIdAsPortfolioDTO = async(userId: number) => {
                 where: { vocalId: userId, isTitle: true },
             })
             .then(async (title) => {
-                if (!title) throw new InvalidVocalTitlePortfolio(rm.INVALID_USER_TITLE);
+                if (!title) return undefined;
 
                 const beatURL = await getS3OneBeatObject(objectParams_url(config.vocalPortfolioBucketName, title.portfolioFile));
                 const imageURL = (title.portfolioImage === config.defaultVocalPortfolioImage) ? 

@@ -19,7 +19,7 @@ export {
     AlreadyExistsEmail,
     UpdateAuthCode,
     SendAuthCode,
-    ValidAuthTimePassed,
+    InvalidVerificationCode,
     CreateAuthCode,
     SendResetPassword,
 } from './user';
@@ -40,11 +40,13 @@ export {
     BeatFileUploadFail,
     BeatFileUpdateFail,
     BeatClosedUpdateFail,
+    CommentFilesGetFail,
     CommentFileUploadFail,
     CommentFileUpdateFail,
     NotProducer,
     NotProducerBeat,
     NoAudioFile,
+    GetBeatFail,
     GetBeatsFail,
     GetBeatFileFail,
     NotVocal,
@@ -75,6 +77,8 @@ export {
     InvalidProducerTitlePortfolio,
     InvalidVocalTitlePortfolio,
     GetMyInformationFail,
+    ProducerTitleNotFound,
+    VocalTitleNotFound,
 } from './mypage';
 
 export {

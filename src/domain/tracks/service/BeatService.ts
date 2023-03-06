@@ -1,9 +1,9 @@
 import deleteS3TrackAudioAndImage from '../../../global/modules/S3Object/delete/deleteOneBeat';
-import { BeatClosedUpdateDTO, BeatClosedUpdateReturnDTO, BeatCreateDTO, BeatCreateReturnDTO, BeatDeleteReturnDTO, GetBeatFileReturnDTO } from '../interfaces';
+import { BeatClosedUpdateDTO, BeatClosedUpdateReturnDTO, BeatCreateDTO, BeatCreateReturnDTO, BeatDeleteReturnDTO, BeatGetDTO, GetBeatFileReturnDTO } from '../interfaces';
 import { getUserById } from '../../user/repository';
-import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, GetBeatsFail, GetBeatFileFail, InvalidBeatId, BeatClosedUpdateFail } from '../../../global/middlewares/error/errorInstance';
+import { BeatFileUploadFail, NotProducer, NotProducerBeat, BeatFileUpdateFail, GetBeatsFail, GetBeatFileFail, InvalidBeatId, BeatClosedUpdateFail, GetBeatFail } from '../../../global/middlewares/error/errorInstance';
 import { rm } from '../../../global/constants';
-import { createBeatByUserId, deleteBeatByUserId, getBeatByUserId, getBeatFileById, getBeatsByCateg, updateBeatById, updateBeatClosedById } from '../repository';
+import { createBeatByUserId, deleteBeatByUserId, getBeatByIdAndUserId, getBeatByUserId, getBeatFileById, getBeatsByCateg, updateBeatById, updateBeatClosedById } from '../repository';
 import config from '../../../global/config';
 import updateS3TrackAudioAndImage from '../../../global/modules/S3Object/update/updateOneBeat';
 
@@ -28,6 +28,17 @@ const getBeatList = async(page: number, limit: number, categ: string[]) => {
     try {
         const data = await getBeatsByCateg(page, limit, categ);
         if (!data) throw new GetBeatsFail(rm.GET_TRACK_LIST_FAIL);
+
+        return data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+const getBeat = async(beatDTO: BeatGetDTO, beatId: number) => {
+    try {
+        const data = await getBeatByIdAndUserId(beatId, beatDTO.tableName, Number(beatDTO.userId));
+        if (!data) throw new GetBeatFail(rm.GET_TRACK_INFO_FAIL);
 
         return data;
     } catch (error) {
@@ -92,7 +103,7 @@ const updateBeatClosed = async(beatId: number, closedDTO: BeatClosedUpdateDTO) =
     } catch (error) {
         throw error;
     }
-}
+};
 
 const deleteBeatById = async(userId: number, beatId: number) => {
     try {
@@ -114,6 +125,7 @@ const deleteBeatById = async(userId: number, beatId: number) => {
 const BeatService = {
     createBeat,
     getBeatList,
+    getBeat,
     getBeatFile,
     updateBeat,
     updateBeatClosed,

@@ -1,4 +1,6 @@
 import prisma from '../../../global/config/prismaClient';
+import { rm } from '../../../global/constants';
+import { VocalTitleNotFound } from '../../../global/middlewares/error/errorInstance';
 
 const findVocalPortfolioTitleById = async(userId: number) => {
     try {
@@ -11,7 +13,7 @@ const findVocalPortfolioTitleById = async(userId: number) => {
 
         return title;
     } catch(error) {
-        throw error;
+        throw new VocalTitleNotFound(rm.VOCAL_TITLE_NOT_FOUND);
     }
 };
 

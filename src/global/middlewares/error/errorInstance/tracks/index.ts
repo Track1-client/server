@@ -5,6 +5,7 @@ export {
     NotProducer,
     NotProducerBeat,
     NoAudioFile,
+    GetBeatFail,
     GetBeatsFail,
     GetBeatFileFail,
     NotVocal,
@@ -13,6 +14,7 @@ export {
 export { 
     CommentFileUploadFail,
     CommentFileUpdateFail,
+    CommentFilesGetFail,
     InvalidBeatId,
     InvalidVocalComment,
 } from './comment';
