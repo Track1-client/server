@@ -1,4 +1,3 @@
-export { default as createTempUserTable } from './createTempUserByEmail';
 export { default as createAuth } from './createAuth';
 export { default as createUser } from './createUser';
 export { default as upsertCodeInTempUser } from './upsertUserAuthCode';
