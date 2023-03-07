@@ -26,7 +26,7 @@ const createComment = async (beatId: number, tableName: string, userId: number, 
 
             return await vocalCommentOrderRepository.createVocalComment(beatId, commentDTO, isValidBeat.producerId, userId, audioFileKey, $transaction)
                                 .then(async (comment) => {
-
+                                    
                                     await vocalCommentOrderRepository.upsertVocalOrder(comment.vocalId, 'commemt', comment.id, $transaction); //! vocalOrder 생성 또는 업데이트 
                                     return comment;
 
