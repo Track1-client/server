@@ -1,7 +1,10 @@
 import prisma from '../../../../global/config/prismaClient';
 
+
 const findVocalPortfolioByUserId = async(userId: number, portfolioId: number) => {
+
     try {
+
         const data = await prisma.vocalPortfolio.findUnique({
             where: {
                 vocalPortfolio: {
@@ -12,9 +15,14 @@ const findVocalPortfolioByUserId = async(userId: number, portfolioId: number) =>
         });
 
         return data;
+
     } catch(error) {
+
         throw error;
+
     }
+
 };
+
 
 export default findVocalPortfolioByUserId;

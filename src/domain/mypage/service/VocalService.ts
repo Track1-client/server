@@ -8,6 +8,11 @@ import deleteS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Objec
 import updateS3VocalPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneVocalPortfolio';
 import { upsertVocalOrder } from '../../vocals/repository';
 import prisma from '../../../global/config/prismaClient';
+import VocalTitleRepository from '../repository/VocalTitleRepository';
+
+
+const vocalTitleRepository = new VocalTitleRepository();
+
 
 const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -72,11 +77,11 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
         
         const prismaResult = await prisma.$transaction(async ($transaction) => {
             //& 현재 타이틀 포트폴리오 업데이트
-            const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId, $transaction);
+            const oldData = await vocalTitleRepository.updateOldTitle(Number(titleDTO.userId), oldId, $transaction);
             if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
             
             //& 바뀔 타이틀 포트폴리오 업데이트
-            const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId, $transaction);
+            const newData = await vocalTitleRepository.updateNewTitle(Number(titleDTO.userId), newId, $transaction);
             if (!newData) throw new UpdateVocalNewTitleFail(rm.UPDATE_VOCAL_NEW_TITLE_FAIL);
 
             return { oldData, newData };

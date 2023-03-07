@@ -5,15 +5,21 @@ import config from '../../../../global/config';
 import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
 import { PortfolioUpdateDTO } from '../../interfaces';
 
+
 function objectParams_url(audioKey: string) {
+
     return {
         Bucket: config.producerPortfolioBucketName,
         Key: audioKey,
     };
+    
 };
 
+
 const updateProducerPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, portfolioId: number, userId: number, audioKey: string, imageKey: string) => {
+    
     try {
+
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
         const data = await prisma.producerPortfolio.update({
@@ -39,9 +45,13 @@ const updateProducerPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, port
         });
 
         return data;
+
     } catch(error) {
+
         throw error;
     }
+
 };
+
 
 export default updateProducerPortfolioById;

@@ -1,7 +1,10 @@
 import prisma from '../../../../global/config/prismaClient';
 
+
 const deleteProducerPortfolioByUserId = async(userId: number, portfolioId: number) => {
+
     try {
+
         await prisma.producerPortfolio.delete({
             where: {
                 producerPortfolio: {
@@ -10,9 +13,14 @@ const deleteProducerPortfolioByUserId = async(userId: number, portfolioId: numbe
                 },
             },
         });
+
     } catch(error) {
+
         throw error;
+
     }
+
 };
+
 
 export default deleteProducerPortfolioByUserId;
