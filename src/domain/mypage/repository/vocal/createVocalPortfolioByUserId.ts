@@ -1,4 +1,4 @@
-import prisma from '../../../../global/config/prismaClient';
+import { Prisma } from '@prisma/client';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
 import convertCategory from '../../../../global/modules/convertCategory';
 import config from '../../../../global/config';
@@ -16,13 +16,13 @@ function objectParams_url(audioKey: string) {
 };
 
 
-const createVocalPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, userId: number, isTitle: boolean, audioKey: string, imageKey: string) => {
+const createVocalPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, userId: number, isTitle: boolean, audioKey: string, imageKey: string, transaction: Prisma.TransactionClient) => {
     
     try {
 
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
-        const data = await prisma.vocalPortfolio.create({
+        const data = await transaction.vocalPortfolio.create({
             data: {
                 portfolioImage: imageKey,
                 title: portfolioDTO.title,

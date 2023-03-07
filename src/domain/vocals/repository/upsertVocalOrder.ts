@@ -1,8 +1,8 @@
-import prisma from '../../../global/config/prismaClient';
+import { Prisma } from '@prisma/client';
 
-const upsertVocalOrder = async(vocalId: number, tableName: string, tableId: number) => {
+const upsertVocalOrder = async(vocalId: number, tableName: string, tableId: number, transaction: Prisma.TransactionClient) => {
     try {
-        const data = prisma.vocalOrder.upsert({
+        const data = transaction.vocalOrder.upsert({
             where: {
                 vocalId,
             },

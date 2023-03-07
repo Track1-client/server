@@ -1,8 +1,11 @@
 import { InformationGetDTO, InformationProducerGetReturnDTO, InformationVocalGetReturnDTO } from '../interfaces';
 import { getProducerProfileById, getVocalProfileById } from '../../profile/repository';
 
+
 const getUserInfo = async (infoDTO: InformationGetDTO, page: number, limit: number) => {
+
     try {
+
         let data;
 
         if (infoDTO.tableName === 'producer') {
@@ -25,13 +28,21 @@ const getUserInfo = async (infoDTO: InformationGetDTO, page: number, limit: numb
             };
             return result;
         }
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const MypageService = {
+
     getUserInfo,
+
 };
+
 
 export default MypageService;

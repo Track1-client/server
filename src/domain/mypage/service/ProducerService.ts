@@ -13,7 +13,9 @@ const producerTitleRepository = new ProducerTitleRepository();
 
 
 const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
+
     try {
+
         if (tableName !== 'producer') throw new NotProducer(rm.NOT_PRODUCER);
         
         const getPortfolioNumber = await getProducerPortfolioNumberByUserId(userId);
@@ -29,13 +31,20 @@ const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableNa
             producerTitleId: getTitle?.id as number,
         };  
         return result;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const updateProducerPortfolio = async (portfolioId: number, tableName: string, userId: number, portfolioDTO: PortfolioUpdateDTO, fileData: any) => {
+    
     try {
+
         const isValidPortfolio = await getProducerPortfolioByUserId(userId, portfolioId);
         if (!isValidPortfolio || tableName !== 'producer') throw new InvalidProducerPortfolio(rm.INVALID_PRODUCER_PORTFOLIO);
 
@@ -54,14 +63,22 @@ const updateProducerPortfolio = async (portfolioId: number, tableName: string, u
             producerPortfolioId: data.id,
             producerId: data.producerId,
         };
+
         return result;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: number) => {
+
     try {
+
         //& 현재 타이틀 포트폴리오 확인
         const currentTitle = await getProducerPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'producer') throw new InvalidProducerTitlePortfolio(rm.INVALID_USER_TITLE);
@@ -83,13 +100,20 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
             newTitleId: prismaResult.newData.id,
         };
         return result;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const deleteProducerPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioId: number) => {
+
     try {
+
         const isValidPortfolio = await getProducerPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
         if (!isValidPortfolio || portfolioDTO.tableName !== 'producer') throw new InvalidProducerPortfolio(rm.INVALID_PRODUCER_PORTFOLIO);
 
@@ -100,16 +124,24 @@ const deleteProducerPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfol
             producerId: isValidPortfolio.producerId,
         };
         return result;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const ProducerService = {
+
     createProducerPortfolio,
     updateProducerPortfolio,
     updateProducerTitle,
     deleteProducerPortfolio,
+
 };
+
 
 export default ProducerService;
