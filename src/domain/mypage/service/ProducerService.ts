@@ -6,6 +6,11 @@ import deleteS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Ob
 import updateS3ProducerPortfolioAudioAndImage from '../../../global/modules/S3Object/update/updateOneProducerPortfolio';
 import { PortfolioCreateDTO, ProducerPortfolioCreateReturnDTO, PortfolioDeleteDTO, ProducerPortfolioDeleteReturnDTO, PortfolioUpdateDTO, ProducerPortfolioUpdateReturnDTO, TitleUpdateDTO, TitleUpdateReturnDTO } from '../interfaces';
 import { createProducerPortfolioByUserId, deleteProducerPortfolioByUserId, getProducerPortfolioByUserId, getProducerPortfolioNumberByUserId, getProducerPortfolioTitleByUserId, updateNewTitleProducerPortfolio, updateOldTitleProducerPortfolio, updateProducerPortfolioById } from '../repository';
+import ProducerTitleRepository from '../repository/PorudcerTitleRepository';
+
+
+const producerTitleRepository = new ProducerTitleRepository();
+
 
 const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
     try {
@@ -61,13 +66,13 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
         const currentTitle = await getProducerPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'producer') throw new InvalidProducerTitlePortfolio(rm.INVALID_USER_TITLE);
 
-        const prismaResult = await prisma.$transaction(async (prisma) => {
+        const prismaResult = await prisma.$transaction(async ($transaction) => {
             //& 현재 타이틀 포트폴리오 업데이트
-            const oldData = await updateOldTitleProducerPortfolio(Number(titleDTO.userId), oldId);
+            const oldData = await producerTitleRepository.updateOldTitle(Number(titleDTO.userId), oldId, $transaction);
             if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_PRODUCER_OLD_TITLE_FAIL);
             
             //& 바뀔 타이틀 포트폴리오 업데이트
-            const newData = await updateNewTitleProducerPortfolio(Number(titleDTO.userId), newId);
+            const newData = await producerTitleRepository.updateNewTitle(Number(titleDTO.userId), newId, $transaction);
             if (!newData) throw new UpdateProducerNewTitleFail(rm.UPDATE_PRODUCER_NEW_TITLE_FAIL);
 
             return { oldData, newData };

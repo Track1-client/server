@@ -70,13 +70,13 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
         const currentTitle = await getVocalPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'vocal') throw new InvalidVocalTitlePortfolio(rm.INVALID_USER_TITLE);
         
-        const prismaResult = await prisma.$transaction(async (prisma) => {
+        const prismaResult = await prisma.$transaction(async ($transaction) => {
             //& 현재 타이틀 포트폴리오 업데이트
-            const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId);
+            const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId, $transaction);
             if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
             
             //& 바뀔 타이틀 포트폴리오 업데이트
-            const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId);
+            const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId, $transaction);
             if (!newData) throw new UpdateVocalNewTitleFail(rm.UPDATE_VOCAL_NEW_TITLE_FAIL);
 
             return { oldData, newData };

@@ -1,6 +1,6 @@
-import { PrismaClient } from '@prisma/client';
+import { Prisma } from '@prisma/client';
 
-const updateNewTitleProducerPortfolio = async(userId: number, newId: number, transaction: PrismaClient) => {
+const updateNewTitleProducerPortfolio = async(userId: number, newId: number, transaction: Prisma.TransactionClient) => {
     try {
         const data = await transaction.producerPortfolio.update({
             data: {
