@@ -13,7 +13,7 @@ const updateOldTitleProducerPortfolio = async(userId: number, oldId: number, tra
                 },
             },
         });
-
+        
         return data;
     } catch(error) {
         throw error;
