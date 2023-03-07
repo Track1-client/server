@@ -6,9 +6,11 @@ const findProducerPortfolioNumberByUserId = async(userId: number) => {
     try {
 
         const number = await prisma.producerPortfolio.count({
+
             where: {
-                producerId: userId,
-            },
+                producerId: userId
+            }
+            
         });
 
         return number;

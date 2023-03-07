@@ -6,12 +6,14 @@ const deleteVocalPortfolioByUserId = async(userId: number, portfolioId: number) 
     try {
 
         await prisma.vocalPortfolio.delete({
+
             where: {
                 vocalPortfolio: {
                     vocalId: userId,
-                    id: portfolioId,
-                },
-            },
+                    id: portfolioId
+                }
+            }
+
         });
 
     } catch(error) {

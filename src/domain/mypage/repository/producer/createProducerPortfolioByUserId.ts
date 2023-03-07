@@ -9,8 +9,10 @@ import { PortfolioCreateDTO } from '../../interfaces';
 function objectParams_url(audioKey: string) {
 
     return {
+
         Bucket: config.producerPortfolioBucketName,
         Key: audioKey,
+
     };
 
 };
@@ -23,6 +25,7 @@ const createProducerPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, 
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
         const data = await prisma.producerPortfolio.create({
+
             data: {
                 portfolioImage: imageKey,
                 title: portfolioDTO.title,
@@ -32,15 +35,11 @@ const createProducerPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, 
                 keyword: portfolioDTO.keyword,
                 duration: await getAudioDurationInSeconds(audioSignedURL as string),
                 isTitle,
-                Producer: {
-                    connect: {
-                        id: userId,
-                    },
-                },
+                Producer: { connect: { id: userId } },
             },
-            select: {
-                id: true,
-            },
+
+            select: { id: true }
+
         });
 
         return data;

@@ -6,12 +6,14 @@ const deleteProducerPortfolioByUserId = async(userId: number, portfolioId: numbe
     try {
 
         await prisma.producerPortfolio.delete({
+
             where: {
                 producerPortfolio: {
                     producerId: userId,
                     id: portfolioId,
-                },
-            },
+                }
+            }
+
         });
 
     } catch(error) {

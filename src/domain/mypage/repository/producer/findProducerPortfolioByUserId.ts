@@ -5,12 +5,14 @@ const findProducerPortfolioByUserId = async(userId: number, portfolioId: number)
     
     try {
         const data = await prisma.producerPortfolio.findUnique({
+
             where: {
                 producerPortfolio: {
                     producerId: userId,
                     id: portfolioId,
-                },
-            },
+                }
+            }
+
         });
 
         return data;

@@ -6,12 +6,14 @@ const findVocalPortfolioByUserId = async(userId: number, portfolioId: number) =>
     try {
 
         const data = await prisma.vocalPortfolio.findUnique({
+
             where: {
                 vocalPortfolio: {
                     vocalId: userId,
-                    id: portfolioId,
-                },
-            },
+                    id: portfolioId
+                }
+            }
+
         });
 
         return data;

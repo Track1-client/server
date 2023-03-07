@@ -9,8 +9,10 @@ import { PortfolioUpdateDTO } from '../../interfaces';
 function objectParams_url(audioKey: string) {
 
     return {
+
         Bucket: config.producerPortfolioBucketName,
         Key: audioKey,
+
     };
     
 };
@@ -23,6 +25,7 @@ const updateProducerPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, port
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
         const data = await prisma.producerPortfolio.update({
+
             data: {
                 portfolioFile: audioKey,
                 portfolioImage: imageKey,
@@ -32,16 +35,19 @@ const updateProducerPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, port
                 duration: await getAudioDurationInSeconds(audioSignedURL as string),
                 content: portfolioDTO.content,
             },
+            
             where: {
                 producerPortfolio: {
                     id: portfolioId,
                     producerId: userId,
                 },
             },
+
             select: {
                 id: true,
                 producerId: true,
-            },
+            }
+
         });
 
         return data;

@@ -6,15 +6,15 @@ const updateOldTitleVocalPortfolio = async(userId: number, oldId: number, transa
     try {
 
         const data = await transaction.vocalPortfolio.update({
-            data: {
-                isTitle: false,
-            },
+
+            data: { isTitle: false },
             where: {
                 vocalPortfolio: {
                     vocalId: userId,
-                    id: oldId,
-                },
-            },
+                    id: oldId
+                }
+            }
+
         });
 
         return data;

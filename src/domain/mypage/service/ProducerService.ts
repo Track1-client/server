@@ -27,9 +27,12 @@ const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableNa
         const getTitle = await getProducerPortfolioTitleByUserId(userId);
 
         const result: ProducerPortfolioCreateReturnDTO = {
+
             producerPortfolioId: portfolio.id,
-            producerTitleId: getTitle?.id as number,
+            producerTitleId: getTitle?.id as number
+
         };  
+
         return result;
 
     } catch (error) {
@@ -51,17 +54,21 @@ const updateProducerPortfolio = async (portfolioId: number, tableName: string, u
         //* S3 객체 삭제
         let portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
         let portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
+        
         await updateS3ProducerPortfolioAudioAndImage(portfolioAudio as string, portfolioImage as string);  
 
         //* DB 업데이트
         portfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         portfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultJacketAndProducerPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
+        
         const data = await updateProducerPortfolioById(portfolioDTO, portfolioId, userId, String(portfolioAudio), String(portfolioImage));
         if (!data) throw new UpdateProducerPortfolioFail(rm.UPDATE_PRODUCER_PORTFOLIO_FAIL);
 
         const result: ProducerPortfolioUpdateReturnDTO = {
+
             producerPortfolioId: data.id,
-            producerId: data.producerId,
+            producerId: data.producerId
+
         };
 
         return result;
@@ -96,9 +103,12 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
         });
 
         const result: TitleUpdateReturnDTO = {
+
             oldTitleId: prismaResult.oldData.id,
-            newTitleId: prismaResult.newData.id,
+            newTitleId: prismaResult.newData.id
+
         };
+
         return result;
 
     } catch (error) {
@@ -121,7 +131,9 @@ const deleteProducerPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfol
         await deleteProducerPortfolioByUserId(isValidPortfolio.producerId, isValidPortfolio.id); //! DB 삭제 
 
         const result: ProducerPortfolioDeleteReturnDTO = {
-            producerId: isValidPortfolio.producerId,
+
+            producerId: isValidPortfolio.producerId
+            
         };
         return result;
 

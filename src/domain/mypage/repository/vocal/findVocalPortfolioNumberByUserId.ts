@@ -6,9 +6,9 @@ const findVocalPortfolioNumberByUserId = async(userId: number) => {
     try {
 
         const number = await prisma.vocalPortfolio.count({
-            where: {
-                vocalId: userId,
-            },
+
+            where: { vocalId: userId }
+
         });
 
         return number;

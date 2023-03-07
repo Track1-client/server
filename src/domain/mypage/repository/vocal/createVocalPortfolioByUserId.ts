@@ -9,8 +9,10 @@ import { PortfolioCreateDTO } from '../../interfaces';
 function objectParams_url(audioKey: string) {
 
     return {
+
         Bucket: config.vocalPortfolioBucketName,
-        Key: audioKey,
+        Key: audioKey
+        
     };
     
 };
@@ -23,6 +25,7 @@ const createVocalPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, use
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
         const data = await transaction.vocalPortfolio.create({
+
             data: {
                 portfolioImage: imageKey,
                 title: portfolioDTO.title,
@@ -32,16 +35,14 @@ const createVocalPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, use
                 keyword: portfolioDTO.keyword,
                 duration: await getAudioDurationInSeconds(audioSignedURL as string),
                 isTitle,
-                Vocal: {
-                    connect: {
-                        id: userId,
-                    },
-                },
+                Vocal: { connect: { id: userId } },
             },
+
             select: {
                 id: true,
                 vocalId: true,
-            },
+            }
+
         });
 
         return data;

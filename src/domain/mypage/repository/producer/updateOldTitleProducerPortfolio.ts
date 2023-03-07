@@ -6,15 +6,16 @@ const updateOldTitleProducerPortfolio = async(userId: number, oldId: number, tra
     try {
 
         const data = await transaction.producerPortfolio.update({
-            data: {
-                isTitle: false,
-            },
+
+            data: { isTitle: false },
+
             where: {
                 producerPortfolio: {
                     producerId: userId,
-                    id: oldId,
-                },
-            },
+                    id: oldId
+                }
+            }
+
         });
         
         return data;

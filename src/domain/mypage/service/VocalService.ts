@@ -64,17 +64,21 @@ const updateVocalPortfolio = async (portfolioId: number, tableName: string, user
         //* S3 객체 삭제
         let portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
         let portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
+        
         await updateS3VocalPortfolioAudioAndImage(portfolioAudio as string, portfolioImage as string);  
 
         //* DB 업데이트
         portfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         portfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultVocalPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
+        
         const data = await updateVocalPortfolioById(portfolioDTO, portfolioId, userId, String(portfolioAudio), String(portfolioImage));
         if (!data) throw new UpdateVocalPortfolioFail(rm.UPDATE_VOCAL_PORTFOLIO_FAIL);
 
         const result: VocalPortfolioUpdateReturnDTO = {
+
             vocalPortfolioId: data.id,
-            vocalId: data.vocalId,
+            vocalId: data.vocalId
+
         };
         return result;
 
@@ -108,9 +112,12 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
         });
 
         const result: TitleUpdateReturnDTO = {
+
             oldTitleId: prismaResult.oldData.id,
-            newTitleId: prismaResult.newData.id,
+            newTitleId: prismaResult.newData.id
+
         };
+
         return result;
 
     } catch (error) {
@@ -133,7 +140,9 @@ const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioI
         await deleteVocalPortfolioByUserId(isValidPortfolio.vocalId, isValidPortfolio.id); //! DB 삭제 
 
         const result: VocalPortfolioDeleteReturnDTO = {
-            vocalId: isValidPortfolio.vocalId,
+
+            vocalId: isValidPortfolio.vocalId
+            
         };
         return result;
 

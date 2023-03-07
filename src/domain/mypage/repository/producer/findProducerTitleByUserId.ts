@@ -8,13 +8,16 @@ const findProducerTitlePortfolio = async(userId: number) => {
     try {
 
         const data = await prisma.producerPortfolio.findFirstOrThrow({
+
             where: {
                 producerId: userId,
-                isTitle: true,
+                isTitle: true
             },
+
             select: {
-                id: true,
-            },
+                id: true
+            }
+
         });
 
         return data;
