@@ -1,13 +1,14 @@
-import prisma from '../../../global/config/prismaClient';
-import { ProducerCreateDTO, VocalCreateDTO } from '../interfaces';
+import { Prisma } from '@prisma/client';
+import prisma from '../../../../global/config/prismaClient';
+import { ProducerCreateDTO, VocalCreateDTO } from '../../interfaces';
 
 
-const createProducer = async(producer: ProducerCreateDTO, password: string, location: string) => {
+const createProducer = async(producer: ProducerCreateDTO, password: string, location: string, transaction: Prisma.TransactionClient) => {
 
     try {
 
         const isAgree = (producer.isAgree === 'true');
-        const result = await prisma.producer.create({
+        const result = await transaction.producer.create({
 
             data: {
                 producerID: producer.ID,
@@ -35,12 +36,12 @@ const createProducer = async(producer: ProducerCreateDTO, password: string, loca
 };
 
 
-const createVocal = async(vocal: VocalCreateDTO, password: string, location: string) => {
+const createVocal = async(vocal: VocalCreateDTO, password: string, location: string, transaction: Prisma.TransactionClient) => {
 
     try {
 
         const isAgree = (vocal.isAgree === 'true');
-        const result = await prisma.vocal.create({
+        const result = await transaction.vocal.create({
 
             data: {
                 vocalID: vocal.ID,

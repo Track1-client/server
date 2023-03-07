@@ -8,21 +8,32 @@ import { AuthCodeReturnDTO, EmailDTO, VerifyCodeDTO } from '../interfaces';
 import crypto from 'crypto';
 import { createAuth, findTempUserByEmail, findAuthByToken, findTempUserByEmailAndTime, getUserByEmail, upsertCodeInTempUser } from '../repository';
 
+
 const isEmailExists = async(emailDTO: EmailDTO) => {
+
     try {
+
         const result = (emailDTO.tableName === 'producer') ? 
                         await getUserByEmail.producerEmailExists(emailDTO.userEmail) : 
                         await getUserByEmail.vocalEmailExists(emailDTO.userEmail);
         
         const data = (result) ? result : false;
+
         return data;
+
     } catch(error) {
+
         throw error;
+
     }
+
 };
 
+
 const createTempUser = async(emailDTO: EmailDTO) => {
+
     try {
+
         let authCode = randomAccessCode();
         
         const tempUser = await upsertCodeInTempUser(emailDTO, authCode); 
@@ -44,26 +55,37 @@ const createTempUser = async(emailDTO: EmailDTO) => {
         */
         
         const result: AuthCodeReturnDTO = {
+
             tableName: tempUser.tableName,
             userEmail: tempUser.userEmail,
-            authCode : tempUser.authCode,
+            authCode : tempUser.authCode
+
         }
 
         return result;
+
     } catch(error) {
+
         throw error;
+
     }
+
 };
 
+
 const updateAuthCode = async(emailDTO: EmailDTO) => {
+
     try {
+
         let newAuthCode: string;
         const oldAuthCode = await findTempUserByEmail(emailDTO.tableName, emailDTO.userEmail) as unknown as string;
         
         //! 원래 코드와 일치하지 않는 인증코드 생성 
         do {
+
             newAuthCode = randomAccessCode();
             if (newAuthCode !== oldAuthCode) break;
+
         } while (newAuthCode === oldAuthCode);
         
         const data = await upsertCodeInTempUser(emailDTO, newAuthCode);
@@ -85,21 +107,31 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
         */
         
         const result: AuthCodeReturnDTO = {
+
             tableName: data.tableName,
             userEmail: data.userEmail,
-            authCode : data.authCode,
+            authCode : data.authCode
+
         }
 
         return result;
+
     } catch(error) {
+
         throw error;
+
     }
+
 };
 
+
 const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
+
     const getAuthCode = await findTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail)
                             .then(async () => {
+
                                 return await findTempUserByEmailAndTime(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
+                            
                             })
                             .catch((error) => { throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST) });
 
@@ -110,54 +142,78 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
     //await deleteTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
     
     const result: AuthCodeReturnDTO = {
+
         tableName: verifyCodeDTO.tableName,
         userEmail: verifyCodeDTO.userEmail,
-        authCode: getAuthCode.authCode as unknown as string,
+        authCode: getAuthCode.authCode as unknown as string
+
     };
+
     return result;
+
 };
+
 
 //& 비밀번호 재설정 링크 유효시간을 위한 Auth 테이블 생성 
 const createAuthTable = async(userId: number, tableName: string, userEmail: string) => {
+
     try {
+
         let newToken: string;
         let oldToken: string;
 
         //! 원래 토큰과 일치하지 않는 토큰 생성 
         do {
+
             newToken = crypto.randomBytes(20).toString('hex');
             oldToken = await findAuthByToken(newToken) as unknown as string;
             
             if (!oldToken) break;
+            
         } while (oldToken);
 
         const auth = await createAuth(userId, tableName, userEmail, newToken);
         if (!auth) throw new CreateAuth(rm.FAIL_CREATE_AUTH);
 
         return auth;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
+
 
 //& 비밀번호 재설정 메일 보내기 
 const postPasswordMail = async(auth: any) => {
+
     try {
+
         //! 메일 보내기
         const image = config.track1EmailImage;
         await sendPasswordResetMail(auth, image);
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const EmailService = {
+
     isEmailExists,
     createTempUser,
     updateAuthCode,
     checkVerify,
     postPasswordMail,
-    createAuthTable,
+    createAuthTable
+
 }
+
 
 export default EmailService;

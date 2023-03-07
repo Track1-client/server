@@ -1,4 +1,4 @@
-import prisma from '../../../global/config/prismaClient';
+import prisma from '../../../../global/config/prismaClient';
 
 
 //! producer 비밀번호 업데이트

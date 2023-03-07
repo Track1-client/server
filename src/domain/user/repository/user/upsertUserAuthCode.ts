@@ -1,5 +1,5 @@
-import prisma from '../../../global/config/prismaClient';
-import { EmailDTO } from '../interfaces';
+import prisma from '../../../../global/config/prismaClient';
+import { EmailDTO } from '../../interfaces';
 
 
 const upsertCodeInTempUser = async(emailDTO: EmailDTO, authCode: string) => {

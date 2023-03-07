@@ -1,6 +1,6 @@
-import prisma from '../../../global/config/prismaClient';
-import convertCategory from '../../../global/modules/convertCategory';
-import { UserUpdateDTO } from '../interfaces';
+import prisma from '../../../../global/config/prismaClient';
+import convertCategory from '../../../../global/modules/convertCategory';
+import { UserUpdateDTO } from '../../interfaces';
 
 
 //! producer 프로필 업데이트

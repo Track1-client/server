@@ -1,4 +1,4 @@
-import prisma from '../../../global/config/prismaClient';
+import prisma from '../../../../global/config/prismaClient';
 
 
 const deleteEveryAuthByEmail = async(tableName: string, email: string) => {
