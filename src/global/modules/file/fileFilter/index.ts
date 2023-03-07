@@ -1,9 +1,13 @@
 import audioFileFilter from './AudioFileFilter';
 import imageFileFilter from './ImageFileFilter';
 
+
 const fileFilter = {
+
     imageFileFilter,
-    audioFileFilter,
+    audioFileFilter
+
 };
+
 
 export default fileFilter;

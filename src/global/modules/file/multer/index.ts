@@ -4,10 +4,12 @@ import profileImageMulter from './s3/profileImageMulter';
 import tracksAudioAndImage from './s3/trackUploadAudioAndImage';
 
 const multerModules = {
+
     profileImageMulter,
     tracksAudioAndImage,
     commentAudioMulter,
-    portfolioAudioAndImage,
+    portfolioAudioAndImage
+    
 };
 
 export default multerModules;

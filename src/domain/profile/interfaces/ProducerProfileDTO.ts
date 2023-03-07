@@ -1,4 +1,5 @@
 export default interface ProducerProfileDTO {
+
     id: number;
     profileImage: string;
     name: string;
@@ -6,4 +7,5 @@ export default interface ProducerProfileDTO {
     category: string[];
     keyword: string[];
     introduce: string;
+    
 };

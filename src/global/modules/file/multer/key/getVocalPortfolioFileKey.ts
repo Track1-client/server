@@ -3,6 +3,7 @@ import { rm } from '../../../../constants';
 import { NoAudioFile } from '../../../../middlewares/error/errorInstance';
 
 const getVocalPortfolioFileKey = (myfiles: any) => {
+    
     //* 재킷이미지 없는 경우 -> default vocal jacketImage로 설정
     const jacketImageKey = !("jacketImage" in myfiles) ? 
             config.defaultVocalPortfolioImage : myfiles['jacketImage'][0]['key'] as string;
@@ -11,10 +12,9 @@ const getVocalPortfolioFileKey = (myfiles: any) => {
     if(!("audioFile" in myfiles)) throw new NoAudioFile(rm.NO_AUDIO_FILE);
     const audioFileKey = myfiles['audioFile'][0]['key'] as string;
     
-    return {
-        jacketImageKey,
-        audioFileKey,
-    };
+
+    return { jacketImageKey, audioFileKey };
+
 };
 
 export default getVocalPortfolioFileKey;

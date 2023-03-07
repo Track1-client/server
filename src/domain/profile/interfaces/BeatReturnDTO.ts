@@ -1,4 +1,5 @@
 export default interface BeatReturnDTO {
+
     id: number;
     jacketImage: string;
     beatWavFile: string;
@@ -8,4 +9,5 @@ export default interface BeatReturnDTO {
     category: string;
     wavFileLength: number;
     isSelected: boolean;
+    
 };

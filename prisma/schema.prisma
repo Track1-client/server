@@ -52,6 +52,7 @@ model Producer {
   producerImage     String              @db.VarChar(10000)
   producerID        String              @unique @db.VarChar(200)
   producerPW        String              @db.VarChar(200)
+  isAgree           Boolean             @default(true)
   Beat              Beat[]
   ProducerPortfolio ProducerPortfolio[]
 }
@@ -78,6 +79,8 @@ model TempUser {
   tableName String @db.VarChar(100)
   userEmail String @db.VarChar(100)
   authCode  String @db.VarChar(100)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@unique([tableName, userEmail], name: "tableEmail")
 }
@@ -91,6 +94,7 @@ model Vocal {
   introduce      String?
   vocalImage     String           @db.VarChar(10000)
   isSelected     Boolean          @default(false)
+  isAgree        Boolean          @default(true)
   vocalID        String           @unique @db.VarChar(200)
   vocalPW        String           @db.VarChar(200)
   Comment        Comment[]

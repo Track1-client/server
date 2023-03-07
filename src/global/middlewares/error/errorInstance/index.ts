@@ -6,6 +6,8 @@ export {
     InvalidValidationFormResult,
     UpdateUserFail,
     CreateAuth,
+    VocalJoinFail,
+    ProducerJoinFail,
     //* token 관련
     AccessTokenDoesNotExists,
     AccessTokenInvalid,

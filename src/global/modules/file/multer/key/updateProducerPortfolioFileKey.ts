@@ -1,14 +1,15 @@
 const updateProducerPortfolioFileKey = (myfiles: any) => {
+
     let jacketImageKey = '';
     let audioFileKey = '';
 
     if ("jacketImage" in myfiles) jacketImageKey = myfiles['jacketImage'][0]['key'] as string;
     if ("audioFile" in myfiles) audioFileKey = myfiles['audioFile'][0]['key'] as string;
     
-    return {
-        jacketImageKey,
-        audioFileKey,
-    };
+
+    return { jacketImageKey, audioFileKey };
+
 };
+
 
 export default updateProducerPortfolioFileKey;

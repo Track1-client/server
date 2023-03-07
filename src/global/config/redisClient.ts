@@ -1,15 +1,20 @@
 import config from '.';
 import * as redis from 'redis';
 
+
 const redisInfo = {
+
     socket: {
         host: config.redisHost,
-        port: config.redisPort,
+        port: config.redisPort
     },
-    password: config.redisPassword,
+    password: config.redisPassword
+
 };
+
 
 let redisClient = redis.createClient(redisInfo);
 redisClient.connect();
+
 
 export default redisClient;

@@ -3,21 +3,28 @@ import { body } from 'express-validator';
 import { validatorErrorCallback } from '../../../global/middlewares';
 import { MailController, TokenController, UserController } from '../controller';
 
+
 const router: Router = Router();
 
+
 const expressValidatorArray = [
+
     body("tableName").notEmpty(),
     body("userEmail")
         .trim()
         .isEmail(),
     validatorErrorCallback
+    
 ];
+
 
 //! 토큰 재발급
 router.get('/refresh', TokenController.refresh);
 
+
 //? 닉네임 중복 검사
 router.post('/check-email', UserController.checkEmail);
+
 
 //* 회원가입 인증코드 메일 전송 
 router.post(
@@ -26,12 +33,14 @@ router.post(
     MailController.postAuthMail
 );
 
+
 //* 회원가입 인증코드 메일 재전송 
 router.patch(
     '/auth-mail-repost',
     expressValidatorArray,
     MailController.repostAuthMail
 );
+
 
 //* 인증코드 확인 
 router.post(
@@ -45,12 +54,14 @@ router.post(
     MailController.verifyCode
 );
 
+
 //& 비밀번호 찾기 메일 전송 
 router.post(
     '/newpassword-mail',
     expressValidatorArray,
     MailController.getNewPasswordMail
 );
+
 
 //& 비밀번호 찾기 메일 재전송 
 router.post(
@@ -59,8 +70,10 @@ router.post(
     MailController.getNewPasswordMailAgain
 );
 
+
 //& 토큰 valid 여부 확인 
 router.get('/newpassword/:token', UserController.isPasswordTokenValid);
+
 
 //& 비밀번호 변경
 router.patch(
@@ -75,5 +88,6 @@ router.patch(
     ],
     UserController.updatePassword
 );
+
 
 export default router;

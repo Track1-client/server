@@ -6,27 +6,40 @@ import { getUserById } from '../../user/repository';
 import { ProducerBeatsGetReturnDTO, ProducerProfileGetDTO, ProducerProfileGetReturnDTO, ProducerProfileUpdateDTO } from '../interfaces';
 import { getProducerBeatsById, getProducerProfileById, updateProducerProfileByUserId } from '../repository';
 
+
 const getProducerProfile = async (profileDTO: ProducerProfileGetDTO, producerId: number, page: number, limit: number) => {
+    
     try {
+
         const isMe = (profileDTO.tableName === 'producer' && producerId === Number(profileDTO.userId)) ? true : false;
         
         const data = await getProducerProfileById(producerId, limit, page);
         if (!data) throw new GetProducerInfoFail(rm.GET_USER_INFORMATION_FAIL);
 
         const result: ProducerProfileGetReturnDTO = {
+
             whoamI: profileDTO.tableName,
             isMe: isMe,
             producerProfile: data.profileDTO,
-            producerPortfolio: data.portfolioList,
+            producerPortfolio: data.portfolioList
+
         };
+
         return result;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const getProducerBeats = async (producerId: number, page: number, limit: number) => {
+
     try {
+
         const producer = await getUserById.producer(producerId);
         if (!producer) throw new InvalidProducer(rm.INVALID_PRODUCER);
 
@@ -34,16 +47,26 @@ const getProducerBeats = async (producerId: number, page: number, limit: number)
         if (!data) throw new GetProducerBeatsFail(rm.GET_PRODUCER_BEATS_FAIL);
         
         const result: ProducerBeatsGetReturnDTO = {
-            beatList: data,
+
+            beatList: data
+
         };
+
         return result;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const updateProducerProfile = async (profileDTO: ProducerProfileUpdateDTO, tableName: string, userId: number, imageFileKey: string) => {
+    
     try {
+
         const user = await getUserById.producer(userId);
         await updateS3ProfileImage(user?.producerImage as string);
 
@@ -51,15 +74,23 @@ const updateProducerProfile = async (profileDTO: ProducerProfileUpdateDTO, table
         if (!data || tableName !== 'producer') throw new UpdateProducerProfileFail(rm.UPDATE_PRODUCER_PROFILE_FAIL);
 
         return data;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
 
+
 const ProducerService = {
+
     getProducerProfile,
     getProducerBeats,
-    updateProducerProfile,
+    updateProducerProfile
+
 };
+
 
 export default ProducerService;
