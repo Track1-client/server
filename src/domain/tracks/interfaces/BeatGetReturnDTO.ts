@@ -1,4 +1,5 @@
 export default interface GetBeatReturnDTO {
+
     beatId: number;
     jacketImage: string;
     wavFile: string;
@@ -8,4 +9,5 @@ export default interface GetBeatReturnDTO {
     keyword: string[];
     category: string;
     wavFileLength: number;
+    
 };

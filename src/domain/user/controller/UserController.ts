@@ -30,7 +30,7 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
         const joinResult = {
             userResult,
             accessToken: tokenResult.accessToken
-        }
+        };
         return res
                 .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
                 .status(sc.CREATED)

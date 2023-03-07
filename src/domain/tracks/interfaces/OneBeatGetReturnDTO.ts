@@ -1,4 +1,5 @@
 export default interface GetOneBeatReturnDTO {
+
     beatId: number;
     jacketImage: string;
     beatWavFile: string;
@@ -12,4 +13,5 @@ export default interface GetOneBeatReturnDTO {
     isMe: boolean,
     wavFileLength: number;
     isClosed: boolean;
+    
 };

@@ -1,4 +1,5 @@
 export default interface CommentGetReturnDTO {
+
     commentId: number;
     vocalWavFile: string;
     vocalName: string;
@@ -6,4 +7,5 @@ export default interface CommentGetReturnDTO {
     comment: string;
     isMe: boolean;
     vocalWavFileLength: number;
+    
 };
