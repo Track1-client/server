@@ -1,4 +1,5 @@
 export default interface FilteringReturnDTO {
+
     vocalId: number;
     vocalProfileImage: string;
     vocalTitleFile: string;
@@ -8,4 +9,5 @@ export default interface FilteringReturnDTO {
     totalCategNum: number;
     wavFileLength: number;
     isSelected: boolean;
+    
 };
