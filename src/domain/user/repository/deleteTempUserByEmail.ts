@@ -1,4 +1,6 @@
 import prisma from '../../../global/config/prismaClient';
+import { rm } from '../../../global/constants';
+import { SendAuthCode } from '../../../global/middlewares/error/errorInstance';
 
 const deleteTempUserByEmail = async(tableName: string, userEmail: string) => {
     try {
@@ -11,7 +13,7 @@ const deleteTempUserByEmail = async(tableName: string, userEmail: string) => {
             },
         });
     } catch(error) {
-        throw error;
+        throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST)
     }
 };
 

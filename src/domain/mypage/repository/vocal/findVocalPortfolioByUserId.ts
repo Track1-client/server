@@ -1,4 +1,4 @@
-import prisma from '../../../global/config/prismaClient';
+import prisma from '../../../../global/config/prismaClient';
 
 const findVocalPortfolioByUserId = async(userId: number, portfolioId: number) => {
     try {

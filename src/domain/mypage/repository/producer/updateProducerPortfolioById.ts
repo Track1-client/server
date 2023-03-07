@@ -1,22 +1,22 @@
-import prisma from '../../../global/config/prismaClient';
+import prisma from '../../../../global/config/prismaClient';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
-import convertCategory from '../../../global/modules/convertCategory';
-import config from '../../../global/config';
-import getS3OneBeatObject from '../../../global/modules/S3Object/get/getOneBeatObject';
-import { PortfolioUpdateDTO } from '../interfaces';
+import convertCategory from '../../../../global/modules/convertCategory';
+import config from '../../../../global/config';
+import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
+import { PortfolioUpdateDTO } from '../../interfaces';
 
 function objectParams_url(audioKey: string) {
     return {
-        Bucket: config.vocalPortfolioBucketName,
+        Bucket: config.producerPortfolioBucketName,
         Key: audioKey,
     };
 };
 
-const updateVocalPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, portfolioId: number, userId: number, audioKey: string, imageKey: string) => {
+const updateProducerPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, portfolioId: number, userId: number, audioKey: string, imageKey: string) => {
     try {
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
-        const data = await prisma.vocalPortfolio.update({
+        const data = await prisma.producerPortfolio.update({
             data: {
                 portfolioFile: audioKey,
                 portfolioImage: imageKey,
@@ -27,14 +27,14 @@ const updateVocalPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, portfol
                 content: portfolioDTO.content,
             },
             where: {
-                vocalPortfolio: {
+                producerPortfolio: {
                     id: portfolioId,
-                    vocalId: userId,
+                    producerId: userId,
                 },
             },
             select: {
                 id: true,
-                vocalId: true,
+                producerId: true,
             },
         });
 
@@ -44,4 +44,4 @@ const updateVocalPortfolioById = async(portfolioDTO: PortfolioUpdateDTO, portfol
     }
 };
 
-export default updateVocalPortfolioById;
+export default updateProducerPortfolioById;

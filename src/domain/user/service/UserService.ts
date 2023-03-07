@@ -1,4 +1,4 @@
-import { AlreadyExistsEmail, ProducerJoinFail, ResetPasswordTimePassed, UnauthorizedUser, UpdateUserFail, VocalJoinFail } from './../../../global/middlewares/error/errorInstance/user';
+import { AlreadyExistsEmail, ProducerJoinFail, ResetPasswordTimePassed, UnauthorizedUser, UpdateUserFail, VocalJoinFail, SendAuthCode } from './../../../global/middlewares/error/errorInstance';
 import bcrypt from "bcryptjs";
 import { rm } from '../../../global/constants';
 import { IncorrectLoginPassword, LoginIDNonExists } from '../../../global/middlewares/error/errorInstance';
@@ -7,6 +7,7 @@ import { createUser, getUserByEmail, getUserById, getUserByLoginID, updateUserPr
 import UserCreateResultDTO from '../interfaces/UserCreateReturnDTO';
 import jwtUtils from '../../../global/modules/jwtHandler';
 import redisClient from '../../../global/config/redisClient';
+import prisma from '../../../global/config/prismaClient';
 
 const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: string): Promise<UserCreateResultDTO> => {
     try {
@@ -16,10 +17,15 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
         const salt = await bcrypt.genSalt(10);
         const password = await bcrypt.hash(producerCreateDTO.PW, salt); 
 
-        const producer = await createUser.createProducer(producerCreateDTO, password, location);
+        const producer = await prisma.$transaction(async (prisma) => {
+            return await createUser.createProducer(producerCreateDTO, password, location)
+                            .then(async (producer) => {
+                                //! 인증코드 데이터 삭제
+                                await deleteTempUserByEmail('producer', producer.producerID).then((error) => { throw error });  
+                                return producer;
+                            })
+        });
         if (!producer) throw new ProducerJoinFail(rm.SIGNUP_FAIL);
-
-        await deleteTempUserByEmail('producer', producer.producerID);       //! 인증코드 데이터 삭제
 
         const result: UserCreateResultDTO = {
             id: producer.id,
@@ -41,12 +47,14 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
         const salt = await bcrypt.genSalt(10);
         const password = await bcrypt.hash(vocalCreateDTO.PW, salt); 
 
-        
-        const vocal = await createUser.createVocal(vocalCreateDTO, password, location);
-        if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
+        const vocal = await prisma.$transaction(async (prisma) => {
+            const vocal = await createUser.createVocal(vocalCreateDTO, password, location)
+            if (!vocal) throw new VocalJoinFail(rm.SIGNIN_FAIL);
 
-        await deleteTempUserByEmail('vocal', vocal.vocalID);        //! 인증코드 데이터 삭제
-        
+            await deleteTempUserByEmail('vocal', vocal.vocalID).catch((error) => { throw error; });        //! 인증코드 데이터 삭제
+            return vocal;
+        });
+
         const result: UserCreateResultDTO = {
             id: vocal.id,
             name: vocal.name,

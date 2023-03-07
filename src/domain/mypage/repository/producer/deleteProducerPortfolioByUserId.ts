@@ -1,4 +1,4 @@
-import prisma from '../../../global/config/prismaClient';
+import prisma from '../../../../global/config/prismaClient';
 
 const deleteProducerPortfolioByUserId = async(userId: number, portfolioId: number) => {
     try {

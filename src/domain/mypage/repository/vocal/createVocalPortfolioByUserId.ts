@@ -1,22 +1,22 @@
-import prisma from '../../../global/config/prismaClient';
+import prisma from '../../../../global/config/prismaClient';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
-import convertCategory from '../../../global/modules/convertCategory';
-import config from '../../../global/config';
-import getS3OneBeatObject from '../../../global/modules/S3Object/get/getOneBeatObject';
-import { PortfolioCreateDTO } from '../interfaces';
+import convertCategory from '../../../../global/modules/convertCategory';
+import config from '../../../../global/config';
+import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
+import { PortfolioCreateDTO } from '../../interfaces';
 
 function objectParams_url(audioKey: string) {
     return {
-        Bucket: config.producerPortfolioBucketName,
+        Bucket: config.vocalPortfolioBucketName,
         Key: audioKey,
     };
 };
 
-const createProducerPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, userId: number, isTitle: boolean, audioKey: string, imageKey: string) => {
+const createVocalPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, userId: number, isTitle: boolean, audioKey: string, imageKey: string) => {
     try {
         const audioSignedURL = await getS3OneBeatObject(objectParams_url(audioKey));   //! 객체의 signedURL 받아오기 
         
-        const data = await prisma.producerPortfolio.create({
+        const data = await prisma.vocalPortfolio.create({
             data: {
                 portfolioImage: imageKey,
                 title: portfolioDTO.title,
@@ -26,7 +26,7 @@ const createProducerPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, 
                 keyword: portfolioDTO.keyword,
                 duration: await getAudioDurationInSeconds(audioSignedURL as string),
                 isTitle,
-                Producer: {
+                Vocal: {
                     connect: {
                         id: userId,
                     },
@@ -34,6 +34,7 @@ const createProducerPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, 
             },
             select: {
                 id: true,
+                vocalId: true,
             },
         });
 
@@ -43,4 +44,4 @@ const createProducerPortfolioByUserId = async(portfolioDTO: PortfolioCreateDTO, 
     }
 };
 
-export default createProducerPortfolioByUserId;
+export default createVocalPortfolioByUserId;

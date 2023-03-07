@@ -18,7 +18,8 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         
         const prismaResult = await prisma.$transaction(async (prisma) => {
             return await createVocalPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey)
-                                        .then(async (portfolio) => { 
+                                        .then(async (portfolio) => {
+                                            throw new Error('error test'); 
                                             await upsertVocalOrder(portfolio.vocalId, 'portfolio', portfolio.id); 
                                             return portfolio;
                                         })
@@ -73,7 +74,7 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
             //& 현재 타이틀 포트폴리오 업데이트
             const oldData = await updateOldTitleVocalPortfolio(Number(titleDTO.userId), oldId);
             if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
-    
+            
             //& 바뀔 타이틀 포트폴리오 업데이트
             const newData = await updateNewTitleVocalPortfolio(Number(titleDTO.userId), newId);
             if (!newData) throw new UpdateVocalNewTitleFail(rm.UPDATE_VOCAL_NEW_TITLE_FAIL);
