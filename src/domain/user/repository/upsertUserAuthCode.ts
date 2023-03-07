@@ -1,9 +1,13 @@
 import prisma from '../../../global/config/prismaClient';
 import { EmailDTO } from '../interfaces';
 
+
 const upsertCodeInTempUser = async(emailDTO: EmailDTO, authCode: string) => {
+
     try {
+
         const data = await prisma.tempUser.upsert({
+
             where: {
                 tableEmail: {
                     tableName: emailDTO.tableName,
@@ -15,15 +19,19 @@ const upsertCodeInTempUser = async(emailDTO: EmailDTO, authCode: string) => {
                 userEmail: emailDTO.userEmail,
                 authCode
             },
-            update: {
-                authCode
-            },
+            update: { authCode }
+            
         });
         
         return data;
+
     } catch(error) {
+
         throw error;
+
     }
+
 };
+
 
 export default upsertCodeInTempUser;
