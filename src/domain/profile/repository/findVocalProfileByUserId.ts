@@ -6,15 +6,23 @@ import { rm } from '../../../global/constants';
 import { getS3OneBeatObject, getS3OneImageObject } from '../../../global/modules/S3Object/get';
 import { vocalTitleAsPortfolioDTO } from '.';
 
+
 function objectParams_url(bucketName: string, fileKey: string) {
+
     return {
+
         Bucket: bucketName,
-        Key: fileKey,
+        Key: fileKey
+
     };
+
 };
 
+
 const findVocalProfileById = async(vocalId: number, limit: number, page: number) => {
+
     try {
+
         const data = await prisma.vocal
             .findUnique({
                 select: {
@@ -27,15 +35,17 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
                         take: limit,
                     },
                 },
-                where: { id: vocalId },
+                where: { id: vocalId }
             })
             .then(async (vocal) => {
+
                 if (!vocal) throw new InvalidVocal(rm.INVALID_VOCAL);
 
                 const profileImage = (vocal.vocalImage === config.defaultUserProfileImage) ?
                                         config.defaultUserProfileImage : await getS3OneImageObject(objectParams_url(config.profileImageBucketName, vocal.vocalImage));
 
                 const profileDTO: VocalProfileDTO = {
+
                     id: vocal.id,
                     profileImage: profileImage as string,
                     name: vocal.name,
@@ -43,20 +53,24 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
                     category: vocal.category,
                     keyword: vocal.keyword,
                     introduce: vocal.introduce as string,
-                    isSelected: vocal.isSelected,
+                    isSelected: vocal.isSelected
+
                 };
 
                 let portfolioList: any[] = [];
                 const vocalTitle = await vocalTitleAsPortfolioDTO(vocalId);
+
                 if (vocal.VocalPortfolio.length === 0 && vocalTitle === undefined) return { profileDTO , portfolioList }; //! 타이틀만 있는 경우 
 
                 portfolioList = await Promise.all(vocal.VocalPortfolio.map(async (portfolio) => {
+                    
                     const beatURL = await getS3OneBeatObject(objectParams_url(config.vocalPortfolioBucketName, portfolio.portfolioFile));
                     const imageURL = (portfolio.portfolioImage === config.defaultVocalPortfolioImage) ? 
                                         portfolio.portfolioImage : 
                                         await getS3OneImageObject(objectParams_url(config.vocalPortfolioBucketName, portfolio.portfolioImage));
 
                     const portfolioDTO: PortfolioDTO = {
+
                         id: portfolio.id,
                         jacketImage: imageURL as string,
                         beatWavFile: beatURL as string,
@@ -64,9 +78,12 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
                         content: portfolio.content as string,
                         keyword: portfolio.keyword,
                         category: portfolio.category[0] as string,
-                        wavFileLength: portfolio.duration,
+                        wavFileLength: portfolio.duration
+
                     }
+
                     return portfolioDTO;
+
                 }));
 
                 portfolioList.unshift(vocalTitle);  //! 포트폴리오배열 [0]에 타이틀 넣기 
@@ -75,9 +92,14 @@ const findVocalProfileById = async(vocalId: number, limit: number, page: number)
             });
 
         return data;
+
     } catch (error) {
+
         throw error;
+
     }
+
 };
+
 
 export default findVocalProfileById;

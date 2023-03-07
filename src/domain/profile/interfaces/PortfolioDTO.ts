@@ -1,4 +1,5 @@
 export default interface PortfolioDTO {
+
     id: number;
     jacketImage: string;
     beatWavFile: string;
@@ -7,4 +8,5 @@ export default interface PortfolioDTO {
     keyword: string[];
     category: string;
     wavFileLength: number;
+    
 };

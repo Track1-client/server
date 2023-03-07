@@ -5,8 +5,11 @@ import getLocation from '../../../global/modules/file/multer/key';
 import { VocalProfileGetDTO, VocalProfileUpdateDTO } from '../interfaces';
 import VocalService from '../service/VocalService';
 
+
 const getVocalProfile = async(req: Request, res: Response, next: NextFunction) => {
+
     try {
+
         const { vocalId } = req.params;
         const { page, limit } = req.query;
         const profileDTO: VocalProfileGetDTO = req.body;
@@ -14,13 +17,20 @@ const getVocalProfile = async(req: Request, res: Response, next: NextFunction) =
         const result = await VocalService.getVocalProfile(profileDTO, Number(vocalId), Number(page), Number(limit));
 
         return res.status(sc.OK).send(success(sc.OK, rm.GET_VOCAL_PROFILE_SUCCESS, result));
+
     } catch (error) {
+
         return next(error);
+
     }
+
 };
 
+
 const updateVocalProfile = async(req: Request, res: Response, next: NextFunction) => {
+
     try {
+
         const imageFileKey: Express.MulterS3.File = req.file as Express.MulterS3.File;
         const fileData = getLocation.getProfileImageFileKey(imageFileKey); //! image file into string location 
         
@@ -30,14 +40,22 @@ const updateVocalProfile = async(req: Request, res: Response, next: NextFunction
         const result = await VocalService.updateVocalProfile(profileDTO, String(tableName), Number(userId), fileData);
 
         return res.status(sc.OK).send(success(sc.OK, rm.UPDATE_VOCAL_PROFILE_SUCCESS, result));
+
     } catch (error) {
+
         return next(error);
+
     }
+
 };
 
+
 const VocalController = {
+
     getVocalProfile,
-    updateVocalProfile,
+    updateVocalProfile
+
 };
+
 
 export default VocalController;

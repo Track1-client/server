@@ -1,4 +1,5 @@
 export default interface VocalProfileDTO {
+
     id: number;
     profileImage: string;
     name: string;
@@ -7,4 +8,5 @@ export default interface VocalProfileDTO {
     keyword: string[];
     introduce: string;
     isSelected: boolean;
+    
 };
