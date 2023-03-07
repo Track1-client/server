@@ -1,10 +1,12 @@
 export default {
+
     NULL_VALUE: "필요한 값이 없습니다.",
     OUT_OF_VALUE: "파라미터 값이 잘못되었습니다.",
     NOT_FOUND: "잘못된 경로입니다.",
     BAD_REQUEST: "잘못된 요청입니다.",
-  
-    // 회원가입 및 로그인
+
+
+    //! 회원가입 및 로그인
     SIGNUP_SUCCESS: "회원 가입 성공",
     SIGNUP_FAIL: "회원 가입 실패",
     NEED_TO_LOGIN: "새롭게 로그인 필요",
@@ -16,13 +18,9 @@ export default {
     ALREADY_IN_USE_NAME: "이미 존재하는 닉네임입니다.",
     INVALID_ID: "존재하지 않는 아이디입니다.",
     INCORRECT_PASSWORD: "잘못된 비밀번호입니다.",
-    SUCCESS_UPDATE_USER_PROFILE: "유저 프로필 수정 성공",
-    FAIL_UPDATE_USER_PROFILE: "유저 프로필 수정 실패",
-    SUCCESS_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 성공",
-    FAIL_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 실패",
-    FAIL_CREATE_AUTH: "auth 생성 실패",
-
-    // 토큰
+    
+    
+    //! 토큰
     CREATE_TOKEN_SUCCESS: "토큰 재발급 성공",
     EXPIRED_ACCESS_TOKEN: "Access 토큰이 만료되었습니다.",
     EXPIRED_REFRESH_TOKEN: "Refresh 토큰이 만료되었습니다.",
@@ -33,8 +31,9 @@ export default {
     VALID_TOKEN: "유효한 토큰입니다.",
     EMPTY_ACCESS_TOKEN: "Access 토큰 값이 없습니다.",
     EMPTY_REFRESH_TOKEN: "Refresh 토큰 값이 없습니다.",
-  
-    // 유저
+    
+    
+    //! 유저
     READ_USER_SUCCESS: "유저 조회 성공",
     READ_ALL_USERS_SUCCESS: "모든 유저 조회 성공",
     DONE_CHECK_USER_NAME: "유저 이름 체크 완료",
@@ -44,8 +43,14 @@ export default {
     NO_USER: "탈퇴했거나 가입하지 않은 유저입니다.",
     SEARCH_USER_FAIL: "유저 서치 실패",
     SEARCH_USER_SUCCESS: "유저 서치 성공",
-
-    // 이메일 
+    SUCCESS_UPDATE_USER_PROFILE: "회원가입 후 유저 프로필 수정 성공",
+    FAIL_UPDATE_USER_PROFILE: "회원가입 후 유저 프로필 수정 실패",
+    SUCCESS_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 성공",
+    FAIL_UPDATE_USER_PASSWORD: "유저 비밀번호 변경 실패",
+    FAIL_CREATE_AUTH: "auth 생성 실패",
+    
+    
+    //! 이메일 
     EMAIL_CHECK_DONE: "이메일 중복 검사 완료",
     ALREADY_EXISTS_EMAIL: "중복된 이메일입니다",
     MAKE_VERIFICATION_CODE_FAIL: "인증코드 생성 실패",
@@ -60,7 +65,8 @@ export default {
     PASSWORD_RESET_MAIL_SEND_FAIL: "비밀번호 재설정 메일 전송 실패",
     PASSWORD_RESET_TIME_PASSED: "비밀번호 초기화 링크 3시간 초과",
     
-    // 파일 업로드 관련
+
+    //! 파일 업로드 관련
     INVALID_IMAGE_FILE_TYPE: "가능한 이미지 파일 형식(.png/.jpg/.jpeg)을 벗어남",
     INAVLID_AUDIO_FILE_TYPE: "가능한 오디오 파일 형식(.mp3/.wav)을 벗어남",
     NOT_IMAGE_FILE: "이미지 파일이 아닙니다",
@@ -70,7 +76,8 @@ export default {
     UPLOAD_TRACK_FILE_SUCCESS: "트랙 게시글 업로드 성공",
     UPLOAD_TRACK_FILE_FAIL: "트랙 게시글 업로드 실패",
 
-    // 게시글 관련 
+
+    //! 게시글 관련 
     UPDATE_TRACK_SUCCESS: "게시글 수정 성공",
     UPDATE_TRACK_FAIL: "게시글 수정 실패",
     UPDATE_TRACK_CLOSED_SUCCESS: "게시글 마감 업데이트 성공",
@@ -90,7 +97,8 @@ export default {
     S3_CANNOT_FIND_AUDIO_FILE_OBJEUPDATE_TRACK_FAILCT: "해당 버킷에서 오디오 객체를 찾을 수 없음",
     S3_CANNOT_FIND_IMAGE_FILE_OBJECT: "해당 버킷에서 이미지 객체를 찾을 수 없음",
 
-    // 댓글 관련
+
+    //! 댓글 관련
     GET_COMMENT_LIST_SUCCESS: "댓글 조회 성공",
     GET_COMMENT_LIST_FAIL: "댓글 조회 실패",
     UPLOAD_COMMENT_SUCCESS: "댓글 업로드 성공",
@@ -102,7 +110,8 @@ export default {
     INVALID_BEAT_ID: "존재하지 않는 게시글",
     INVALID_COMMENT: "올바르지 않은 보컬의 댓글",
 
-    // 포트폴리오 관련
+
+    //! 포트폴리오 관련
     NOT_PRODUCER: "프로듀서 아님",
     NOT_VOCAL: "보컬 아님",
     PRODUCER_TITLE_NOT_FOUND: "프로듀서 타이틀이 존재하지 않음",
@@ -123,7 +132,8 @@ export default {
     INVALID_VOCAL_PORTFOLIO: "유효하지 않은 보컬의 포트폴리오",
     INVALID_USER_TITLE: "유효하지 않은 사용자의 타이틀",
 
-    // 프로필 관련
+
+    //! 프로필 관련
     GET_USER_INFORMATION_SUCCESS: "유저관련 정보 조회 성공",
     GET_USER_INFORMATION_FAIL: "유저관련 정보 조회 실패",
     GET_PRODUCER_PROFILE_SUCCESS: "프로듀서 프로필 조회 성공",
@@ -147,19 +157,24 @@ export default {
     INVALID_PRODUCER: "유효하지 않은 프로듀서",
     INVALID_VOCAL: "유효하지 않은 보컬",
 
-    // 보컬검색 관련
+
+    //! 보컬검색 관련
     GET_VOCAL_LIST_SUCCESS: "보컬 필터링 검색 성공",
     GET_VOCAL_LIST_FAIL: "보컬 필터링 검색 실패",
 
-    // S3 객체 관련
+
+    //! S3 객체 관련
     DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 게시글 오디오, 이미지 객체 삭제 실패",
     DELETE_S3_COMMENT_OBJECT_FAIL: "S3 댓글 오디오 객체 삭제 실패",
     DELETE_S3_PRODUCER_PORTFOLIO_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 프로듀서 포트폴리오 오디오, 이미지 객체 삭제 실패",
     DELETE_S3_VOCAL_PORTFOLIO_AUDIO_AND_IMAGE_OBJECT_FAIL: "S3 보컬 포트폴리오 오디오, 이미지 객체 삭제 실패",
 
-    // 페이지네이션 변수 관련
+
+    //! 페이지네이션 변수 관련
     INVALID_PAGINATION_PARAMETERS: "유효하지 않은 페이지네이션 변수",
 
-    // 서버 내 오류
+
+    //! 서버 내 오류
     INTERNAL_SERVER_ERROR: "서버 내 오류",
-  };
+
+};

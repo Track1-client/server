@@ -1,6 +1,8 @@
 import ejs from 'ejs';
 
+
 const ejsPasswordSetting = (token: string, image: string, endpoint: string) => {
+
     let passwordEmailForm;
     //! for redirection
     const clientAddr = 'https://www.track1.site';
@@ -14,6 +16,8 @@ const ejsPasswordSetting = (token: string, image: string, endpoint: string) => {
     });
 
     return passwordEmailForm;
+
 };
+
 
 export default ejsPasswordSetting;

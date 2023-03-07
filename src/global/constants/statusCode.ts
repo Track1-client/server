@@ -1,4 +1,5 @@
 export default {
+
     OK: 200, // 목록, 상세, 수정 성공
     CREATED: 201, // POST나 PUT으로 데이터 등록할 경우 사용
     // 어떠한 생성 작업을 요청받아 생성 작업을 성공
@@ -11,5 +12,6 @@ export default {
     CONFLICT: 409, // 클라이언트 요청에 대해 서버에서 충돌 요소가 발생 할수 있음을 의미
     INTERNAL_SERVER_ERROR: 500, // 서버에 오류가 발생하여 응답 할 수 없음을 의미
     SERVICE_UNAVAILABLE: 503, // 현재 서버가 유지보수 등의 이유로 일시적인 사용 불가함을 의미
-    DB_ERROR: 600,
+    DB_ERROR: 600
+    
   };

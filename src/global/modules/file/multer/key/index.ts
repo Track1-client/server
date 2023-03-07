@@ -9,6 +9,7 @@ import updateTrackFileKey from './updateTrackFileKey';
 import updateVocalPortfolioFileKey from './updateVocalPortfolioFileKey';
 
 const getLocation = {
+
     getTrackFileKey,
     getAudioFileKey,
     getProfileImageFileKey,
@@ -17,7 +18,9 @@ const getLocation = {
     updateTrackFileKey,
     updateAudioFileKey,
     updateProducerPortfolioFileKey,
-    updateVocalPortfolioFileKey,
+    updateVocalPortfolioFileKey
+
 };
+
 
 export default getLocation;

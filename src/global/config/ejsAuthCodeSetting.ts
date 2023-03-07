@@ -1,6 +1,8 @@
 import ejs from 'ejs';
 
+
 const ejsAuthCode = (authCode: string, image: string) => {
+
     let authEmailForm;
 
     ejs.renderFile(
@@ -12,6 +14,8 @@ const ejsAuthCode = (authCode: string, image: string) => {
     });
 
     return authEmailForm;
+    
 };
+
 
 export default ejsAuthCode;
