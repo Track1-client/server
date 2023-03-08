@@ -110,7 +110,7 @@ const updateProfile = async(req: Request, res: Response, next: NextFunction) => 
 const signIn = async(req: Request, res: Response, next: NextFunction) => {
 
     try {
-        LOGGER.info('dsf');
+        
         const userLogInDTO: SignInDTO = req.body;
         const data = await UserService.userLogin(userLogInDTO) as SignInResultDTO;
 
