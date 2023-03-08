@@ -3,7 +3,7 @@ import winstonDaily from 'winston-daily-rotate-file';
 import path from 'path';
 
 
-const logDir = 'logs';
+const logDir = 'src/config/logs';
 
 
 const colors = {

@@ -8,8 +8,7 @@ import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import getLocation from '../../../global/modules/file/multer/key';
 import MailService from '../service/MailService';
-import LOGGER from '../../../../config/logger';
-
+import LOGGER from '../../../config/logger';
 
 const cookieInfo: any = {
 
@@ -111,7 +110,7 @@ const updateProfile = async(req: Request, res: Response, next: NextFunction) => 
 const signIn = async(req: Request, res: Response, next: NextFunction) => {
 
     try {
-        
+        LOGGER.info('dsf');
         const userLogInDTO: SignInDTO = req.body;
         const data = await UserService.userLogin(userLogInDTO) as SignInResultDTO;
 
