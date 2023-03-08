@@ -6,7 +6,7 @@
 # Edit at https://www.toptal.com/developers/gitignore?templates=node
 
 ### Node ###
-# Logs
+#Logs
 logs
 *.log
 npm-debug.log*

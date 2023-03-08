@@ -4,6 +4,8 @@ import cors from "cors";
 import { corsMiddleware, globalErrorHandler } from './global/middlewares';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import morgan from 'morgan';
+import logger from '../config/logger';
 
 const app = express(); 
 const PORT = 3000;
@@ -36,8 +38,8 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 });
 app.listen(PORT, () => {
     console.log(`
-        #############################################
-            🛡️ Server listening on port: ${PORT} 🛡️
-        #############################################
+    #############################################
+        🛡️ Server listening on port: ${PORT} 🛡️
+    #############################################
     `);
 }); 
