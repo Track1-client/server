@@ -1,9 +1,9 @@
 import * as winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 import path from 'path';
+import moment from 'moment-timezone';
 
-
-const logDir = 'src/config/logs';
+const logDir = 'config/logs';
 
 
 const colors = {
@@ -17,9 +17,16 @@ const colors = {
 winston.addColors(colors);
 
 
-const format = winston.format.combine(
+const appendTimestamp = winston.format((info, opts) => {
+  if (opts.tz)
+    info.timestamp = moment().tz(opts.tz).format(" YYYY-MM-DD HH:mm:ss ||");
+  return info;
+});
 
-  winston.format.timestamp({ format: ' YYYY-MM-DD HH:MM:SS ||' }),
+
+const format = winston.format.combine(
+  
+  appendTimestamp({ tz: "Asia/Seoul" }),
   winston.format.colorize({ all: true }),
   winston.format.printf(
       (info) => `${info.timestamp}   [  ${info.level}  ]  ▶  ${info.message}  `,

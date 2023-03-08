@@ -19,7 +19,8 @@
     ]
   },
   "include": [
-    "./src/**/*" //? build 시 포함
+    "./src/**/*", //? build 시 포함
+    "config"  
   ],
   "exclude": [
     "node_modules", //? build 시 제외
