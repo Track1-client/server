@@ -8,6 +8,7 @@ import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import getLocation from '../../../global/modules/file/multer/key';
 import MailService from '../service/MailService';
+import LOGGER from '../../../../config/logger';
 
 
 const cookieInfo: any = {
@@ -110,14 +111,13 @@ const updateProfile = async(req: Request, res: Response, next: NextFunction) => 
 const signIn = async(req: Request, res: Response, next: NextFunction) => {
 
     try {
-
+        
         const userLogInDTO: SignInDTO = req.body;
         const data = await UserService.userLogin(userLogInDTO) as SignInResultDTO;
 
         const accessToken = jwtUtils.signAccess(data.tableName, data.userId);
         let refreshToken: string;
-
-
+        
         //? 다중로그인 처리 -> refresh token이 valid한 경우 refresh token은 다시 재발급받지 않음
         const isRefreshToken = await TokenService.isRefreshTokenValid(data.tableName, data.userId);
 
