@@ -10,7 +10,7 @@ import redisClient from '../../../global/config/redisClient';
 import prisma from '../../../global/config/prismaClient';
 import ProducerTempUserRepository from '../repository/ProducerTempUserRepository';
 import VocalTempUserRepository from '../repository/VocalTempUserRepository';
-
+import LOGGER from '../../../../config/logger';
 
 const producerTempUserRepository = new ProducerTempUserRepository();
 const vocalTempUserRepository = new VocalTempUserRepository();
@@ -174,7 +174,8 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
 const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
 
     try {
-        
+        LOGGER.info('LOGGER TEST');
+        LOGGER.error('LOGGER TEST');
         const producer = await getUserByLoginID.producerLogin(logInDTO.ID);
         const vocal = await getUserByLoginID.vocalLogin(logInDTO.ID);
 
