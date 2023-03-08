@@ -37,7 +37,7 @@ jobs:
 
 ### for code deploy 
       - name: zip file
-        run: zip -r track_1.zip ./dist ./yarn.lock ./prisma ./src/global/config/template ./config/logs/error
+        run: zip -r track_1.zip ./dist ./yarn.lock ./prisma ./src/global/config/template ./config
 
       - name: AWS configure credentials
         uses: aws-actions/configure-aws-credentials@v1
