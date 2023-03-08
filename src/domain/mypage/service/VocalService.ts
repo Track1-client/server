@@ -14,6 +14,7 @@ import VocalPortfolioOrderRepository from '../repository/VocalPortfolioOrderRepo
 const vocalTitleRepository = new VocalTitleRepository();
 const vocalPortfolioOrderRepository = new VocalPortfolioOrderRepository();
 
+
 const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName: string, userId: number, files: any) => {
 
     try {
@@ -23,6 +24,7 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         const getPortfolioNumber = await getVocalPortfolioNumberByUserId(userId);
         const isTitle = ( !getPortfolioNumber ) ? true : false;
         
+
         const prismaResult = await prisma.$transaction(async ($transaction) => {
             
             return await vocalPortfolioOrderRepository.createVocalPortfolio(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey, $transaction)
@@ -35,6 +37,7 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
         });
 
         const getTitle = await getVocalPortfolioTitleByUserId(userId);
+
 
         const result: VocalPortfolioCreateReturnDTO = {
 
@@ -61,18 +64,22 @@ const updateVocalPortfolio = async (portfolioId: number, tableName: string, user
         const isValidPortfolio = await getVocalPortfolioByUserId(userId, portfolioId);
         if (!isValidPortfolio || tableName !== 'vocal') throw new InvalidVocalPortfolio(rm.INVALID_VOCAL_PORTFOLIO);
 
+
+        //* DB 업데이트
+        const newPortfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
+        const newPortfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultVocalPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
+        
+        const data = await updateVocalPortfolioById(portfolioDTO, portfolioId, userId, String(newPortfolioAudio), String(newPortfolioImage));
+        if (!data) throw new UpdateVocalPortfolioFail(rm.UPDATE_VOCAL_PORTFOLIO_FAIL);
+
+
         //* S3 객체 삭제
-        let portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
-        let portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
+        const portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
+        const portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
         
         await updateS3VocalPortfolioAudioAndImage(portfolioAudio as string, portfolioImage as string);  
 
-        //* DB 업데이트
-        portfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
-        portfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultVocalPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
-        
-        const data = await updateVocalPortfolioById(portfolioDTO, portfolioId, userId, String(portfolioAudio), String(portfolioImage));
-        if (!data) throw new UpdateVocalPortfolioFail(rm.UPDATE_VOCAL_PORTFOLIO_FAIL);
+
 
         const result: VocalPortfolioUpdateReturnDTO = {
 
@@ -80,6 +87,7 @@ const updateVocalPortfolio = async (portfolioId: number, tableName: string, user
             vocalId: data.vocalId
 
         };
+
         return result;
 
     } catch (error) {
@@ -99,7 +107,9 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
         const currentTitle = await getVocalPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'vocal') throw new InvalidVocalTitlePortfolio(rm.INVALID_USER_TITLE);
         
+
         const prismaResult = await prisma.$transaction(async ($transaction) => {
+
             //& 현재 타이틀 포트폴리오 업데이트
             const oldData = await vocalTitleRepository.updateOldTitle(Number(titleDTO.userId), oldId, $transaction);
             if (!oldData) throw new UpdateVocalOldTitleFail(rm.UPDATE_VOCAL_OLD_TITLE_FAIL);
@@ -110,6 +120,7 @@ const updateVocalTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newId: 
 
             return { oldData, newData };
         });
+
 
         const result: TitleUpdateReturnDTO = {
 
@@ -136,14 +147,17 @@ const deleteVocalPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfolioI
         const isValidPortfolio = await getVocalPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
         if (!isValidPortfolio || portfolioDTO.tableName !== 'vocal') throw new InvalidVocalPortfolio(rm.INVALID_VOCAL_PORTFOLIO);
 
-        await deleteS3VocalPortfolioAudioAndImage(isValidPortfolio.portfolioFile, isValidPortfolio.portfolioImage);  //! S3 객체 삭제 
+
         await deleteVocalPortfolioByUserId(isValidPortfolio.vocalId, isValidPortfolio.id); //! DB 삭제 
+        await deleteS3VocalPortfolioAudioAndImage(isValidPortfolio.portfolioFile, isValidPortfolio.portfolioImage);  //! S3 객체 삭제 
+
 
         const result: VocalPortfolioDeleteReturnDTO = {
 
             vocalId: isValidPortfolio.vocalId
             
         };
+        
         return result;
 
     } catch (error) {

@@ -1,7 +1,7 @@
 import getAudioDurationInSeconds from 'get-audio-duration';
 import config from '../../../../global/config';
 import prisma from '../../../../global/config/prismaClient';
-import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
+import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeat';
 import { CommentUpdateDTO } from '../../interfaces';
 
 

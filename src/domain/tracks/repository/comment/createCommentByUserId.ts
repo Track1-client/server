@@ -2,7 +2,7 @@ import prisma from '../../../../global/config/prismaClient';
 import { CommentCreateDTO } from '../../interfaces';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
 import config from '../../../../global/config';
-import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
+import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeat';
 import { Prisma } from '@prisma/client';
 
 
