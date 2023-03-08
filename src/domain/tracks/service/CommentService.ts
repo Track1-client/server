@@ -77,16 +77,18 @@ const updateComment = async (commentId: number, tableName: string, userId: numbe
         const isValidComment = await getCommentByUserId(commentId, Number(userId));
         if (!isValidComment || tableName !== 'vocal') throw new InvalidVocalComment(rm.INVALID_COMMENT);
 
-        let commentAudio = ( audioFileKey ) ? isValidComment.commentFile : undefined;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
+        const oldCommentAudio = ( audioFileKey ) ? isValidComment.commentFile : undefined;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
+        const newCommentAudio = ( audioFileKey ) ? audioFileKey : isValidComment.commentFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         
-        //* S3 객체 삭제
-        await updateS3CommentAudio(commentAudio as string); 
-
-        commentAudio = ( audioFileKey ) ? audioFileKey : isValidComment.commentFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
         
         //* DB 업데이트
-        const data = await updateCommentById(commentDTO, commentId, userId, String(commentAudio)); 
+        const data = await updateCommentById(commentDTO, commentId, userId, String(newCommentAudio)); 
         if (!data) throw new CommentFileUpdateFail(rm.UPDATE_COMMENT_FAIL);
+        
+
+        //* S3 객체 삭제
+        await updateS3CommentAudio(oldCommentAudio as string); 
+
 
         const result: CommentUpdateReturnDTO = {
 
@@ -115,8 +117,10 @@ const deleteComment = async (commentDTO: CommentDeleteDTO, commentId: number) =>
         const isValidComment = await getCommentByUserId(commentId, Number(commentDTO.userId));
         if (!isValidComment || commentDTO.tableName !== 'vocal') throw new InvalidVocalComment(rm.INVALID_COMMENT);
 
-        await deleteS3CommentAudio(isValidComment.commentFile);  //! S3 객체 삭제 
+        
         await deleteCommentById(commentId, Number(commentDTO.userId)); //! DB 삭제 
+        await deleteS3CommentAudio(isValidComment.commentFile);  //! S3 객체 삭제 
+
 
         const result: CommentDeleteReturnDTO = {
 

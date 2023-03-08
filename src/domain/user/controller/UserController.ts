@@ -39,10 +39,12 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
             accessToken: tokenResult.accessToken
         };
 
+
         return res
                 .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
                 .status(sc.CREATED)
                 .send(success(sc.CREATED, rm.SIGNUP_SUCCESS, joinResult));
+
 
     } catch (error) {
 
@@ -71,10 +73,12 @@ const createVocal = async(req: Request, res: Response, next: NextFunction) => {
             accessToken: tokenResult.accessToken
         };
 
+
         return res
                 .cookie('refreshToken', tokenResult.refreshToken, cookieInfo)
                 .status(sc.CREATED)
                 .send(success(sc.CREATED, rm.SIGNUP_SUCCESS, joinResult));
+
 
     } catch (error) {
 
@@ -113,6 +117,7 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
         const accessToken = jwtUtils.signAccess(data.tableName, data.userId);
         let refreshToken: string;
 
+
         //? 다중로그인 처리 -> refresh token이 valid한 경우 refresh token은 다시 재발급받지 않음
         const isRefreshToken = await TokenService.isRefreshTokenValid(data.tableName, data.userId);
 
@@ -131,6 +136,7 @@ const signIn = async(req: Request, res: Response, next: NextFunction) => {
             accessToken
         };
         
+
         return res
                 .cookie('refreshToken', refreshToken, cookieInfo)
                 .status(sc.OK)
@@ -180,12 +186,14 @@ const updatePassword = async(req: Request, res: Response, next: NextFunction) =>
 
         const result = await UserService.updateUserPassword(token, passwordDTO.password);
         
+
         //! 비밀번호 초기화 후, refresh token 삭제 (무조건 다시 로그인 필요)
         await TokenService.deleteRefreshToken(result.tableName, result.id as unknown as string); 
 
         //! 비밀번호 초기화 후, Auth 테이블 데이터 삭제하기 
         await UserService.deleteAuthData(result.tableName, result.id);
 
+        
         return res.status(sc.OK).send(success(sc.OK, rm.SUCCESS_UPDATE_USER_PASSWORD, result));
 
     } catch (error) {

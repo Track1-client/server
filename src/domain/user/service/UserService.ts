@@ -43,6 +43,7 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
 
         });
 
+
         const result: UserCreateResultDTO = {
 
             id: producer.id,
@@ -89,6 +90,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
 
         });
 
+
         const result: UserCreateResultDTO = {
 
             id: vocal.id,
@@ -119,6 +121,7 @@ const joinToken = async(tableName: string, user: UserCreateResultDTO): Promise<R
         const redisKeyArray: string[] = ['Table', tableName, 'UserID', user.id as unknown as string];
         await redisClient.set(redisKeyArray.join(':'), refreshToken); 
 
+
         const result: RefreshAccessTokenDTO = {
 
             accessToken,
@@ -146,11 +149,13 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
                         await getUserById.vocal(profileDTO.userId);
         if (!user) throw new UnauthorizedUser(rm.NO_USER);
         
+
         const updateResult = (profileDTO.tableName === 'producer') ? 
                                 await updateUserProfile.updateProducerProfile(profileDTO) :
                                 await updateUserProfile.updateVocalProfile(profileDTO);
         if (!updateResult) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PROFILE);
         
+
         const result: UserCreateResultDTO = (profileDTO.tableName === 'producer') ?
                                                 getProfileUpdateReturn(updateResult, 'producer') :
                                                 getProfileUpdateReturn(updateResult, 'vocal');
@@ -169,26 +174,26 @@ const updateUser = async(profileDTO: UserUpdateDTO): Promise<UserCreateResultDTO
 const userLogin = async(logInDTO: SignInDTO): Promise<SignInResultDTO> => {
 
     try {
-
+        
         const producer = await getUserByLoginID.producerLogin(logInDTO.ID);
         const vocal = await getUserByLoginID.vocalLogin(logInDTO.ID);
 
-        const user = producer || vocal;
-        if (!user) throw new LoginIDNonExists(rm.INVALID_ID);  //! 존재하지 않는 ID
-        
 
-        const tableName = (producer) ? 'producer':'vocal';
-        const userPW = producer?.producerPW || vocal?.vocalPW; 
+        const user = (logInDTO.tableName === 'producer') ? producer : vocal;
+        const userPW = (logInDTO.tableName === 'producer') ? producer?.producerPW : vocal?.vocalPW;
+        if (!user) throw new LoginIDNonExists(rm.INVALID_ID);  //! 존재하지 않는 ID
+
 
         const isMatch = await bcrypt.compare(logInDTO.PW, userPW as string);
         if (!isMatch) throw new IncorrectLoginPassword(rm.INCORRECT_PASSWORD);
         
         
-        const redisKeyArray: string[] = ['Table', tableName, 'UserID', user.id as unknown as string]
+        const redisKeyArray: string[] = ['Table', logInDTO.tableName, 'UserID', user.id as unknown as string]
+
 
         const result: SignInResultDTO = {
 
-            tableName: tableName,
+            tableName: logInDTO.tableName,
             userId: user.id,
             redisKey: redisKeyArray.join(':')   //* Table:vocal:UserId:1 의 형태로 반환 
 
@@ -212,8 +217,10 @@ const updateUserPassword = async(token: string, password: string) => {
         const auth = await findAuthByToken(token);
         if (!auth) throw new ResetPasswordTimePassed(rm.PASSWORD_RESET_TIME_PASSED);  //! 비밀번호 재설정 메일 보낸지 3시간 초과한 경우 
         
+
         const salt = await bcrypt.genSalt(10);
         const newPasword = await bcrypt.hash(password, salt); 
+
 
         const data = (auth.tableName === 'producer') ?
                             await updatePassword.updateProducerPassword(auth.userId, newPasword) :
@@ -222,6 +229,7 @@ const updateUserPassword = async(token: string, password: string) => {
         if (!data) throw new UpdateUserFail(rm.FAIL_UPDATE_USER_PASSWORD);
 
 
+        
         const result: UserCreateResultDTO = (auth.tableName === 'producer') ?
                                                 getPasswordUpdateReturn(data.id, data.name, auth.userEmail, 'producer') :
                                                 getPasswordUpdateReturn(data.id, data.name, auth.userEmail, 'vocal');

@@ -88,9 +88,11 @@ const updateAuthCode = async(emailDTO: EmailDTO) => {
 
         } while (newAuthCode === oldAuthCode);
         
+
         const data = await upsertCodeInTempUser(emailDTO, newAuthCode);
         if (!data) throw new UpdateAuthCode(rm.REMAKE_VERIFICATION_CODE_FAIL);
         
+
         //! 메일 보내기 
         const image = config.track1EmailImage;
         sendAuthCodeMail(emailDTO.userEmail, newAuthCode, image);
@@ -135,12 +137,14 @@ const checkVerify = async(verifyCodeDTO: VerifyCodeDTO) => {
                             })
                             .catch((error) => { throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST) });
 
+
     //! 일치하지 않는 경우 (유효시간 지났거나 다른 코드 입력)
     if (!getAuthCode || getAuthCode.authCode !== verifyCodeDTO.verificationCode) throw new InvalidVerificationCode(rm.INVALID_VERIFICATION_CODE);
 
     //! 일치하는 경우 tempUser 삭제 로직 -> 회원가입 시 삭제로 변경
     //await deleteTempUserByEmail(verifyCodeDTO.tableName, verifyCodeDTO.userEmail);
     
+
     const result: AuthCodeReturnDTO = {
 
         tableName: verifyCodeDTO.tableName,
@@ -172,6 +176,7 @@ const createAuthTable = async(userId: number, tableName: string, userEmail: stri
             
         } while (oldToken);
 
+        
         const auth = await createAuth(userId, tableName, userEmail, newToken);
         if (!auth) throw new CreateAuth(rm.FAIL_CREATE_AUTH);
 

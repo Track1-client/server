@@ -46,6 +46,7 @@ const getProducerBeats = async (producerId: number, page: number, limit: number)
         const data = await getProducerBeatsById(producerId, page, limit);
         if (!data) throw new GetProducerBeatsFail(rm.GET_PRODUCER_BEATS_FAIL);
         
+        
         const result: ProducerBeatsGetReturnDTO = {
 
             beatList: data
@@ -68,10 +69,12 @@ const updateProducerProfile = async (profileDTO: ProducerProfileUpdateDTO, table
     try {
 
         const user = await getUserById.producer(userId);
-        await updateS3ProfileImage(user?.producerImage as string);
-
+        
         const data = await updateProducerProfileByUserId(userId, profileDTO, imageFileKey);
         if (!data || tableName !== 'producer') throw new UpdateProducerProfileFail(rm.UPDATE_PRODUCER_PROFILE_FAIL);
+        
+
+        await updateS3ProfileImage(user?.producerImage as string);
 
         return data;
 
