@@ -169,15 +169,17 @@ const deleteBeatById = async(userId: number, beatId: number) => {
 
         const userBeatData = await getBeatByUserId(userId, beatId);
         if (!userBeatData) throw new NotProducerBeat(rm.PRODUCER_BEAT_UNMATCH);
-        
-        await deleteS3TrackAudioAndImage(userBeatData.beatFile, userBeatData.beatImage);  //! S3 객체 삭제 
+
         await deleteBeatByUserId(userId, beatId); //! DB 삭제 
+        await deleteS3TrackAudioAndImage(userBeatData.beatFile, userBeatData.beatImage);  //! S3 객체 삭제 
+
 
         const result: BeatDeleteReturnDTO = {
 
             userId
 
         };
+
         return result;
 
     } catch (error) {

@@ -2,7 +2,7 @@ import getAudioDurationInSeconds from 'get-audio-duration';
 import config from '../../../../global/config';
 import prisma from '../../../../global/config/prismaClient';
 import convertCategory from '../../../../global/modules/convertCategory';
-import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
+import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeat';
 import { BeatCreateDTO } from '../../interfaces';
 
 

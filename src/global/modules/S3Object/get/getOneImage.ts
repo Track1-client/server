@@ -1,4 +1,4 @@
-import { GetImageFail } from './../../../middlewares/error/errorInstance';
+import { GetImageFail } from '../../../middlewares/error/errorInstance';
 import multipartS3 from '../../../../infra/aws/s3MultipartConfig';
 import { rm } from '../../../constants';
 

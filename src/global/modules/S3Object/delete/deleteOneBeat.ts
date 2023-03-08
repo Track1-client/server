@@ -25,6 +25,7 @@ const deleteS3TrackAudioAndImage = async (audioFile: string, imageFile: string) 
                             Delete: { Objects: objects }
                         })
                     .promise();
+
         }
 
         else throw new DeleteTrackS3Object(rm.DELETE_S3_TRACK_AUDIO_AND_IMAGE_OBJECT_FAIL);

@@ -21,11 +21,13 @@ const createProducerPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableNa
         const getPortfolioNumber = await getProducerPortfolioNumberByUserId(userId);
         const isTitle = ( !getPortfolioNumber ) ? true : false;
         
+
         const portfolio = await createProducerPortfolioByUserId(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey);
         if (!portfolio) throw new UploadProducerPortfolioFail(rm.UPLOAD_PRODUCER_PORTFOLIO_FAIL);
 
         const getTitle = await getProducerPortfolioTitleByUserId(userId);
 
+        
         const result: ProducerPortfolioCreateReturnDTO = {
 
             producerPortfolioId: portfolio.id,
@@ -51,18 +53,21 @@ const updateProducerPortfolio = async (portfolioId: number, tableName: string, u
         const isValidPortfolio = await getProducerPortfolioByUserId(userId, portfolioId);
         if (!isValidPortfolio || tableName !== 'producer') throw new InvalidProducerPortfolio(rm.INVALID_PRODUCER_PORTFOLIO);
 
+
+        //* DB 업데이트
+        const newPortfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
+        const newPortfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultJacketAndProducerPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
+        
+        const data = await updateProducerPortfolioById(portfolioDTO, portfolioId, userId, String(newPortfolioAudio), String(newPortfolioImage));
+        if (!data) throw new UpdateProducerPortfolioFail(rm.UPDATE_PRODUCER_PORTFOLIO_FAIL);
+
+
         //* S3 객체 삭제
-        let portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
-        let portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
+        const portfolioAudio = ( fileData.audioFileKey ) ? isValidPortfolio.portfolioFile : false;  //& 수정할 오디오 존재하는 경우, 기존 게시글의 오디오객체 삭제 
+        const portfolioImage = isValidPortfolio.portfolioImage; //& 수정할 이미지 존재하는 경우, 기존 게시글의 이미지객체 삭제 / 이미지 없는 경우 기본이미지로 바꾸기 위해 기존 게시글 이미지 객체 삭제 
         
         await updateS3ProducerPortfolioAudioAndImage(portfolioAudio as string, portfolioImage as string);  
 
-        //* DB 업데이트
-        portfolioAudio = ( fileData.audioFileKey ) ? fileData.audioFileKey : isValidPortfolio.portfolioFile;  //& 수정할 오디오 존재하면 해당 오디오파일key값, 아니면 기존 오디오파일key값
-        portfolioImage = ( fileData.jacketImageKey ) ? fileData.jacketImageKey : config.defaultJacketAndProducerPortfolioImage; //& 수정할 이미지 존재하면 해당 이미지파일key값, 아니면 기본 이미지        
-        
-        const data = await updateProducerPortfolioById(portfolioDTO, portfolioId, userId, String(portfolioAudio), String(portfolioImage));
-        if (!data) throw new UpdateProducerPortfolioFail(rm.UPDATE_PRODUCER_PORTFOLIO_FAIL);
 
         const result: ProducerPortfolioUpdateReturnDTO = {
 
@@ -90,7 +95,9 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
         const currentTitle = await getProducerPortfolioTitleByUserId(Number(titleDTO.userId));
         if (currentTitle?.id !== oldId || titleDTO.tableName !== 'producer') throw new InvalidProducerTitlePortfolio(rm.INVALID_USER_TITLE);
 
+
         const prismaResult = await prisma.$transaction(async ($transaction) => {
+
             //& 현재 타이틀 포트폴리오 업데이트
             const oldData = await producerTitleRepository.updateOldTitle(Number(titleDTO.userId), oldId, $transaction);
             if (!oldData) throw new UpdateProducerOldTitleFail(rm.UPDATE_PRODUCER_OLD_TITLE_FAIL);
@@ -101,6 +108,7 @@ const updateProducerTitle = async (titleDTO: TitleUpdateDTO, oldId: number, newI
 
             return { oldData, newData };
         });
+
 
         const result: TitleUpdateReturnDTO = {
 
@@ -127,14 +135,17 @@ const deleteProducerPortfolio = async (portfolioDTO: PortfolioDeleteDTO, portfol
         const isValidPortfolio = await getProducerPortfolioByUserId(Number(portfolioDTO.userId), portfolioId);
         if (!isValidPortfolio || portfolioDTO.tableName !== 'producer') throw new InvalidProducerPortfolio(rm.INVALID_PRODUCER_PORTFOLIO);
 
-        await deleteS3ProducerPortfolioAudioAndImage(isValidPortfolio.portfolioFile, isValidPortfolio.portfolioImage);  //! S3 객체 삭제 
+
         await deleteProducerPortfolioByUserId(isValidPortfolio.producerId, isValidPortfolio.id); //! DB 삭제 
+        await deleteS3ProducerPortfolioAudioAndImage(isValidPortfolio.portfolioFile, isValidPortfolio.portfolioImage);  //! S3 객체 삭제 
+
 
         const result: ProducerPortfolioDeleteReturnDTO = {
 
             producerId: isValidPortfolio.producerId
             
         };
+
         return result;
 
     } catch (error) {

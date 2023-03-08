@@ -1,2 +1,2 @@
-export { default as getS3OneBeatObject } from './getOneBeatObject';
-export { default as getS3OneImageObject } from './getOneImageObject';
+export { default as getS3OneBeatObject } from './getOneBeat';
+export { default as getS3OneImageObject } from './getOneImage';

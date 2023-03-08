@@ -3,7 +3,7 @@ import { BeatCreateDTO } from '../../interfaces';
 import { getAudioDurationInSeconds } from 'get-audio-duration';
 import convertCategory from '../../../../global/modules/convertCategory';
 import config from '../../../../global/config';
-import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeatObject';
+import getS3OneBeatObject from '../../../../global/modules/S3Object/get/getOneBeat';
 
 
 function objectParams_url(audioKey: string) {
