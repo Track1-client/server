@@ -29,6 +29,7 @@ jobs:
       - name: create env file  
         run: |
           echo "${{ secrets.ENV_FILE }}" > .env
+          echo "${{ secrets.NODE_ENV }}" >> .env
 
       - name: build server files   
         working-directory: ./
