@@ -6,7 +6,8 @@ const redisInfo = {
 
     socket: {
         host: config.redisHost,
-        port: config.redisPort
+        port: config.redisPort,
+        connectTimeout: 60000
     },
     password: config.redisPassword
 
