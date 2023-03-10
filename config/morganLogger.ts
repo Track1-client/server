@@ -18,20 +18,6 @@ const skip = () => {
 };
 
 
-morgan.token("status", (req: Request, res: Response) => {
-
-    let color ;
-
-    if (res.statusCode < 300) color = "\x1b[32m"    //green
-    else if (res.statusCode < 400) color = "\x1b[36m" //cyan
-    else if (res.statusCode < 500) color = "\x1b[33m"   //yellow
-    else if (res.statusCode < 600) color = "\x1b[31m"   //red
-    else color = "\x1b[0m" /*글자색 초기화*/
-
-    return color + res.statusCode + "\x1b[35m" /*보라색*/;
-
-});
-
 morgan.token("request", (req: Request, res: Response) => {
     
     return "[Request] -> " + JSON.stringify(req.body);
