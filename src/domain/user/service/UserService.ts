@@ -10,6 +10,7 @@ import redisClient from '../../../global/config/redisClient';
 import prisma from '../../../global/config/prismaClient';
 import ProducerTempUserRepository from '../repository/ProducerTempUserRepository';
 import VocalTempUserRepository from '../repository/VocalTempUserRepository';
+import LOGGER from '../../../../config/logger';
 
 
 const producerTempUserRepository = new ProducerTempUserRepository();
@@ -34,7 +35,12 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
                                 
                                 //! 인증코드 데이터 삭제
                                 await producerTempUserRepository.deleteTempUser('producer', producer.producerID, $transaction)
-                                    .catch((error) => { throw error });  
+                                    .catch((error) => { 
+
+                                        LOGGER.error('인증메일 전송 후 회원가입 요망');
+                                        throw error 
+
+                                    });  
                                 
                                 return producer;
 
@@ -81,7 +87,12 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
                             .then( async (vocal) => {
 
                                 await vocalTempUserRepository.deleteTempUser('vocal', vocal.vocalID, $transaction)
-                                    .catch((error) => { throw error });
+                                    .catch((error) => { 
+
+                                        LOGGER.error('인증메일 전송 후 회원가입 요망');
+                                        throw error 
+                                    
+                                    });
 
                                 return vocal;
 

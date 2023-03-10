@@ -29,8 +29,10 @@ const createVocalPortfolio = async (portfolioDTO: PortfolioCreateDTO, tableName:
             
             return await vocalPortfolioOrderRepository.createVocalPortfolio(portfolioDTO, userId, isTitle, files.audioFileKey, files.jacketImageKey, $transaction)
                                         .then(async (portfolio) => {
+
                                             await vocalPortfolioOrderRepository.upsertVocalOrder(portfolio.vocalId, 'portfolio', portfolio.id, $transaction); 
                                             return portfolio;
+                                            
                                         })
                                         .catch((error) => { throw new UploadVocalPortfolioFail(rm.UPLOAD_VOCAL_PORTFOLIO_FAIL) })
 
