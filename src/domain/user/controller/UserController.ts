@@ -25,7 +25,7 @@ const cookieInfo: any = {
 const createProducer = async(req: Request, res: Response, next: NextFunction) => {
 
     try {
-
+        
         const producerCreateDTO: ProducerCreateDTO = req.body;
         const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
         

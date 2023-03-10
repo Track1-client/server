@@ -27,7 +27,6 @@ const appendTimestamp = winston.format((info, opts) => {
 const format = winston.format.combine(
   
   appendTimestamp({ tz: "Asia/Seoul" }),
-  winston.format.colorize({ all: true }),
   winston.format.printf(
       (info) => `${info.timestamp}   [  ${info.level}  ]  ▶  ${info.message}  `,
   )
@@ -60,7 +59,7 @@ const LOGGER = winston.createLogger({
 
       }),
       new winston.transports.Console({
-
+          format: winston.format.colorize({ all: true }),
           handleExceptions: true
 
       })
