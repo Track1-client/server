@@ -100,7 +100,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
                             .catch((error) => { throw new VocalJoinFail(rm.SIGNUP_FAIL) });
 
         });
-
+        
 
         const result: UserCreateResultDTO = {
 
