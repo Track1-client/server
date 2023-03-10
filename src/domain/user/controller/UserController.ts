@@ -8,7 +8,7 @@ import UserService from '../service/UserService';
 import TokenService from '../service/TokenService';
 import getLocation from '../../../global/modules/file/multer/key';
 import MailService from '../service/MailService';
-import LOGGER from '../../../../config/logger';
+import LOGGER from '../../../../config/winstonLogger';
 
 
 const cookieInfo: any = {

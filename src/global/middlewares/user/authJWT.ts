@@ -4,7 +4,7 @@ import { JwtPayload } from "jsonwebtoken";
 import { rm } from "../../constants";
 import tokenType from "../../constants/tokenType";
 import jwtUtils from '../../modules/jwtHandler';
-import LOGGER from '../../../../config/logger';
+import LOGGER from '../../../../config/winstonLogger';
 
 
 export default async (req: Request, res: Response, next: NextFunction) => {

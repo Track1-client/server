@@ -10,7 +10,7 @@ import redisClient from '../../../global/config/redisClient';
 import prisma from '../../../global/config/prismaClient';
 import ProducerTempUserRepository from '../repository/ProducerTempUserRepository';
 import VocalTempUserRepository from '../repository/VocalTempUserRepository';
-import LOGGER from '../../../../config/logger';
+import LOGGER from '../../../../config/winstonLogger';
 
 
 const producerTempUserRepository = new ProducerTempUserRepository();
@@ -76,7 +76,8 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
 
         const emailExists = await getUserByEmail.vocalEmailExists(vocalCreateDTO.ID);
         if (emailExists) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
-
+        LOGGER.error('error test');
+        LOGGER.info('info test');
         const salt = await bcrypt.genSalt(10);
         const password = await bcrypt.hash(vocalCreateDTO.PW, salt); 
 
@@ -85,7 +86,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
             return await vocalTempUserRepository.createVocal(vocalCreateDTO, password, location, $transaction)
 
                             .then( async (vocal) => {
-
+                                
                                 await vocalTempUserRepository.deleteTempUser('vocal', vocal.vocalID, $transaction)
                                     .catch((error) => { 
 

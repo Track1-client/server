@@ -2,8 +2,10 @@ import * as winston from 'winston';
 import winstonDaily from 'winston-daily-rotate-file';
 import path from 'path';
 import moment from 'moment-timezone';
+import configVariable from '../src/global/config';
 
-const logDir = 'config/logs';
+
+const logDir = (configVariable.env === 'development') ? 'config/logs' : 'dist/config';
 
 
 const colors = {
