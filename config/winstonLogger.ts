@@ -45,7 +45,7 @@ const LOGGER = winston.createLogger({
 
           level: 'info',
           datePattern: 'YYYY-MM-DD',
-          filename: path.join(logDir, `%DATE%.log`),
+          filename: path.join(logDir + '/log', `%DATE%.log`),
           zippedArchive: true,	
           handleExceptions: true,
           maxFiles: 30
@@ -55,7 +55,7 @@ const LOGGER = winston.createLogger({
 
           level: 'error',
           datePattern: 'YYYY-MM-DD',
-          filename: path.join(logDir+ '/error', `%DATE%.error.log`),
+          filename: path.join(logDir + '/error', `%DATE%.error.log`),
           zippedArchive: true,
           maxFiles: 30
 
@@ -73,7 +73,7 @@ const LOGGER = winston.createLogger({
 
         level: 'error',
         datePattern: 'YYYY-MM-DD',
-        filename: path.join(logDir+ '/error', `%DATE%.exception.log`),
+        filename: path.join(logDir + '/error', `%DATE%.exception.log`),
         zippedArchive: true,	
         maxFiles: 30
 

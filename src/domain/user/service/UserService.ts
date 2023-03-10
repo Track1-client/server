@@ -73,7 +73,7 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
 const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Promise<UserCreateResultDTO> => {
 
     try {
-
+        
         const emailExists = await getUserByEmail.vocalEmailExists(vocalCreateDTO.ID);
         if (emailExists) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
         
