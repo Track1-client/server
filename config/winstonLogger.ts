@@ -60,7 +60,18 @@ const LOGGER = winston.createLogger({
           maxFiles: 30
 
       }),
+      new winstonDaily ({
+
+          level: 'http',
+          datePattern: 'YYYY-MM-DD',
+          filename: path.join(logDir + '/http', `%DATE%.http.log`),
+          zippedArchive: true,
+          maxFiles: 30
+
+      }),
+      
       new winston.transports.Console({
+
           format: winston.format.colorize({ all: true }),
           handleExceptions: true
 

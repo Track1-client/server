@@ -4,11 +4,11 @@ import cors from "cors";
 import { corsMiddleware, globalErrorHandler } from './global/middlewares';
 import path from 'path';
 import cookieParser from 'cookie-parser';
+import morganMiddleware from '../config/morganLogger';
+
 
 const app = express(); 
 const PORT = 3000;
-
-app.use(cookieParser());
 
 const corsOriginList = [
     'https://www.track1.site',
@@ -22,10 +22,15 @@ const corsOptions = {
     optionsSuccessStatus: 200,
 };
 
+
+app.use(cookieParser());
+
 app.use(cors(corsOptions));
 app.use(corsMiddleware(corsOriginList));
 
 app.use(express.json());
+
+app.use(morganMiddleware);
 
 app.use("/", router); 
 app.use(globalErrorHandler);
