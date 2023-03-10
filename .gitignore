@@ -7,7 +7,7 @@
 
 ### Node ###
 #Logs
-logs
+logs/error
 *.log
 npm-debug.log*
 yarn-debug.log*
