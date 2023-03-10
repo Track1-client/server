@@ -31,11 +31,11 @@ const createProducer = async(producerCreateDTO: ProducerCreateDTO, location: str
             return await producerTempUserRepository.createProducer(producerCreateDTO, password, location, $transaction)
 
                             .then(async (producer) => {
-
+                                
                                 //! 인증코드 데이터 삭제
                                 await producerTempUserRepository.deleteTempUser('producer', producer.producerID, $transaction)
-                                    .then((error) => { throw error });  
-
+                                    .catch((error) => { throw error });  
+                                
                                 return producer;
 
                             })
@@ -81,7 +81,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
                             .then( async (vocal) => {
 
                                 await vocalTempUserRepository.deleteTempUser('vocal', vocal.vocalID, $transaction)
-                                    .then((error) => { throw error });
+                                    .catch((error) => { throw error });
 
                                 return vocal;
 
