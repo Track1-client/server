@@ -1,4 +1,5 @@
 import { Prisma } from '@prisma/client';
+import LOGGER from '../../../../../config/logger';
 import { rm } from '../../../../global/constants';
 import { SendAuthCode } from '../../../../global/middlewares/error/errorInstance';
 
@@ -19,7 +20,7 @@ const deleteTempUserByEmail = async(tableName: string, userEmail: string, transa
         });
 
     } catch(error) {
-
+        
         throw new SendAuthCode(rm.SEND_VERIFY_MAIL_FIRST)
 
     }

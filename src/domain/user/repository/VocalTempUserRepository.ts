@@ -7,11 +7,11 @@ import createUser from './user/createUser';
 class VocalTempUserRepository {
 
     async createVocal (vocal: VocalCreateDTO, password: string, location: string, transaction: Prisma.TransactionClient) {
-        return createUser.createVocal(vocal, password, location, transaction);
+        return await createUser.createVocal(vocal, password, location, transaction);
     }
 
     async deleteTempUser (tableName: string, userEmail: string, transaction: Prisma.TransactionClient) {
-        return deleteTempUserByEmail(tableName, userEmail, transaction);
+        return await deleteTempUserByEmail(tableName, userEmail, transaction);
     }
 
 }

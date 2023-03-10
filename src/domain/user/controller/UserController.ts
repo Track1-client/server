@@ -10,6 +10,7 @@ import getLocation from '../../../global/modules/file/multer/key';
 import MailService from '../service/MailService';
 import LOGGER from '../../../../config/logger';
 
+
 const cookieInfo: any = {
 
     httpOnly: true,
@@ -27,9 +28,9 @@ const createProducer = async(req: Request, res: Response, next: NextFunction) =>
 
         const producerCreateDTO: ProducerCreateDTO = req.body;
         const profileImage: Express.MulterS3.File = req.file as Express.MulterS3.File;
-
+        
         const key = getLocation.getProfileImageFileKey(profileImage);
-
+        
         const userResult = await UserService.createProducer(producerCreateDTO, key as string); //! DB에 유저 정보 저장 
         const tokenResult = await UserService.joinToken('producer', userResult); //! access, refresh 토큰 생성 
 
