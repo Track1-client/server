@@ -1,5 +1,4 @@
 import { Prisma } from '@prisma/client';
-import LOGGER from '../../../../../config/winstonLogger';
 import { rm } from '../../../../global/constants';
 import { SendAuthCode } from '../../../../global/middlewares/error/errorInstance';
 

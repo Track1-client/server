@@ -4,7 +4,6 @@ import { JwtPayload } from "jsonwebtoken";
 import { rm } from "../../constants";
 import tokenType from "../../constants/tokenType";
 import jwtUtils from '../../modules/jwtHandler';
-import LOGGER from '../../../../config/winstonLogger';
 
 
 export default async (req: Request, res: Response, next: NextFunction) => {
@@ -12,7 +11,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
     try {
 
         const token = req.headers.authorization?.split(" ").reverse()[0];
-        LOGGER.error(`${token}`);
+        
         if (!token) throw new AccessTokenDoesNotExists(rm.EMPTY_ACCESS_TOKEN);
 
         const decoded = jwtUtils.accessVerify(token);

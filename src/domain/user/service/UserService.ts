@@ -76,8 +76,7 @@ const createVocal = async(vocalCreateDTO: VocalCreateDTO, location: string): Pro
 
         const emailExists = await getUserByEmail.vocalEmailExists(vocalCreateDTO.ID);
         if (emailExists) throw new AlreadyExistsEmail(rm.ALREADY_EXISTS_EMAIL);
-        LOGGER.error('error test');
-        LOGGER.info('info test');
+        
         const salt = await bcrypt.genSalt(10);
         const password = await bcrypt.hash(vocalCreateDTO.PW, salt); 
 
