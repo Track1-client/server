@@ -1,14 +1,14 @@
 import config from '../../../global/config';
 import prisma from '../../../global/config/prismaClient';
-import { getS3OneBeatObject } from '../../../global/modules/S3Object/get';
+import { getS3OneBeatObject, getS3OneImageObject } from '../../../global/modules/S3Object/get';
 import { FilteringReturnDTO } from '../interfaces';
 
 
-function objectParams_url(audioKey: string) {
+function objectParams_url(bucketName: string, audioKey: string) {
 
     return {
 
-        Bucket: config.vocalPortfolioBucketName,
+        Bucket: bucketName,
         Key: audioKey
 
     };
@@ -55,16 +55,19 @@ const findVocals = async(condition: any, page: number, limit: number) => {
                         //! 보컬이 아직 포트폴리오를 올리지 않아서 타이틀이 존재하지 않는 경우 예외처리 
                         if (getVocal.VocalPortfolio.length !== 0) {
 
-                                titleURL = await getS3OneBeatObject(objectParams_url(getVocal.VocalPortfolio[0].portfolioFile)) as string;
+                                titleURL = await getS3OneBeatObject(objectParams_url(config.vocalPortfolioBucketName, getVocal.VocalPortfolio[0].portfolioFile)) as string;
                                 duration = getVocal.VocalPortfolio[0].duration;
 
                         };
+
+                        const profileImage = (getVocal.vocalImage === config.defaultUserProfileImage) ?
+                                        config.defaultUserProfileImage : await getS3OneImageObject(objectParams_url(config.profileImageBucketName, getVocal.vocalImage));
 
 
                         const returnDTO: FilteringReturnDTO = {
 
                             vocalId: getVocal.id,
-                            vocalProfileImage: getVocal.vocalImage,
+                            vocalProfileImage: profileImage as string,
                             vocalTitleFile: titleURL,
                             vocalName: getVocal.name,
                             category: getVocal.category,
