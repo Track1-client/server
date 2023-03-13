@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import LOGGER from '../../../../config/winstonLogger';
 import { rm, sc } from '../../../global/constants';
 import { success } from '../../../global/constants/response';
 import getLocation from '../../../global/modules/file/multer/key';
